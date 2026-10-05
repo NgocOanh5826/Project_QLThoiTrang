@@ -1,0 +1,3 @@
+@model Promotion
+@{ViewData["Title"]=Model.Id==0?"Thêm khuyến mãi":"Chỉnh sửa khuyến mãi";}
+<form asp-action="Promotion" method="post" class="panel form-stack"><input asp-for="Id" type="hidden"/><div asp-validation-summary="All" class="validation"></div><div class="form-grid"><label>Tên chương trình<input asp-for="Name"/></label><label>Mã chương trình<input asp-for="Code"/></label><label>Mức giảm dự kiến (%)<input asp-for="Percent" type="number" min="1" max="70"/></label><label>Ngày kết thúc<input asp-for="Until" type="date"/></label></div><label class="checkbox"><input asp-for="Active"/>Bật chương trình</label><div class="actions"><button class="btn-black">Lưu chương trình</button><a href="/Admin/Promotions" class="button-secondary">Quay lại</a></div></form>

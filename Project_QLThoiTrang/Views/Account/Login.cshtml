@@ -1,0 +1,15 @@
+@model LoginInput
+@{ViewData["Title"]="Đăng nhập";}
+<section class="auth-grid auth-login">
+ <aside class="auth-story"><a href="/" class="auth-brand">QOANH <span>EVERYDAY, YOUR WAY</span></a><div class="auth-story-copy"><p class="eyebrow">CHÀO MỪNG BẠN TRỞ LẠI</p><h1>Phong cách<br/>riêng của bạn<br/>đang chờ.</h1><p>Tiếp tục khám phá những món đồ bạn yêu thích và theo dõi đơn hàng của mình.</p></div><a href="/Shop" class="auth-backlink">← Khám phá cửa hàng</a><span class="auth-note">BẢN DEMO · KHÔNG THANH TOÁN THẬT</span></aside>
+ <div class="auth-form-wrap"><a href="/" class="auth-mobile-brand">QOANH <span>EVERYDAY, YOUR WAY</span></a><form asp-action="Login" method="post" class="auth-form">
+  <input asp-for="ReturnUrl" type="hidden"/><span class="auth-step">KHÔNG GIAN CỦA BẠN <span>01 / 02</span></span><h2>Đăng nhập</h2><p class="auth-intro">Nhập thông tin để tiếp tục.</p>
+  <div asp-validation-summary="ModelOnly" class="auth-validation" role="alert"></div>
+  <label asp-for="Email">Địa chỉ email</label><div class="auth-input-wrap"><i class="bi bi-envelope" aria-hidden="true"></i><input asp-for="Email" type="email" autocomplete="username" placeholder="ten@email.com" inputmode="email" autocapitalize="none" aria-describedby="Email-error"/></div><span asp-validation-for="Email" id="Email-error" class="field-error" role="alert"></span>
+  <div class="auth-label-row"><label asp-for="Password">Mật khẩu</label><span>Ít nhất 8 ký tự</span></div><div class="auth-input-wrap"><i class="bi bi-lock" aria-hidden="true"></i><input asp-for="Password" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu" aria-describedby="Password-error"/><button class="password-toggle" type="button" data-password-toggle="Password" aria-label="Hiện mật khẩu" aria-pressed="false"><i class="bi bi-eye" aria-hidden="true"></i></button></div><span asp-validation-for="Password" id="Password-error" class="field-error" role="alert"></span>
+  <div class="auth-options"><label class="remember-check"><input asp-for="RememberMe"/> <span>Duy trì đăng nhập</span></label><a href="/Home/Info/contact">Cần hỗ trợ?</a></div>
+  <button type="submit" class="auth-submit">Đăng nhập <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+  <p class="auth-switch">Chưa có tài khoản? <a asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Tạo tài khoản</a></p>
+  <details class="demo-accounts"><summary><i class="bi bi-info-circle" aria-hidden="true"></i> Tài khoản dùng thử trên máy này</summary><div><p>Khách hàng <code>khach@qoanh.local</code></p><p>Mật khẩu <code>Khach@12345</code></p><p>Quản trị <code>admin@qoanh.local</code></p><p>Mật khẩu <code>Admin@12345</code></p><small>Tài khoản chỉ dùng cho dữ liệu demo cục bộ.</small></div></details>
+ </form></div>
+</section>

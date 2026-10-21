@@ -8,7 +8,7 @@
       "Image": "/images/products/aothun01.jpg",
       "Color": "Tr\u1EAFng",
       "Description": "Cotton m\u1EC1m m\u1EA1i, phom d\u1EC5 m\u1EB7c. Ph\u00F9 h\u1EE3p v\u1EDBi nh\u1EEFng ng\u00E0y b\u1EA1n mu\u1ED1n tho\u1EA3i m\u00E1i m\u00E0 v\u1EABn ch\u1EC9n chu.",
-      "Stock": 15,
+      "Stock": 14,
       "Active": true,
       "IsNew": false,
       "OnSale": false
@@ -34,7 +34,7 @@
       "Image": "/images/products/aothun03.jpg",
       "Color": "Tr\u1EAFng",
       "Description": "Cotton m\u1EC1m m\u1EA1i, phom d\u1EC5 m\u1EB7c. Ph\u00F9 h\u1EE3p v\u1EDBi nh\u1EEFng ng\u00E0y b\u1EA1n mu\u1ED1n tho\u1EA3i m\u00E1i m\u00E0 v\u1EABn ch\u1EC9n chu.",
-      "Stock": 21,
+      "Stock": 20,
       "Active": true,
       "IsNew": false,
       "OnSale": true
@@ -132,6 +132,15 @@
       "Address": "96 v\u00F5 v\u0103n ng\u00E2n",
       "PasswordHash": "AQAAAAIAAYagAAAAEEY8wYaIFrOQ1ntbteBaqmmSasEvMf9t8hpbG4SneOby0bhNHR6EApqzUuelT98D0w==",
       "Role": "Customer"
+    },
+    {
+      "Id": 4,
+      "Name": "Noanh",
+      "Email": "oanh@gmail.com",
+      "Phone": "",
+      "Address": "",
+      "PasswordHash": "AQAAAAIAAYagAAAAEGq8sVkemOC8skExMdbgYJVGceEIubdsm9LlsPXuEnGo0MLKdKnNCuEXDYCP17mSOQ==",
+      "Role": "Customer"
     }
   ],
   "Orders": [
@@ -182,6 +191,38 @@
       "Subtotal": 599000,
       "Shipping": 30000,
       "Total": 629000
+    },
+    {
+      "Id": "QH-CFBAD3CEDD",
+      "CustomerId": 4,
+      "Created": "2026-10-14T16:16:49.1584265+07:00",
+      "Name": "Noanh",
+      "Phone": "123456789",
+      "Address": "90, \u0111\u01B0\u1EDDng 34, X\u00E3 Hoa Th\u00E1m, T\u1EC9nh L\u1EA1ng S\u01A1n",
+      "Note": "vjfjgc",
+      "Status": "\u0110\u00E3 giao",
+      "Payment": "Thanh to\u00E1n khi nh\u1EADn h\u00E0ng",
+      "Lines": [
+        {
+          "ProductId": 1,
+          "Name": "\u00C1o thun Cotton Basic",
+          "Image": "/images/products/aothun01.jpg",
+          "Size": "L",
+          "Quantity": 1,
+          "Price": 299000
+        },
+        {
+          "ProductId": 3,
+          "Name": "\u00C1o thun Premium",
+          "Image": "/images/products/aothun03.jpg",
+          "Size": "M",
+          "Quantity": 1,
+          "Price": 399000
+        }
+      ],
+      "Subtotal": 698000,
+      "Shipping": 30000,
+      "Total": 728000
     }
   ],
   "Promotions": [

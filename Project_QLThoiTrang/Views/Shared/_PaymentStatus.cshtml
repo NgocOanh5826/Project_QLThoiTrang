@@ -1,0 +1,6 @@
+@model Order
+<section class="panel form-stack"><h2>Thanh toán · @(Model.Payment=="Chuyển khoản"?"Chuyển khoản":"COD")</h2><p>@Model.PaymentStatus</p><p>Đã nhận: @Model.PaidAmount.ToString("N0") đ · Đã hoàn: @Model.RefundedAmount.ToString("N0") đ</p><partial name="_BankInstructions" model="Model"/>
+@if((User.IsInRole("Admin")||User.IsInRole("Sales"))&&Model.PaidAmount<Model.Total&&((Model.Payment=="Chuyển khoản"&&Model.Status=="Chờ xác nhận")||new[]{"Đã xác nhận","Đang chuẩn bị","Đang giao","Đã giao","Hoàn thành"}.Contains(Model.Status))){
+ <form asp-controller="Admin" asp-action="Payment" method="post" class="form-stack" data-confirm="Xác nhận đã thực nhận đủ tiền và đối soát chứng từ?"><input name="id" type="hidden" value="@Model.Id"/><label>Số tiền đã nhận<input name="amount" type="number" value="@((Model.Total-Model.PaidAmount).ToString(System.Globalization.CultureInfo.InvariantCulture))" readonly/></label><label>Mã giao dịch / biên nhận duy nhất<input name="reference" maxlength="100" required/></label><p class="notice">Chỉ xác nhận theo tiền đã thực nhận. Việc khách quét QR hoặc báo đã chuyển không tự xác nhận thanh toán.</p><button class="btn-black">Xác nhận đã nhận đủ tiền</button></form>
+}
+</section>

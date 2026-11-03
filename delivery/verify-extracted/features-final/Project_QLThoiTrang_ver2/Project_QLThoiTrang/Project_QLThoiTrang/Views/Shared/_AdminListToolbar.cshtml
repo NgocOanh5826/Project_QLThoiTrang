@@ -1,0 +1,7 @@
+<div class="filter-bar admin-list-toolbar" data-admin-list-filter>
+ <label>Tìm kiếm<input type="search" data-admin-list-search placeholder="Nhập từ khóa trong bảng…" autocomplete="off"/></label>
+ @if(ViewData["FilterStatus"] is true){<label>Trạng thái<select data-admin-list-state><option value="">Tất cả trạng thái</option><option value="active">Đang hoạt động</option><option value="inactive">Ngừng hoạt động</option></select></label>}
+ <button type="button" class="button-secondary" data-admin-list-reset>Xóa bộ lọc</button>
+ <span class="muted small" data-admin-list-count aria-live="polite"></span>
+ @if(ViewData["CreateUrl"] is string createUrl){<a href="@createUrl" class="btn-black">@(ViewData["CreateLabel"]??"Thêm mới")</a>}
+</div>

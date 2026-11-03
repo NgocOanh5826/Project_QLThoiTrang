@@ -1,0 +1,5 @@
+@model StoreData
+@{ViewData["Title"]="Tồn theo biến thể và kho";}
+<a class="btn-black" href="/Admin/Receive">Nhập kho</a><div class="panel table-scroll"><table class="data-table"><thead><tr><th>Kho</th><th>Sản phẩm / SKU</th><th>Size / màu</th><th>Tồn</th><th>Kiểm kê</th></tr></thead><tbody>
+@foreach(var w in Model.Warehouses.Where(w=>w.Active)){@foreach(var v in Model.Variants){var quantity=Model.Stocks.FirstOrDefault(s=>s.WarehouseId==w.Id&&s.VariantId==v.Id)?.Quantity??0;<tr><td>@w.Name</td><td>@Model.Products.Single(p=>p.Id==v.ProductId).Name<br/>@v.Sku</td><td>@v.Size / @v.Color</td><td>@quantity</td><td><form asp-action="AdjustVariant" method="post" class="inline-form"><input name="variantId" value="@v.Id" type="hidden"/><input name="warehouseId" value="@w.Id" type="hidden"/><input name="expected" value="@quantity" type="hidden"/><input name="quantity" value="@quantity" type="number" min="0" max="100000" required/><input name="reason" placeholder="Lý do kiểm kê" minlength="5" maxlength="300" required/><button class="button-secondary">Ghi kiểm kê</button></form></td></tr>}}
+</tbody></table></div>

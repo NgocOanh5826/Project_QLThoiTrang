@@ -1,0 +1,328 @@
+{
+  "executedUtc": "2026-11-03T10:03:01.784370+00:00",
+  "baseUrl": "http://127.0.0.1:5188",
+  "total": 64,
+  "failed": 0,
+  "results": [
+    {
+      "id": "HTTP01-home",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP02-guest-admin-redirect-login",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP03-antiforgery-required",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP04-admin-login",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Products",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Product",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Product/1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Categories",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Orders",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Order/QH-DEMO01",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Customers",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Customer/2",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/EditCustomer/2",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Inventory",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Receive",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Returns",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Promotions",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Promotion",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Promotion/1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Reports",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Settings",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Export",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/References?kind=brands",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/References?kind=sizes",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/References?kind=colors",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/References?kind=warehouses",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/References?kind=suppliers",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Variants",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/VariantStock",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Staff",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Staff/1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Receipts",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/Reviews",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Admin/LoginHistory",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP05-customer-login",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP06-customer-admin-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Shop",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Shop/Detail/1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Shop/Cart",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Shop/Wishlist",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Account",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Account/Password",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Account/Orders",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Account/Order/QH-DEMO01",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Home/Info/privacy",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP07-other-customer-order-hidden",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP08-checkout-COD-deliver-full-return",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP09-receive-and-reject-duplicate",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP10-inventory-login",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP11-inventory-read-stock",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP12-inventory-staff-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP13-inventory-cannot-create-admin",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP14-catalog-login",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP15-catalog-can-products",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP16-catalog-receive-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP17-sales-login",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP18-sales-can-orders",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP19-sales-settings-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP20-lock-account-revokes-existing-cookie",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP21-guest-cart-merged-and-survives-logout",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP23-profile-empty-optional-fields",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP24-profile-duplicate-phone-validation-rollback",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "HTTP22-login-rate-limit-429",
+      "status": "PASS",
+      "error": ""
+    }
+  ]
+}

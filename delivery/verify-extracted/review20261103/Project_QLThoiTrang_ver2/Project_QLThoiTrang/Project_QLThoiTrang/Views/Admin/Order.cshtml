@@ -1,0 +1,7 @@
+@model Order
+@{ViewData["Title"]="Chi tiết đơn "+Model.Id;var states=Model.Status switch{"Chờ xác nhận"=>new[]{"Đã xác nhận","Đã hủy"},"Đã xác nhận"=>new[]{"Đang chuẩn bị","Đang giao","Đã hủy"},"Đang chuẩn bị"=>new[]{"Đang giao","Đã hủy"},"Đang giao"=>new[]{"Đã giao"},"Đã giao"=>new[]{"Hoàn thành"},_=>Array.Empty<string>()};}
+<div class="checkout-grid"><div class="panel"><div class="section-title"><h2>Sản phẩm đã đặt</h2><span class="status">@Model.Status</span></div><partial name="_OrderLines" model="Model"/></div><aside class="panel form-stack"><h2>Thông tin nhận hàng</h2><p>@Model.Name<br/>@Model.Phone<br/>@Model.Address</p><p class="muted">@Model.Created.ToString("dd/MM/yyyy HH:mm")<br/>@Model.Payment</p><p>@Model.Note</p>@if(states.Length>0){<form asp-action="OrderStatus" method="post" class="form-stack" data-confirm="Xác nhận cập nhật trạng thái đơn hàng?"><input type="hidden" name="id" value="@Model.Id"/><label>Bước tiếp theo<select name="status">@foreach(var state in states){<option>@state</option>}</select></label><button class="btn-black">Cập nhật trạng thái</button></form>}else{<p class="notice">Đơn đã hoàn tất hoặc đã hủy. Không sửa lịch sử.</p>}<a href="/Admin/Orders" class="button-secondary">Tất cả đơn hàng</a></aside></div>
+
+<partial name="_PaymentStatus" model="Model"/>
+
+<partial name="_OrderHistory" model="Model"/>

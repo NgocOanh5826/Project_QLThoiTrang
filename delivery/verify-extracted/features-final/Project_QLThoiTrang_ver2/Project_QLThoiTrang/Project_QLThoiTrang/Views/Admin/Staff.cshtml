@@ -1,0 +1,3 @@
+@{ViewData["FilterStatus"]=true;ViewData["Title"]="Nhân viên và phân quyền";ViewData["CreateUrl"]="/Admin/StaffMember";ViewData["CreateLabel"]="Thêm nhân viên";}
+<partial name="_AdminListToolbar"/>
+<div class="panel table-scroll"><table class="data-table"><thead><tr><th>Tên</th><th>Email</th><th>Vai trò</th><th>Hoạt động</th><th></th></tr></thead><tbody>@foreach(var c in (List<Customer>)ViewBag.Staff){<tr data-state="@(c.Active?"active":"inactive")"><td>@c.Name</td><td>@c.Email</td><td>@c.Role</td><td>@c.Active</td><td><a href="/Admin/StaffMember/@(-c.Id)">Sửa / khóa / đặt lại mật khẩu</a></td></tr>}</tbody></table></div>

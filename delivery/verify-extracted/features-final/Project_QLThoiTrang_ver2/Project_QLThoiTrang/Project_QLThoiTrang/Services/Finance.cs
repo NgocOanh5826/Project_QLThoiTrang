@@ -1,0 +1,24 @@
+using Project_QLThoiTrang.Data;
+using Project_QLThoiTrang.Models;
+namespace Project_QLThoiTrang.Services;
+public sealed partial class StoreService
+{
+ void UpdateCosting(StoreDbContext db,StoreData data,Dictionary<int,int> before,Dictionary<string,string> oldStatuses,HashSet<int> approved,int movementCount)
+ {
+  var values=db.InventoryValues.ToDictionary(v=>v.VariantId);
+  foreach(var order in data.Orders)foreach(var line in order.Lines.Where(l=>l.Id==0))line.UnitCost=values.GetValueOrDefault(line.VariantId)?.AverageCost;
+  var additions=data.StockMovements.Skip(movementCount).Where(m=>m.Reason=="Nhập kho"&&m.VariantId.HasValue).Select(m=>(Variant:m.VariantId!.Value,Quantity:m.Delta,Cost:(decimal?)m.UnitCost)).ToList();
+  foreach(var order in data.Orders.Where(o=>o.Status=="Đã hủy"&&oldStatuses.GetValueOrDefault(o.Id)!=o.Status&&oldStatuses.ContainsKey(o.Id)))foreach(var l in order.Lines)additions.Add((l.VariantId,l.Quantity,l.UnitCost));
+  foreach(var r in data.Returns.Where(r=>r.Status=="Approved"&&!approved.Contains(r.Id)))foreach(var returned in r.Lines){var l=data.Orders.Single(o=>o.Id==r.OrderId).Lines.Single(l=>l.Id==returned.OrderLineId);additions.Add((l.VariantId,returned.Quantity,l.UnitCost));}
+  foreach(var g in additions.GroupBy(a=>a.Variant))
+  {int oldQuantity=before.GetValueOrDefault(g.Key);var value=values.GetValueOrDefault(g.Key);if(value==null){value=new(){VariantId=g.Key};db.InventoryValues.Add(value);values.Add(g.Key,value);}value.AverageCost=(oldQuantity>0&&!value.AverageCost.HasValue)||g.Any(a=>!a.Cost.HasValue)?null:decimal.Round((oldQuantity*(value.AverageCost??0)+g.Sum(a=>a.Quantity*a.Cost!.Value))/(oldQuantity+g.Sum(a=>a.Quantity)),2);value.UpdatedUtc=DateTime.UtcNow;value.Note="Bình quân di động sau nhập/nhận lại";}
+ }
+ public void SetInventoryValue(int variantId,int expected,decimal cost,string note,int actor)=>NativeWrite(db=>
+ {NativePermission(db,actor,"Inventory");Require(cost>=0&&cost<=100000000,"Giá vốn không hợp lệ.");note=Text(note,5,300,"Lý do khai báo giá vốn");Require(db.BienTheSanPham.Any(v=>v.MaBienThe==variantId),"Không tìm thấy biến thể.");Require(db.TonKho.Where(t=>t.MaBienThe==variantId).Sum(t=>(int?)t.SoLuongTon).GetValueOrDefault()==expected,"Tồn đã thay đổi, tải lại trang.");var value=db.InventoryValues.SingleOrDefault(v=>v.VariantId==variantId);if(value==null){value=new(){VariantId=variantId};db.InventoryValues.Add(value);}value.AverageCost=cost;value.UpdatedUtc=DateTime.UtcNow;value.ActorId=actor;value.Note=note;return 0;});
+ public List<ProfitLine> Profit(DateTime from,DateTime to)=>Read(d=>
+ {Require(from.Date<=to.Date,"Khoảng ngày không hợp lệ.");var rows=new List<ProfitLine>();foreach(var o in d.Orders.Where(o=>o.Created.Date>=from.Date&&o.Created.Date<=to.Date&&o.Status is "Đã giao" or "Hoàn thành" or "Đã hoàn hàng")){foreach(var l in o.Lines){int returned=d.Returns.Where(r=>r.OrderId==o.Id&&r.Status=="Approved").SelectMany(r=>r.Lines).Where(r=>r.OrderLineId==l.Id).Sum(r=>r.Quantity);decimal refunds=d.Returns.Where(r=>r.OrderId==o.Id&&r.Status=="Approved").SelectMany(r=>r.Lines).Where(r=>r.OrderLineId==l.Id).Sum(r=>r.Refund);int quantity=Math.Max(0,l.Quantity-returned);decimal revenue=o.Status=="Đã hoàn hàng"?0:Math.Max(0,(o.Subtotal==0?0:decimal.Round(l.Price*l.Quantity*(o.Subtotal-o.Discount)/o.Subtotal,2))-refunds);rows.Add(new(o.Id,o.Created,l.Name,quantity,revenue,quantity==0?0:l.UnitCost*quantity));}}return rows;});
+ public void ReconcileSupplier(int receiptId,decimal amount,string note,int actor)=>NativeWrite(db=>
+ {NativePermission(db,actor,"Sales");Require(db.PhieuNhap.Any(p=>p.MaPhieuNhap==receiptId),"Phiếu nhập không tồn tại.");Require(amount>=0&&amount<=10000000000000m,"Công nợ không hợp lệ.");note=Text(note,5,300,"Căn cứ đối soát");var account=db.SupplierAccounts.SingleOrDefault(a=>a.ReceiptId==receiptId);Require(!db.SupplierPayments.Any(p=>p.ReceiptId==receiptId),"Phiếu đã chi tiền; không thay số phải trả.");if(account==null){account=new(){ReceiptId=receiptId};db.SupplierAccounts.Add(account);}account.Amount=amount;account.Note=note;account.ActorId=actor;account.UpdatedUtc=DateTime.UtcNow;return 0;});
+ public void PaySupplier(int receiptId,decimal amount,string reference,int actor)=>NativeWrite(db=>
+ {NativePermission(db,actor,"Sales");var account=db.SupplierAccounts.SingleOrDefault(a=>a.ReceiptId==receiptId);Require(account!=null,"Cần đối soát phiếu nhập trước khi chi.");reference=Text(reference,1,100,"Chứng từ chi");Require(!db.SupplierPayments.Any(p=>p.Reference==reference),"Chứng từ chi đã sử dụng.");decimal paid=db.SupplierPayments.Where(p=>p.ReceiptId==receiptId).Sum(p=>(decimal?)p.Amount)??0;Require(amount>0&&amount<=account!.Amount-paid,"Số tiền vượt phần công nợ còn lại.");db.SupplierPayments.Add(new(){ReceiptId=receiptId,Amount=amount,Reference=reference,ActorId=actor,CreatedUtc=DateTime.UtcNow});return 0;});
+}

@@ -1,0 +1,202 @@
+{
+  "executedUtc": "2026-11-03T09:20:46.318294+00:00",
+  "total": 39,
+  "failed": 0,
+  "results": [
+    {
+      "id": "LIST-reference-brands",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "CREATE-reference-brands",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LIST-reference-sizes",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "CREATE-reference-sizes",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LIST-reference-colors",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "CREATE-reference-colors",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LIST-reference-warehouses",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "CREATE-reference-warehouses",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LIST-reference-suppliers",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "CREATE-reference-suppliers",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LIST-Variants",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "CREATE-Variant",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LIST-Staff",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "CREATE-StaffMember",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LIST-Categories",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "CREATE-Category",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LIST-Inventory",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LIST-VariantStock",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LIST-Returns",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LIST-Receipts",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LIST-Reviews",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LIST-LoginHistory",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LIST-Promotions",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "EDIT-stock-count",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "VALIDATION-reference-stays-on-form",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "SAVE-reference-returns-to-list",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "EDIT-reference",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "EDIT-variant",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "EDIT-staff",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "DETAIL-receipt",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "DETAIL-return",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LEGACY-variant-link",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "LEGACY-reference-link",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AUTH-inventory-warehouse-form",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AUTH-inventory-brand-form-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AUTH-catalog-warehouse-form-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AUTH-catalog-category-form",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AUTH-sales-staff-form-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AUTH-sales-stock-form-denied",
+      "status": "PASS",
+      "error": ""
+    }
+  ]
+}

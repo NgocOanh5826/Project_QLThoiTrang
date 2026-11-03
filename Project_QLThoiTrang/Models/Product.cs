@@ -2,6 +2,10 @@ using System.ComponentModel.DataAnnotations;
 namespace Project_QLThoiTrang.Models;
 public class Product
 {
+ public int? BrandId { get; set; }
+ public int? LegacyId { get; set; }
+ public List<Variant> Variants { get; set; }=new();
+ public int AvailableStock=>Variants.Where(v=>v.Active).Sum(v=>v.Stock);
  public int Id { get; set; }
  [Required(ErrorMessage="Nhập tên sản phẩm"),StringLength(120)] public string Name { get; set; }="";
  [Required] public string Category { get; set; }="Nữ";

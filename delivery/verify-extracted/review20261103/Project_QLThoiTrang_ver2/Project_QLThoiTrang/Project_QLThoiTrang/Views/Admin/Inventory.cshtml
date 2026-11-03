@@ -1,0 +1,7 @@
+<a class="button-secondary" href="/Admin/VariantStock">Kiểm kê theo biến thể / kho</a>
+<a class="button-secondary" href="/Admin/Receipts">Lịch sử phiếu nhập</a>
+@model List<Product>
+@{ViewData["Title"]="Quản lý tồn kho";}
+<a class="btn-black" href="/Admin/Receive">Nhập kho</a><p class="notice">Tồn kho tổng theo sản phẩm; đơn đặt hàng trừ kho, đơn hủy hoàn lại kho. Tồn chi tiết theo biến thể/kho đã có tại màn hình kiểm kê.</p><div class="panel table-scroll"><table class="data-table"><thead><tr><th>Sản phẩm</th><th>Hiện có</th><th>Tình trạng</th><th>Điều chỉnh tồn thực tế</th></tr></thead><tbody>@foreach(var p in Model){<tr><td><div class="table-product"><img src="@p.Image" alt=""/><strong>@p.Name</strong></div></td><td>@p.Stock</td><td><span class="status @(p.Stock<=5?"warning":"")">@(p.Stock==0?"Hết hàng":p.Stock<=5?"Sắp hết":"Còn hàng")</span></td><td><form asp-action="Inventory" method="post" class="inline-form inventory-adjustment"><input type="hidden" name="id" value="@p.Id"/><input type="hidden" name="expected" value="@p.Stock"/><input name="reason" placeholder="Lý do kiểm kê" minlength="5" maxlength="300" required/><label class="sr-only" for="stock-@p.Id">Tồn kho @p.Name</label><input id="stock-@p.Id" name="quantity" type="number" value="@p.Stock" min="0" max="100000"/><button class="button-secondary compact">Lưu tồn kho</button></form></td></tr>}</tbody></table></div>
+
+<partial name="_StockHistory"/>

@@ -1,0 +1,3 @@
+@model List<ReviewItem>
+@{ViewData["Title"]="Quản lý đánh giá";}
+<div class="panel table-scroll"><table class="data-table"><thead><tr><th>Sản phẩm</th><th>Khách</th><th>Sao</th><th>Nội dung</th><th></th></tr></thead><tbody>@foreach(var r in Model){<tr><td>@r.ProductId</td><td>@r.Customer</td><td>@r.Stars / 5</td><td>@r.Text</td><td><form asp-action="Moderate" method="post"><input name="id" value="@r.Id" type="hidden"/><input name="active" value="@((!r.Active).ToString().ToLowerInvariant())" type="hidden"/><button class="button-secondary">@(r.Active?"Ẩn":"Hiện")</button></form></td></tr>}</tbody></table></div>

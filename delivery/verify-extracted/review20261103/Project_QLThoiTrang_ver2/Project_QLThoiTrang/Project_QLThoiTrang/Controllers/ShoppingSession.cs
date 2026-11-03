@@ -1,0 +1,11 @@
+using Microsoft.AspNetCore.Mvc.Filters;
+using Project_QLThoiTrang.Models;
+using Project_QLThoiTrang.Services;
+namespace Project_QLThoiTrang.Controllers;
+public partial class ShopController
+{
+ public override void OnActionExecuting(ActionExecutingContext context)
+ {if(User.IsInRole("Customer")){SessionStore.Set(HttpContext.Session,"cart",store.UserCart(CustomerId));SessionStore.Set(HttpContext.Session,"wishlist",store.UserWishlist(CustomerId));}}
+ public override void OnActionExecuted(ActionExecutedContext context)
+ {if(context.Exception==null&&User.IsInRole("Customer")&&new[]{"Add","UpdateCart","Favorite"}.Contains(context.ActionDescriptor.RouteValues["action"]))store.SaveShopping(CustomerId,SessionStore.Get<List<CartItem>>(HttpContext.Session,"cart"),SessionStore.Get<List<int>>(HttpContext.Session,"wishlist"));}
+}

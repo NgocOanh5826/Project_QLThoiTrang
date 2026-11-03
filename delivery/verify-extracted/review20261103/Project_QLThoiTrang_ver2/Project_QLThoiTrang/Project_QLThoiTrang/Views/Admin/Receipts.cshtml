@@ -1,0 +1,4 @@
+@model List<Project_QLThoiTrang.Data.Native.PhieuNhapRow>
+@inject Project_QLThoiTrang.Services.StoreService Store
+@{ViewData["Title"]="Lịch sử phiếu nhập";var details=Store.NativeRead(db=>db.ChiTietPhieuNhap.ToList());}
+<a class="btn-black" href="/Admin/Receive">Nhập kho</a>@foreach(var r in Model){<section class="panel"><h2>Phiếu @r.MaPhieuNhap · @r.QReference</h2><p>@r.NgayNhap.ToString("dd/MM/yyyy HH:mm") · Kho @r.MaKho · Nhà cung cấp @r.MaNCC · Nhân viên @r.MaNV</p><p>Tổng nhập: @r.TongTien.ToString("N0") đ</p><ul>@foreach(var d in details.Where(d=>d.MaPhieuNhap==r.MaPhieuNhap)){<li>Biến thể @d.MaBienThe · Số lượng @d.SoLuong · Giá @d.GiaNhap.ToString("N0") đ</li>}</ul></section>}

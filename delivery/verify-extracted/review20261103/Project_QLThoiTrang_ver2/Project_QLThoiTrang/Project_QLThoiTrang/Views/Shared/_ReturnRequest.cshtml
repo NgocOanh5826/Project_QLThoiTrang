@@ -1,0 +1,7 @@
+@model Order
+@inject Project_QLThoiTrang.Services.StoreService Store
+@{var requests=Store.Read(d=>d.Returns.Where(r=>r.OrderId==Model.Id&&r.CustomerId==Model.CustomerId).ToList());}
+@foreach(var r in requests){<section class="panel"><h2>Yêu cầu trả #@r.Id</h2><p>@r.Status · @r.Reason</p><p>@r.Resolution · Dự kiến hoàn @r.Refund.ToString("N0") đ</p>@foreach(var l in r.Lines){<p>Dòng hàng @l.OrderLineId: @l.Quantity sản phẩm</p>}</section>}
+@if((Model.Status is "Đã giao" or "Hoàn thành")&&!requests.Any(r=>r.Status=="Pending")){
+<form asp-controller="Account" asp-action="Return" method="post" class="panel form-stack"><h2>Yêu cầu trả hàng</h2><input name="id" value="@Model.Id" type="hidden"/>
+<label>Sản phẩm trả<select name="lineId"><option value="0">Toàn bộ phần hàng còn lại</option>@foreach(var l in Model.Lines){var returned=requests.Where(r=>r.Status=="Approved").SelectMany(r=>r.Lines).Where(r=>r.OrderLineId==l.Id).Sum(r=>r.Quantity);if(returned<l.Quantity){<option value="@l.Id">@l.Name · @l.Size / @l.Color (còn được trả @(l.Quantity-returned))</option>}}</select></label><label>Số lượng (khi chọn một dòng)<input name="quantity" value="1" type="number" min="1" max="20"/></label><label>Lý do<textarea name="reason" minlength="5" maxlength="500" required></textarea></label><p class="notice">Cửa hàng kiểm tra hàng và chứng từ trước khi hoàn. Trả một phần phân bổ giảm giá theo giá trị hàng; trả nốt toàn bộ được hoàn phần tiền còn lại, gồm phí giao hàng.</p><button class="button-secondary">Gửi yêu cầu</button></form>}

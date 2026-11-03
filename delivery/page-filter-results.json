@@ -1,0 +1,86 @@
+[
+  {
+    "id": "comboboxes /Admin/Promotions",
+    "status": "PASS"
+  },
+  {
+    "id": "comboboxes /Admin/Variants",
+    "status": "PASS"
+  },
+  {
+    "id": "comboboxes /Admin/Staff",
+    "status": "PASS"
+  },
+  {
+    "id": "comboboxes /Admin/Categories",
+    "status": "PASS"
+  },
+  {
+    "id": "comboboxes /Admin/Inventory",
+    "status": "PASS"
+  },
+  {
+    "id": "comboboxes /Admin/VariantStock",
+    "status": "PASS"
+  },
+  {
+    "id": "comboboxes /Admin/Receipts",
+    "status": "PASS"
+  },
+  {
+    "id": "comboboxes /Admin/Returns",
+    "status": "PASS"
+  },
+  {
+    "id": "comboboxes /Admin/Reviews",
+    "status": "PASS"
+  },
+  {
+    "id": "comboboxes /Admin/LoginHistory",
+    "status": "PASS"
+  },
+  {
+    "id": "comboboxes /Finance/Suppliers",
+    "status": "PASS"
+  },
+  {
+    "id": "comboboxes /Valuation",
+    "status": "PASS"
+  },
+  {
+    "id": "comboboxes /Chat",
+    "status": "PASS"
+  },
+  {
+    "id": "comboboxes /Admin/References?kind=brands",
+    "status": "PASS"
+  },
+  {
+    "id": "comboboxes /Admin/References?kind=sizes",
+    "status": "PASS"
+  },
+  {
+    "id": "server search and reset on 3 lists",
+    "status": "PASS"
+  },
+  {
+    "id": "products combined category/state and Vietnamese search",
+    "status": "PASS"
+  },
+  {
+    "id": "customer order history partition and state",
+    "status": "PASS"
+  },
+  {
+    "id": "orders payment filters",
+    "status": "PASS"
+  },
+  {
+    "id": "orders status and date boundaries",
+    "status": "PASS"
+  },
+  {
+    "id": "reports quick date ranges and selected combobox",
+    "status": "PASS"
+  }
+]

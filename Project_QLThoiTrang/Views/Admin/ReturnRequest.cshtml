@@ -1,0 +1,18 @@
+@model List<ReturnRecord>
+@{ViewData["Title"]="Xử lý trả hàng";}
+<p class="notice">Hỗ trợ trả từng phần hoặc toàn bộ đơn. Chỉ duyệt khi đã nhận và kiểm tra hàng có thể nhập lại kho, đồng thời đã hoàn đúng số tiền của yêu cầu; hoàn phí giao hàng khi trả nốt toàn bộ. Ghi mã chứng từ thực tế; hệ thống không tự chuyển tiền.</p>
+@foreach(var r in Model){
+ <section class="panel form-stack"><a class="button-secondary compact" href="/Documents/Return/@r.Id">PDF phiếu trả</a><h2><a href="/Admin/Order/@r.OrderId">@r.OrderId</a></h2><p>@r.Created.ToLocalTime().ToString("dd/MM/yyyy HH:mm") · @r.Status</p><p>@r.Reason</p><p>Số tiền hoàn: @r.Refund.ToString("N0") đ</p>@foreach(var line in r.Lines){<p>Dòng @line.OrderLineId: @line.Quantity sản phẩm</p>}
+ @if(r.Status=="Pending"){
+  <form asp-action="ResolveReturn" method="post" class="form-stack" data-confirm="Xác nhận kết quả trả hàng và chứng từ thực tế?">
+   <input type="hidden" name="id" value="@r.Id"/>
+   <label>Ghi chú xử lý<textarea name="resolution" minlength="5" maxlength="500" required></textarea></label>
+   <label>Mã chứng từ hoàn tiền (bắt buộc khi duyệt)<input name="reference" maxlength="100"/></label>
+   <button class="btn-black" name="approve" value="true">Đã nhận hàng và hoàn tiền — duyệt</button>
+   <button class="button-secondary" name="approve" value="false">Từ chối yêu cầu</button>
+  </form>
+ }else{<p>@r.Resolution · @r.Resolved?.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</p>}
+ </section>
+}
+@if(Model.Count==0){<p class="empty-state">Chưa có yêu cầu trả hàng.</p>}
+<a href="/Admin/Returns" class="button-secondary">Quay lại danh sách</a>

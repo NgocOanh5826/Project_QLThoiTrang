@@ -1,0 +1,3 @@
+@model StoreSettings
+@{ViewData["Title"]="Cài đặt cửa hàng";}
+<form asp-action="Settings" method="post" class="panel form-stack"><h2>Thông tin hiển thị</h2><p class="muted">Thông tin này cập nhật header, footer và trang liên hệ.</p><div asp-validation-summary="All" class="validation"></div><div class="form-grid"><label>Tên thương hiệu<input asp-for="Name"/></label><label>Email hỗ trợ<input asp-for="Email" type="email"/></label><label>Số điện thoại<input asp-for="Phone"/></label><label>Địa chỉ<input asp-for="Address"/></label></div><button class="btn-black">Lưu cài đặt</button></form>

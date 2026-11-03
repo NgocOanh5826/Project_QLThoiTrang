@@ -1,0 +1,3 @@
+@model Product
+<section class="page-section"><h2>Đánh giá sản phẩm</h2>@foreach(var r in (List<ReviewItem>)ViewBag.Reviews){<article class="panel"><strong>@r.Customer · @r.Stars / 5</strong><p>@r.Text</p><small>@r.Created.ToString("dd/MM/yyyy")</small></article>}
+@if(User.IsInRole("Customer")){<form asp-controller="Shop" asp-action="Review" method="post" class="panel form-stack"><input name="id" value="@Model.Id" type="hidden"/><label>Số sao<select name="stars">@for(int i=5;i>=1;i--){<option>@i</option>}</select></label><label>Nội dung<textarea name="text" minlength="5" maxlength="1000" required></textarea></label><button class="button-secondary">Gửi đánh giá sau khi đã nhận hàng</button></form>}</section>

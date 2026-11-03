@@ -1,0 +1,4 @@
+@model List<ReturnRecord>
+@{ViewData["Title"]="Trả hàng và hoàn tiền";}
+<partial name="_AdminListToolbar"/>
+<div class="panel table-scroll"><table class="data-table"><thead><tr><th>Mã đơn</th><th>Ngày yêu cầu</th><th>Lý do</th><th>Tiền hoàn</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody>@foreach(var r in Model){<tr><td>@r.OrderId</td><td>@r.Created.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td><td>@r.Reason</td><td>@r.Refund.ToString("N0") đ</td><td>@r.Status</td><td><a class="button-secondary compact" href="/Admin/ReturnRequest/@r.Id">@(r.Status=="Pending"?"Xử lý":"Xem chi tiết")</a></td></tr>}</tbody></table></div>

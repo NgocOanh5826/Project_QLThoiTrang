@@ -1,0 +1,3 @@
+@model Product
+@{ViewData["Title"]="Xác nhận ẩn sản phẩm";}
+<div class="panel form-stack narrow"><h2>@Model.Name</h2><p>Sản phẩm sẽ ngừng hiển thị và không thể đặt mua. Thông tin trong các đơn hàng cũ được giữ nguyên.</p><p class="muted">Bạn có thể mở lại sản phẩm trong màn hình chỉnh sửa.</p><form asp-action="DeleteProduct" method="post" class="actions"><input type="hidden" name="id" value="@Model.Id"/><button class="button-danger">Xác nhận ẩn</button><a href="/Admin/Products" class="button-secondary">Quay lại</a></form></div>

@@ -1,0 +1,5 @@
+@model List<Product>
+@{ViewData["CreateUrl"]="/Admin/Receive";ViewData["CreateLabel"]="Nhập kho";ViewData["Title"]="Quản lý tồn kho";}
+<partial name="_AdminListToolbar"/><div class="panel table-scroll"><table class="data-table"><thead><tr><th>Sản phẩm</th><th>Hiện có</th><th>Tình trạng</th><th>Điều chỉnh tồn thực tế</th></tr></thead><tbody>@foreach(var p in Model){<tr><td><div class="table-product"><img src="@p.Image" alt=""/><strong>@p.Name</strong></div></td><td>@p.Stock</td><td><span class="status @(p.Stock<=5?"warning":"")">@(p.Stock==0?"Hết hàng":p.Stock<=5?"Sắp hết":"Còn hàng")</span></td><td><a class="button-secondary compact" href="/Admin/VariantStock">Kiểm kê theo biến thể</a></td></tr>}</tbody></table></div>
+
+

@@ -1,0 +1,3 @@
+@{ViewData["FilterStatus"]=true;ViewData["Title"]="Biến thể sản phẩm";ViewData["CreateUrl"]="/Admin/Variant";ViewData["CreateLabel"]="Thêm biến thể";var products=(List<Product>)ViewBag.Products;}
+<partial name="_AdminListToolbar"/>
+<div class="panel table-scroll"><table class="data-table"><thead><tr><th>Mã / SKU</th><th>Sản phẩm</th><th>Size / màu</th><th>Giá riêng</th><th>Tồn khả dụng</th><th></th></tr></thead><tbody>@foreach(var v in (List<Variant>)ViewBag.Variants){<tr data-state="@(v.Active?"active":"inactive")"><td>@v.Id / @v.Sku</td><td>@products.First(p=>p.Id==v.ProductId).Name</td><td>@v.Size / @v.Color</td><td>@v.Price?.ToString("N0")</td><td>@v.Stock</td><td><a href="/Admin/Variant/@v.Id">Sửa</a></td></tr>}</tbody></table></div>

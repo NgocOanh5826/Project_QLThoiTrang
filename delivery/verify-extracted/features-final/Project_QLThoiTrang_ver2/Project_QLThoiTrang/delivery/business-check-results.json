@@ -1,0 +1,489 @@
+{
+  "executedUtc": "2026-11-03T09:52:58.050589Z",
+  "database": "QOANH_Verification_Features_20261103_A",
+  "server": ".",
+  "total": 80,
+  "failed": 0,
+  "results": [
+    {
+      "id": "SQL01",
+      "expected": "27 b\u1EA3ng g\u1ED1c \u002B 3 b\u1EA3ng m\u1EDF r\u1ED9ng; kh\u00F4ng c\u00F3 b\u1EA3ng Products/Customers thay th\u1EBF",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "SQL02",
+      "expected": "Hai script cung c\u1EA5p t\u1EA1o \u0111\u1EE7 20 kh\u00E1ch v\u00E0 20 nh\u00E2n vi\u00EAn",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "SQL03",
+      "expected": "D\u1EEF li\u1EC7u g\u1ED1c s\u1EA3n ph\u1EA9m/\u0111\u01A1n/tr\u1EA3 h\u00E0ng/phi\u1EBFu nh\u1EADp gi\u1EEF \u0111\u1EE7",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AU01",
+      "expected": "Hash t\u1EEB b\u1EA3n SQL an to\u00E0n x\u00E1c minh \u0111\u01B0\u1EE3c m\u1EADt kh\u1EA9u g\u1ED1c",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AU02",
+      "expected": "T\u00E0i kho\u1EA3n kho \u0111\u01B0\u1EE3c \u00E1nh x\u1EA1 \u0111\u00FAng quy\u1EC1n Inventory",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AU03",
+      "expected": "Sai m\u1EADt kh\u1EA9u ghi nh\u1EADn th\u1EA5t b\u1EA1i; kh\u00F4ng x\u00E1c th\u1EF1c",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "DB01",
+      "expected": "Nh\u1EADp JSON c\u00F9ng d\u1EEF li\u1EC7u SQL: gi\u1EEF c\u1EA3 hai t\u1EADp d\u1EEF li\u1EC7u",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "DB02",
+      "expected": "Legacy ID \u00E1nh x\u1EA1 \u0111\u00FAng; gi\u1EEF t\u1ED3n v\u00E0 hash JSON",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "DB03",
+      "expected": "T\u1ED5ng ti\u1EC1n \u0111\u01A1n JSON kh\u00F4ng \u0111\u1ED5i; kh\u00F4ng tr\u1EEB l\u1EA1i kho l\u1ECBch s\u1EED",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "DB04",
+      "expected": "Ch\u1EB7n nh\u1EADp l\u1EA1i JSON, gi\u1EEF nguy\u00EAn s\u1ED1 b\u1EA3n ghi",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AU04",
+      "expected": "\u0110\u0103ng k\u00FD l\u01B0u Identity hash, \u0111\u0103ng nh\u1EADp \u0111\u01B0\u1EE3c",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AU05",
+      "expected": "Email tr\u00F9ng kh\u00F4ng ph\u00E2n bi\u1EC7t hoa/th\u01B0\u1EDDng b\u1ECB ch\u1EB7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AU06",
+      "expected": "M\u1EADt kh\u1EA9u y\u1EBFu b\u1ECB ch\u1EB7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AU07",
+      "expected": "Ghi m\u1EADt kh\u1EA9u r\u00F5 b\u1ECB rollback",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AU08",
+      "expected": "Kh\u00E1ch kh\u00F4ng \u0111\u01B0\u1EE3c nh\u1EADp kho ho\u1EB7c qu\u1EA3n l\u00FD danh m\u1EE5c",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "MG01",
+      "expected": "Nh\u00E2n vi\u00EAn Catalog th\u00EAm th\u01B0\u01A1ng hi\u1EC7u",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "MG02",
+      "expected": "Nh\u00E2n vi\u00EAn kho kh\u00F4ng \u0111\u01B0\u1EE3c qu\u1EA3n l\u00FD th\u01B0\u01A1ng hi\u1EC7u",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "MG03",
+      "expected": "Th\u00EAm size/m\u00E0u; ch\u1EB7n tr\u00F9ng",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "MG04",
+      "expected": "T\u1EA1o bi\u1EBFn th\u1EC3, ch\u1EB7n SKU/t\u1ED5 h\u1EE3p tr\u00F9ng",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "MG05",
+      "expected": "Admin t\u1EA1o nh\u00E2n vi\u00EAn c\u00F3 hash v\u00E0 quy\u1EC1n; nh\u00E2n vi\u00EAn kh\u00F4ng t\u1EF1 c\u1EA5p quy\u1EC1n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "MG06",
+      "expected": "Admin kh\u00F4ng \u0111\u01B0\u1EE3c t\u1EF1 kh\u00F3a/h\u1EA1 quy\u1EC1n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "MG07",
+      "expected": "Kh\u00F3a nh\u00E2n vi\u00EAn ch\u1EB7n \u0111\u0103ng nh\u1EADp",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR01",
+      "expected": "Gi\u1ECF r\u1ED7ng b\u1ECB ch\u1EB7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR02",
+      "expected": "S\u1ED1 l\u01B0\u1EE3ng \u00E2m ho\u1EB7c \u003E20 b\u1ECB ch\u1EB7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR03",
+      "expected": "Bi\u1EBFn th\u1EC3 kh\u00F4ng t\u1ED3n t\u1EA1i b\u1ECB ch\u1EB7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR04",
+      "expected": "\u0110\u1EB7t theo bi\u1EBFn th\u1EC3, tr\u1EEB \u0111\u00FAng kho v\u00E0 snapshot gi\u00E1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR05",
+      "expected": "Token ch\u1ED1ng g\u1EEDi \u0111\u01A1n hai l\u1EA7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR06",
+      "expected": "T\u00E0i kho\u1EA3n kh\u00F4ng t\u1ED3n t\u1EA1i b\u1ECB ch\u1EB7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR07",
+      "expected": "M\u00E3 h\u1EBFt h\u1EA1n kh\u00F4ng tr\u1EEB kho",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR08",
+      "expected": "Gi\u1EA3m ph\u1EA7n tr\u0103m c\u00F3 gi\u1EDBi h\u1EA1n v\u00E0 s\u1EA3n ph\u1EA9m \u00E1p d\u1EE5ng",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR09",
+      "expected": "Gi\u1EA3m ti\u1EC1n c\u1ED1 \u0111\u1ECBnh \u0111\u00FAng \u0111i\u1EC1u ki\u1EC7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR10",
+      "expected": "M\u00E3 kh\u00F4ng \u00E1p d\u1EE5ng s\u1EA3n ph\u1EA9m b\u1ECB ch\u1EB7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR11",
+      "expected": "Gi\u00E1 b\u00E1o checkout c\u0169 b\u1ECB ch\u1EB7n v\u00E0 rollback",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR12",
+      "expected": "Kh\u00E1ch kh\u00E1c kh\u00F4ng \u0111\u01B0\u1EE3c h\u1EE7y",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR13",
+      "expected": "H\u1EE7y ho\u00E0n kho \u0111\u00FAng bi\u1EBFn th\u1EC3/kho m\u1ED9t l\u1EA7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR14",
+      "expected": "Kh\u00F4ng nh\u1EA3y th\u1EB3ng sang \u0111\u00E3 giao",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR15",
+      "expected": "Kh\u00E1ch kh\u00F4ng \u0111\u01B0\u1EE3c chuy\u1EC3n tr\u1EA1ng th\u00E1i qu\u1EA3n tr\u1ECB",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR16",
+      "expected": "X\u00E1c nh\u1EADn/chu\u1EA9n b\u1ECB/\u0111ang giao kh\u00F4ng tr\u1EEB kho l\u1EA7n n\u1EEFa",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PA01",
+      "expected": "Ch\u1EB7n giao xong khi ch\u01B0a thu ti\u1EC1n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PA02",
+      "expected": "Thu sai ti\u1EC1n b\u1ECB ch\u1EB7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PA03",
+      "expected": "Thu \u0111\u1EE7 ti\u1EC1n ghi ThanhToan g\u1ED1c v\u00E0 ledger",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PA04",
+      "expected": "Thu l\u1EB7p b\u1ECB ch\u1EB7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PA05",
+      "expected": "M\u00E3 ch\u1EE9ng t\u1EEB \u0111\u00E3 d\u00F9ng b\u1ECB ch\u1EB7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PA06",
+      "expected": "Ch\u1EB7n h\u1EE7y tr\u1EF1c ti\u1EBFp \u0111\u01A1n \u0111\u00E3 thu ti\u1EC1n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PA07",
+      "expected": "Giao/ho\u00E0n th\u00E0nh h\u1EE3p l\u1EC7, c\u00F3 l\u1ECBch s\u1EED tr\u1EA1ng th\u00E1i",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "IN01",
+      "expected": "Phi\u1EBFu nh\u1EADp nhi\u1EC1u d\u00F2ng c\u1EADp nh\u1EADt kho, header v\u00E0 chi ti\u1EBFt g\u1ED1c",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "IN02",
+      "expected": "Phi\u1EBFu nh\u1EADp tr\u00F9ng b\u1ECB ch\u1EB7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "IN03",
+      "expected": "D\u00F2ng cu\u1ED1i sai l\u00E0m rollback c\u1EA3 phi\u1EBFu nh\u1EADp",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "IN04",
+      "expected": "Ki\u1EC3m k\u00EA bi\u1EBFn th\u1EC3 ch\u1ED1ng ghi \u0111\u00E8 t\u1ED3n c\u0169",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "IN05",
+      "expected": "T\u1ED3n v\u01B0\u1EE3t gi\u1EDBi h\u1EA1n b\u1ECB rollback",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "IN06",
+      "expected": "Ki\u1EC3m k\u00EA c\u1EA7n l\u00FD do",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "RT01",
+      "expected": "Kh\u00E1ch kh\u00E1c kh\u00F4ng \u0111\u01B0\u1EE3c y\u00EAu c\u1EA7u tr\u1EA3",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "RT02",
+      "expected": "Tr\u1EA3 m\u1ED9t ph\u1EA7n, ph\u00E2n b\u1ED5 gi\u1EA3m gi\u00E1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "RT03",
+      "expected": "Ch\u1EB7n y\u00EAu c\u1EA7u tr\u1EA3 tr\u00F9ng \u0111ang ch\u1EDD",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "RT04",
+      "expected": "Duy\u1EC7t tr\u1EA3 ph\u1EA7n \u0111\u1EA7u ho\u00E0n \u0111\u00FAng ti\u1EC1n v\u00E0 kho",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "RT05",
+      "expected": "Duy\u1EC7t l\u1EB7p kh\u00F4ng ho\u00E0n l\u1EA7n n\u1EEFa",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "RT06",
+      "expected": "Tr\u1EA3 v\u01B0\u1EE3t ph\u1EA7n c\u00F2n l\u1EA1i b\u1ECB ch\u1EB7n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "RT07",
+      "expected": "Tr\u1EA3 n\u1ED1t ho\u00E0n ph\u1EA7n c\u00F2n l\u1EA1i, tr\u1EA1ng th\u00E1i \u0111\u1EA7y \u0111\u1EE7",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "RT08",
+      "expected": "T\u1EEB ch\u1ED1i kh\u00F4ng \u0111\u1ED5i kho ho\u1EB7c ti\u1EC1n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "RT09",
+      "expected": "Kh\u00F4ng ho\u00E0n khi ch\u01B0a \u0111\u1ED1i so\u00E1t ti\u1EC1n g\u1ED1c",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "RV01",
+      "expected": "Ch\u1EB7n \u0111\u00E1nh gi\u00E1 khi ch\u01B0a mua/giao",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "RV02",
+      "expected": "\u0110\u00E3 mua/giao \u0111\u01B0\u1EE3c \u0111\u00E1nh gi\u00E1; ch\u1EB7n l\u1EB7p",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "RV03",
+      "expected": "\u1EA8n/hi\u1EC7n \u0111\u00E1nh gi\u00E1 theo quy\u1EC1n Support",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "SH01",
+      "expected": "Gi\u1ECF v\u00E0 y\u00EAu th\u00EDch l\u01B0u qua connection m\u1EDBi",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "SH02",
+      "expected": "T\u1EA1o \u0111\u01A1n x\u00F3a gi\u1ECF l\u01B0u DB c\u00F9ng transaction",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "TX01",
+      "expected": "Gi\u1ECF nhi\u1EC1u d\u00F2ng sai rollback to\u00E0n b\u1ED9",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "TX02",
+      "expected": "Hai connection mua \u0111\u01A1n v\u1ECB cu\u1ED1i ch\u1EC9 m\u1ED9t th\u00E0nh c\u00F4ng",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "TX03",
+      "expected": "Hai connection thu ti\u1EC1n ch\u1EC9 m\u1ED9t th\u00E0nh c\u00F4ng",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "TX04",
+      "expected": "SQL check constraint ng\u0103n t\u1ED3n \u00E2m",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "TX05",
+      "expected": "FK ng\u0103n x\u00F3a kh\u00E1ch \u0111\u00E3 c\u00F3 \u0111\u01A1n",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "TX06",
+      "expected": "S\u1ED5 kho c\u00E2n b\u1EB1ng v\u1EDBi t\u1ED5ng t\u1ED3n t\u1EA5t c\u1EA3 s\u1EA3n ph\u1EA9m",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AU09",
+      "expected": "\u0110\u1ED5i m\u1EADt kh\u1EA9u ki\u1EC3m tra m\u1EADt kh\u1EA9u hi\u1EC7n t\u1EA1i",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AU10",
+      "expected": "\u0110\u0103ng xu\u1EA5t c\u1EADp nh\u1EADt l\u1ECBch s\u1EED \u0111\u00FAng ch\u1EE7 th\u1EC3",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PA08",
+      "expected": "Kh\u00F4ng t\u00E1i d\u00F9ng ch\u1EE9ng t\u1EEB c\u00F3 s\u1EB5n trong ThanhToan g\u1ED1c",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "RT10",
+      "expected": "V\u01B0\u1EE3t t\u1ED3n khi nh\u1EADn tr\u1EA3 rollback c\u1EA3 ti\u1EC1n, phi\u1EBFu v\u00E0 tr\u1EA1ng th\u00E1i",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OR17",
+      "expected": "Shipping boundary 699000/700000 uses effective variant price",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "TX07",
+      "expected": "C\u00E2n b\u1EB1ng s\u1ED5 kho sau rollback v\u00E0 ki\u1EC3m th\u1EED ng\u01B0\u1EE1ng",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AU11",
+      "expected": "Hash gi\u1EA3 c\u00F3 marker Identity nh\u01B0ng header sai b\u1ECB t\u1EEB ch\u1ED1i v\u00E0 rollback",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AU12",
+      "expected": "M\u1EADt kh\u1EA9u c\u0169 l\u00E0 chu\u1ED7i Base64 d\u00E0i v\u1EABn \u0111\u01B0\u1EE3c b\u0103m; ch\u1EA1y l\u1EB7p kh\u00F4ng \u0111\u1ED5i hash",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AU13",
+      "expected": "Admin c\u1EADp nh\u1EADt h\u1ED3 s\u01A1 kh\u00E1ch v\u1EDBi \u0111i\u1EC7n tho\u1EA1i/\u0111\u1ECBa ch\u1EC9 tr\u1ED1ng",
+      "status": "PASS",
+      "error": ""
+    }
+  ]
+}

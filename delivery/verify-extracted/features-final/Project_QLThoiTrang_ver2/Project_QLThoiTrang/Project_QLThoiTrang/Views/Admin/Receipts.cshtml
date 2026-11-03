@@ -1,0 +1,6 @@
+@model List<Project_QLThoiTrang.Data.Native.PhieuNhapRow>
+@{ViewData["Title"]="Lịch sử phiếu nhập";ViewData["CreateUrl"]="/Admin/Receive";ViewData["CreateLabel"]="Nhập kho";}
+<partial name="_AdminListToolbar"/>
+<div class="panel table-scroll"><table class="data-table"><thead><tr><th>Mã phiếu</th><th>Chứng từ</th><th>Ngày nhập</th><th>Kho</th><th>Nhà cung cấp</th><th>Nhân viên</th><th>Tổng tiền</th><th>Thao tác</th></tr></thead><tbody>
+@foreach(var r in Model){<tr><td>@r.MaPhieuNhap</td><td>@r.QReference</td><td>@r.NgayNhap.ToString("dd/MM/yyyy HH:mm")</td><td>@r.MaKho</td><td>@r.MaNCC</td><td>@r.MaNV</td><td>@r.TongTien.ToString("N0") đ</td><td><a href="/Admin/Receipt/@r.MaPhieuNhap" class="button-secondary compact">Chi tiết</a></td></tr>}
+</tbody></table></div>

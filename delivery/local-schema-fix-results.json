@@ -1,0 +1,29 @@
+{
+  "executedUtc": "2026-11-03T10:38:35.311305+00:00",
+  "results": [
+    {
+      "url": "http://127.0.0.1:5188/",
+      "status": 200,
+      "expected": 200,
+      "result": "PASS"
+    },
+    {
+      "url": "http://127.0.0.1:5188/Shop/Detail/1",
+      "status": 200,
+      "expected": 200,
+      "result": "PASS"
+    },
+    {
+      "url": "http://127.0.0.1:5190/",
+      "status": 503,
+      "expected": 503,
+      "result": "PASS"
+    },
+    {
+      "url": "http://127.0.0.1:5190/css/screens.css",
+      "status": 200,
+      "expected": 200,
+      "result": "PASS"
+    }
+  ]
+}

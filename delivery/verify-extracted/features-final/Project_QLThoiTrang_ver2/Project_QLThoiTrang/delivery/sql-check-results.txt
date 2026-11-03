@@ -1,0 +1,17 @@
+Final native-schema verification, 2026-11-02 Asia/Saigon.
+Source inputs: QL_CuaHangThoiTrang.sql and Insert_QLThoiTrang.sql supplied by user.
+Server: . (local default instance), SQL Server Developer Edition 64-bit.
+Final isolated database: QOANH_Verification_Original_20261102_D.
+Deploy.sql (both supplied scripts with safe adaptations): PASS.
+27 original tables + 3 QOANH support tables, no replacement Products/Customers tables.
+Initial source counts: KhachHang=20; NhanVien=20; SanPham=8; DonHang=4; PhieuNhap=3; PhieuTraHang=1; DanhGia=3.
+04-qoanh-extensions.sql repeated on same DB before mutations: PASS, no duplicate opening ledger.
+Identity V3 hashes from sanitized SQL authenticate using original sample passwords: PASS.
+Original MaGiaoDich cannot be reused by new payments: PASS.
+JSON merge preserves original sample data and JSON stock, order totals and password hashes: PASS.
+77/77 final business checks passed; see business-check-results.json and native-business-check.log.
+Final HTTP checks use this same native-schema database with Release app; see http-check-results.json.
+Original ZIP source compared to Git baseline: 126 files, no differences.
+SQLEXPRESS instance unavailable: installation/run on Express NOT TESTED.
+Existing production database upgrade and --hash-passwords command NOT END-TO-END TESTED; see README and manual cases.
+No production database was created/updated by these verification runs. Isolated test DBs retained.

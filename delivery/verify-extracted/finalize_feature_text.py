@@ -1,0 +1,9 @@
+from pathlib import Path
+base=Path('Project_QLThoiTrang')
+p=base/'Views/Shop/Detail.cshtml';s=p.read_text(encoding='utf-8');s=s.replace('T?i kho?n qu?n tr? v? nh?n vi?n kh?ng ???c mua h?ng.','Tài khoản quản trị và nhân viên không được mua hàng.').replace('V? trang qu?n tr?','Về trang quản trị');p.write_text(s,encoding='utf-8')
+p=base/'Views/Shop/Success.cshtml';s=p.read_text(encoding='utf-8');s=s.replace('Đơn demo <strong>','Đơn hàng <strong>');p.write_text(s,encoding='utf-8')
+p=base/'Views/Shared/_AdminLayout.cshtml';s=p.read_text(encoding='utf-8');s=s.replace('Bản demo · Không giao dịch thanh toán thật · Dữ liệu lưu trên máy chạy web.','QOANH · Quản lý cửa hàng thời trang');p.write_text(s,encoding='utf-8')
+p=base/'Views/Shared/_Layout.cshtml';s=p.read_text(encoding='utf-8');s=s.replace('Website demo quản lý thời trang.','Cửa hàng thời trang QOANH.');p.write_text(s,encoding='utf-8')
+p=base/'Controllers/AdminController.cs';s=p.read_text(encoding='utf-8');s=s.replace('Đã ghi nhận thu COD.','Đã ghi nhận tiền thanh toán.');p.write_text(s,encoding='utf-8')
+p=base/'Services/StoreOperations.cs';s=p.read_text(encoding='utf-8');s=s.replace('Shipping request in progress.','Đang gửi vận đơn; chờ kết quả trước khi ghi nhận thêm tiền.').replace('Đơn chưa đủ điều kiện thu COD.','Đơn chưa đủ điều kiện ghi nhận thanh toán.');p.write_text(s,encoding='utf-8')
+p=base/'Program.cs';s=p.read_text(encoding='utf-8');s=s.replace("OR COL_LENGTH(N'dbo.DonHang',N'QCheckoutToken') IS NULL THROW", "OR COL_LENGTH(N'dbo.DonHang',N'QCheckoutToken') IS NULL OR OBJECT_ID(N'dbo.QOANH_ChatThreads',N'U') IS NULL THROW");s=s.replace('04-qoanh-extensions.sql for an existing original database.','04-qoanh-extensions.sql and 07-customer-finance-features.sql for an existing original database.');p.write_text(s,encoding='utf-8')

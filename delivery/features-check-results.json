@@ -1,0 +1,162 @@
+{
+  "executedUtc": "2026-11-03T10:14:17.9476827Z",
+  "total": 31,
+  "failed": 0,
+  "results": [
+    {
+      "id": "CHAT01-persist-and-idempotency",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "CHAT02-other-customer-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "CHAT03-support-reply-and-read",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "CHAT04-catalog-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "CHAT05-reused-token-tamper-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OTP01-hash-and-send-fake-mail",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OTP02-wrong-code-counted",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OTP03-reset-invalidates-old-password",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OTP04-replay-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OTP05-unknown-account-no-mail",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OTP06-expired-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OTP07-five-failures-lock-code",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "COST01-new-receipt-establishes-cost",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "COST02-weighted-average",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "BANK01-transfer-snapshot-and-cost",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "BANK02-unconfigured-rejected",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "BANK03-admin-cannot-buy",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "BANK04-confirm-receipt-while-pending",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "COST03-snapshot-does-not-change",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "DEBT01-new-receipt-liability",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "DEBT02-partial-payment-and-overpay-guard",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "DEBT03-customer-cannot-pay",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "SHIP01-create-fake-provider-no-COD-for-paid-order",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "SHIP02-duplicate-create-reconciles",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "SHIP03-provider-delivered-not-auto-payment-or-order-status",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PROFIT01-known-cost-margin",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PROFIT02-partial-return-reverses-cost",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "COST04-customer-revaluation-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAY-preserve-legacy-method",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "SHIP04-timeout-remains-uncertain-after-later-rejection",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PDF-multipage-Vietnamese-table",
+      "status": "PASS",
+      "error": ""
+    }
+  ]
+}

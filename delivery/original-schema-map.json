@@ -1,0 +1,1708 @@
+[
+  {
+    "table": "KhachHang",
+    "columns": [
+      {
+        "name": "MaKH",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "HoTen",
+        "sql": "NVARCHAR(100)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "Email",
+        "sql": "VARCHAR(150)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL UNIQUE"
+      },
+      {
+        "name": "MatKhau",
+        "sql": "VARCHAR(255)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "SoDienThoai",
+        "sql": "VARCHAR(15)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": "UNIQUE"
+      },
+      {
+        "name": "GioiTinh",
+        "sql": "NVARCHAR(10)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "NgaySinh",
+        "sql": "DATE",
+        "cs": "DateTime?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "DiaChi",
+        "sql": "NVARCHAR(255)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "NgayDangKy",
+        "sql": "DATETIME2",
+        "cs": "DateTime",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT SYSDATETIME()"
+      },
+      {
+        "name": "TrangThai",
+        "sql": "BIT",
+        "cs": "bool",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 1"
+      }
+    ],
+    "keys": [
+      "MaKH"
+    ]
+  },
+  {
+    "table": "NhanVien",
+    "columns": [
+      {
+        "name": "MaNV",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "HoTen",
+        "sql": "NVARCHAR(100)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "Email",
+        "sql": "VARCHAR(150)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL UNIQUE"
+      },
+      {
+        "name": "MatKhau",
+        "sql": "VARCHAR(255)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "SoDienThoai",
+        "sql": "VARCHAR(15)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": "UNIQUE"
+      },
+      {
+        "name": "GioiTinh",
+        "sql": "NVARCHAR(10)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "NgaySinh",
+        "sql": "DATE",
+        "cs": "DateTime?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "DiaChi",
+        "sql": "NVARCHAR(255)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "ChucVu",
+        "sql": "NVARCHAR(50)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "NgayVaoLam",
+        "sql": "DATE",
+        "cs": "DateTime",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT GETDATE()"
+      },
+      {
+        "name": "TrangThai",
+        "sql": "BIT",
+        "cs": "bool",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 1"
+      }
+    ],
+    "keys": [
+      "MaNV"
+    ]
+  },
+  {
+    "table": "LichSuDangNhap",
+    "columns": [
+      {
+        "name": "MaLichSu",
+        "sql": "BIGINT",
+        "cs": "long",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "MaKH",
+        "sql": "INT",
+        "cs": "int?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": "NULL"
+      },
+      {
+        "name": "MaNV",
+        "sql": "INT",
+        "cs": "int?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": "NULL"
+      },
+      {
+        "name": "ThoiGianDangNhap",
+        "sql": "DATETIME2",
+        "cs": "DateTime",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT SYSDATETIME()"
+      },
+      {
+        "name": "ThoiGianDangXuat",
+        "sql": "DATETIME2",
+        "cs": "DateTime?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": "NULL"
+      },
+      {
+        "name": "DiaChiIP",
+        "sql": "VARCHAR(45)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "ThietBi",
+        "sql": "NVARCHAR(255)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "TrangThai",
+        "sql": "NVARCHAR(20)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      }
+    ],
+    "keys": [
+      "MaLichSu"
+    ]
+  },
+  {
+    "table": "DanhMuc",
+    "columns": [
+      {
+        "name": "MaDanhMuc",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "TenDanhMuc",
+        "sql": "NVARCHAR(100)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL UNIQUE"
+      },
+      {
+        "name": "MoTa",
+        "sql": "NVARCHAR(500)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "TrangThai",
+        "sql": "BIT",
+        "cs": "bool",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 1"
+      }
+    ],
+    "keys": [
+      "MaDanhMuc"
+    ]
+  },
+  {
+    "table": "ThuongHieu",
+    "columns": [
+      {
+        "name": "MaThuongHieu",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "TenThuongHieu",
+        "sql": "NVARCHAR(100)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL UNIQUE"
+      },
+      {
+        "name": "MoTa",
+        "sql": "NVARCHAR(500)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "TrangThai",
+        "sql": "BIT",
+        "cs": "bool",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 1"
+      }
+    ],
+    "keys": [
+      "MaThuongHieu"
+    ]
+  },
+  {
+    "table": "SanPham",
+    "columns": [
+      {
+        "name": "MaSP",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "MaDanhMuc",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaThuongHieu",
+        "sql": "INT",
+        "cs": "int?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": "NULL"
+      },
+      {
+        "name": "TenSP",
+        "sql": "NVARCHAR(200)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MoTa",
+        "sql": "NVARCHAR(MAX)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "GiaBan",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "NgayTao",
+        "sql": "DATETIME2",
+        "cs": "DateTime",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT SYSDATETIME()"
+      },
+      {
+        "name": "TrangThai",
+        "sql": "BIT",
+        "cs": "bool",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 1"
+      }
+    ],
+    "keys": [
+      "MaSP"
+    ]
+  },
+  {
+    "table": "KichThuoc",
+    "columns": [
+      {
+        "name": "MaKichThuoc",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "TenKichThuoc",
+        "sql": "NVARCHAR(30)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL UNIQUE"
+      }
+    ],
+    "keys": [
+      "MaKichThuoc"
+    ]
+  },
+  {
+    "table": "MauSac",
+    "columns": [
+      {
+        "name": "MaMauSac",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "TenMauSac",
+        "sql": "NVARCHAR(50)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL UNIQUE"
+      },
+      {
+        "name": "MaMau",
+        "sql": "VARCHAR(20)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      }
+    ],
+    "keys": [
+      "MaMauSac"
+    ]
+  },
+  {
+    "table": "BienTheSanPham",
+    "columns": [
+      {
+        "name": "MaBienThe",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "MaSP",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaKichThuoc",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaMauSac",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "SKU",
+        "sql": "VARCHAR(50)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL UNIQUE"
+      },
+      {
+        "name": "GiaBanRieng",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": "NULL"
+      },
+      {
+        "name": "TrangThai",
+        "sql": "BIT",
+        "cs": "bool",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 1"
+      }
+    ],
+    "keys": [
+      "MaBienThe"
+    ]
+  },
+  {
+    "table": "HinhAnhSanPham",
+    "columns": [
+      {
+        "name": "MaHinh",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "MaSP",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "DuongDan",
+        "sql": "NVARCHAR(500)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "AnhChinh",
+        "sql": "BIT",
+        "cs": "bool",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 0"
+      }
+    ],
+    "keys": [
+      "MaHinh"
+    ]
+  },
+  {
+    "table": "Kho",
+    "columns": [
+      {
+        "name": "MaKho",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "TenKho",
+        "sql": "NVARCHAR(100)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "DiaChi",
+        "sql": "NVARCHAR(255)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "TrangThai",
+        "sql": "BIT",
+        "cs": "bool",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 1"
+      }
+    ],
+    "keys": [
+      "MaKho"
+    ]
+  },
+  {
+    "table": "TonKho",
+    "columns": [
+      {
+        "name": "MaKho",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaBienThe",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "SoLuongTon",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 0"
+      }
+    ],
+    "keys": [
+      "MaKho",
+      "MaBienThe"
+    ]
+  },
+  {
+    "table": "NhaCungCap",
+    "columns": [
+      {
+        "name": "MaNCC",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "TenNCC",
+        "sql": "NVARCHAR(150)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "SoDienThoai",
+        "sql": "VARCHAR(15)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "Email",
+        "sql": "VARCHAR(150)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "DiaChi",
+        "sql": "NVARCHAR(255)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "TrangThai",
+        "sql": "BIT",
+        "cs": "bool",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 1"
+      }
+    ],
+    "keys": [
+      "MaNCC"
+    ]
+  },
+  {
+    "table": "PhieuNhap",
+    "columns": [
+      {
+        "name": "MaPhieuNhap",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "MaNCC",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaKho",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaNV",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "NgayNhap",
+        "sql": "DATETIME2",
+        "cs": "DateTime",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT SYSDATETIME()"
+      },
+      {
+        "name": "TongTien",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 0"
+      },
+      {
+        "name": "GhiChu",
+        "sql": "NVARCHAR(500)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      }
+    ],
+    "keys": [
+      "MaPhieuNhap"
+    ]
+  },
+  {
+    "table": "ChiTietPhieuNhap",
+    "columns": [
+      {
+        "name": "MaPhieuNhap",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaBienThe",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "SoLuong",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "GiaNhap",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      }
+    ],
+    "keys": [
+      "MaPhieuNhap",
+      "MaBienThe"
+    ]
+  },
+  {
+    "table": "GioHang",
+    "columns": [
+      {
+        "name": "MaGioHang",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "MaKH",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL UNIQUE"
+      },
+      {
+        "name": "NgayTao",
+        "sql": "DATETIME2",
+        "cs": "DateTime",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT SYSDATETIME()"
+      }
+    ],
+    "keys": [
+      "MaGioHang"
+    ]
+  },
+  {
+    "table": "ChiTietGioHang",
+    "columns": [
+      {
+        "name": "MaGioHang",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaBienThe",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "SoLuong",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      }
+    ],
+    "keys": [
+      "MaGioHang",
+      "MaBienThe"
+    ]
+  },
+  {
+    "table": "YeuThich",
+    "columns": [
+      {
+        "name": "MaKH",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaSP",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "NgayThem",
+        "sql": "DATETIME2",
+        "cs": "DateTime",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT SYSDATETIME()"
+      }
+    ],
+    "keys": [
+      "MaKH",
+      "MaSP"
+    ]
+  },
+  {
+    "table": "KhuyenMai",
+    "columns": [
+      {
+        "name": "MaKM",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "MaCode",
+        "sql": "VARCHAR(50)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": "UNIQUE"
+      },
+      {
+        "name": "TenKhuyenMai",
+        "sql": "NVARCHAR(150)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "LoaiGiam",
+        "sql": "VARCHAR(20)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "GiaTriGiam",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "DonHangToiThieu",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 0"
+      },
+      {
+        "name": "GiamToiDa",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": "NULL"
+      },
+      {
+        "name": "SoLuong",
+        "sql": "INT",
+        "cs": "int?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": "NULL"
+      },
+      {
+        "name": "NgayBatDau",
+        "sql": "DATETIME2",
+        "cs": "DateTime",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "NgayKetThuc",
+        "sql": "DATETIME2",
+        "cs": "DateTime",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "TrangThai",
+        "sql": "BIT",
+        "cs": "bool",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 1"
+      }
+    ],
+    "keys": [
+      "MaKM"
+    ]
+  },
+  {
+    "table": "ChiTietKhuyenMai",
+    "columns": [
+      {
+        "name": "MaKM",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaSP",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      }
+    ],
+    "keys": [
+      "MaKM",
+      "MaSP"
+    ]
+  },
+  {
+    "table": "DonHang",
+    "columns": [
+      {
+        "name": "MaDonHang",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "MaKH",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaKM",
+        "sql": "INT",
+        "cs": "int?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": "NULL"
+      },
+      {
+        "name": "NgayDat",
+        "sql": "DATETIME2",
+        "cs": "DateTime",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT SYSDATETIME()"
+      },
+      {
+        "name": "HoTenNguoiNhan",
+        "sql": "NVARCHAR(100)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "SoDienThoaiNhan",
+        "sql": "VARCHAR(15)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "DiaChiGiaoHang",
+        "sql": "NVARCHAR(500)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "TongTienHang",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 0"
+      },
+      {
+        "name": "TienGiam",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 0"
+      },
+      {
+        "name": "PhiVanChuyen",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 0"
+      },
+      {
+        "name": "TongThanhToan",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 0"
+      },
+      {
+        "name": "TrangThai",
+        "sql": "NVARCHAR(30)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT N'Chờ xác nhận'"
+      },
+      {
+        "name": "GhiChu",
+        "sql": "NVARCHAR(500)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      }
+    ],
+    "keys": [
+      "MaDonHang"
+    ]
+  },
+  {
+    "table": "ChiTietDonHang",
+    "columns": [
+      {
+        "name": "MaCTDH",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "MaDonHang",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaBienThe",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "TenSanPham",
+        "sql": "NVARCHAR(200)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "KichThuoc",
+        "sql": "NVARCHAR(30)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "MauSac",
+        "sql": "NVARCHAR(50)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "SoLuong",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "DonGia",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      }
+    ],
+    "keys": [
+      "MaCTDH"
+    ]
+  },
+  {
+    "table": "ThanhToan",
+    "columns": [
+      {
+        "name": "MaThanhToan",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "MaDonHang",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "PhuongThuc",
+        "sql": "NVARCHAR(30)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "SoTien",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "TrangThai",
+        "sql": "NVARCHAR(30)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT N'Chưa thanh toán'"
+      },
+      {
+        "name": "MaGiaoDich",
+        "sql": "VARCHAR(100)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "NgayThanhToan",
+        "sql": "DATETIME2",
+        "cs": "DateTime?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": "NULL"
+      }
+    ],
+    "keys": [
+      "MaThanhToan"
+    ]
+  },
+  {
+    "table": "LichSuTrangThaiDonHang",
+    "columns": [
+      {
+        "name": "MaLichSuTrangThai",
+        "sql": "BIGINT",
+        "cs": "long",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "MaDonHang",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "TrangThai",
+        "sql": "NVARCHAR(30)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "ThoiGian",
+        "sql": "DATETIME2",
+        "cs": "DateTime",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT SYSDATETIME()"
+      },
+      {
+        "name": "GhiChu",
+        "sql": "NVARCHAR(500)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      }
+    ],
+    "keys": [
+      "MaLichSuTrangThai"
+    ]
+  },
+  {
+    "table": "PhieuTraHang",
+    "columns": [
+      {
+        "name": "MaPhieuTra",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "MaDonHang",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaKH",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaNV",
+        "sql": "INT",
+        "cs": "int?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": "NULL"
+      },
+      {
+        "name": "NgayYeuCau",
+        "sql": "DATETIME2",
+        "cs": "DateTime",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT SYSDATETIME()"
+      },
+      {
+        "name": "LyDo",
+        "sql": "NVARCHAR(500)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "TrangThai",
+        "sql": "NVARCHAR(30)",
+        "cs": "string",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT N'Chờ xử lý'"
+      },
+      {
+        "name": "TongTienHoan",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 0"
+      },
+      {
+        "name": "NgayXuLy",
+        "sql": "DATETIME2",
+        "cs": "DateTime?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": "NULL"
+      },
+      {
+        "name": "GhiChu",
+        "sql": "NVARCHAR(500)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      }
+    ],
+    "keys": [
+      "MaPhieuTra"
+    ]
+  },
+  {
+    "table": "ChiTietTraHang",
+    "columns": [
+      {
+        "name": "MaCTTra",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "MaPhieuTra",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaCTDH",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "SoLuongTra",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "LyDoChiTiet",
+        "sql": "NVARCHAR(500)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "TinhTrangSanPham",
+        "sql": "NVARCHAR(255)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "HinhAnh",
+        "sql": "NVARCHAR(500)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "SoTienHoan",
+        "sql": "DECIMAL(18,2)",
+        "cs": "decimal",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 0"
+      }
+    ],
+    "keys": [
+      "MaCTTra"
+    ]
+  },
+  {
+    "table": "DanhGia",
+    "columns": [
+      {
+        "name": "MaDanhGia",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": true,
+        "primary": true,
+        "tail": "IDENTITY(1,1) PRIMARY KEY"
+      },
+      {
+        "name": "MaKH",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "MaSP",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "SoSao",
+        "sql": "INT",
+        "cs": "int",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL"
+      },
+      {
+        "name": "NoiDung",
+        "sql": "NVARCHAR(1000)",
+        "cs": "string?",
+        "nullable": true,
+        "identity": false,
+        "primary": false,
+        "tail": ""
+      },
+      {
+        "name": "NgayDanhGia",
+        "sql": "DATETIME2",
+        "cs": "DateTime",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT SYSDATETIME()"
+      },
+      {
+        "name": "TrangThai",
+        "sql": "BIT",
+        "cs": "bool",
+        "nullable": false,
+        "identity": false,
+        "primary": false,
+        "tail": "NOT NULL DEFAULT 1"
+      }
+    ],
+    "keys": [
+      "MaDanhGia"
+    ]
+  }
+]

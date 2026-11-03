@@ -1,0 +1,3 @@
+@model List<Customer>
+@{ViewData["Title"]="Khách hàng";}
+<form method="get" class="filter-bar"><label>Tìm khách hàng<input name="q" value="@ViewBag.Query" placeholder="Họ tên hoặc email"/></label><button class="btn-black">Tìm kiếm</button></form><div class="panel table-scroll"><table class="data-table"><thead><tr><th>Khách hàng</th><th>Email</th><th>Điện thoại</th><th></th></tr></thead><tbody>@foreach(var c in Model){<tr><td>@c.Name</td><td>@c.Email</td><td>@c.Phone</td><td><a asp-action="Customer" asp-route-id="@c.Id" class="button-secondary compact">Xem hồ sơ</a></td></tr>}</tbody></table>@if(Model.Count==0){<p class="empty-state">Không tìm thấy khách hàng.</p>}</div>

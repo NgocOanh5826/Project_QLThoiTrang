@@ -1,0 +1,5 @@
+@model List<ReturnRecord>
+@{ViewData["Title"]="Trả hàng và hoàn tiền";}
+@{ViewData["TableFilters"]=new[]{AdminListFilter.Choice("state","Trạng thái",("Pending","Chờ xử lý"),("Approved","Đã duyệt"),("Rejected","Từ chối")),new AdminListFilter("month","Tháng yêu cầu")};}
+<partial name="_AdminListToolbar"/>
+<div class="panel table-scroll"><table class="data-table"><thead><tr><th>Mã đơn</th><th>Ngày yêu cầu</th><th>Lý do</th><th>Tiền hoàn</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody>@foreach(var r in Model){<tr data-filter-state="@r.Status" data-filter-month="@r.Created.ToLocalTime().ToString("yyyy-MM")"><td>@r.OrderId</td><td>@r.Created.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td><td>@r.Reason</td><td>@r.Refund.ToString("N0") đ</td><td>@r.Status</td><td class="table-actions-cell"><div class="table-actions"><a class="button-secondary compact table-action" href="/Admin/ReturnRequest/@r.Id">@(r.Status=="Pending"?"Xử lý":"Xem chi tiết")</a></div></td></tr>}</tbody></table></div>

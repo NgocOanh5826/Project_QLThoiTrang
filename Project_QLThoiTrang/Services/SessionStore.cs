@@ -7,6 +7,6 @@ public static class SessionStore
  public static void Set<T>(ISession session,string key,T value)=>session.SetString(key,JsonSerializer.Serialize(value));
  public static CartViewModel Cart(ISession session,StoreService store)
  {
-  var items=Get<List<CartItem>>(session,"cart");return store.Read(d=>new CartViewModel{Lines=items.Select(i=>{var p=d.Products.FirstOrDefault(p=>p.Id==i.ProductId);return p==null?null:new OrderLine{ProductId=p.Id,Name=p.Name,Image=p.Image,Price=p.Price,Size=i.Size,Quantity=i.Quantity};}).OfType<OrderLine>().ToList()});
+  var items=Get<List<CartItem>>(session,"cart");return store.Read(d=>new CartViewModel{Lines=items.Select(i=>{var p=d.Products.FirstOrDefault(p=>p.Id==i.ProductId);var v=d.Variants.FirstOrDefault(v=>v.ProductId==i.ProductId&&(i.VariantId>0?v.Id==i.VariantId:v.Size==i.Size));return p==null||v==null?null:new OrderLine{ProductId=p.Id,VariantId=v.Id,Color=v.Color,Name=p.Name,Image=p.Image,Price=v.Price??p.Price,Size=v.Size,Quantity=i.Quantity};}).OfType<OrderLine>().ToList()});
  }
 }

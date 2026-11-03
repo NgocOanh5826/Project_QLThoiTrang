@@ -1,0 +1,3 @@
+@model ProfileInput
+@{ViewData["Title"]="Cập nhật khách hàng";}
+<form method="post" class="panel form-stack"><div asp-validation-summary="All" class="validation"></div><input name="id" value="@ViewBag.Id" type="hidden"/><label>Họ tên<input asp-for="Name"/></label><label>Điện thoại<input asp-for="Phone" maxlength="15"/></label><label>Địa chỉ<textarea asp-for="Address"></textarea></label><label class="checkbox"><input name="active" type="checkbox" value="true" checked="@ViewBag.Active"/>Tài khoản hoạt động</label><button class="btn-black">Cập nhật</button></form>

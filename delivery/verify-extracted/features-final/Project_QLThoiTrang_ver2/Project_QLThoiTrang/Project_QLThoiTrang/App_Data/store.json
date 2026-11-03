@@ -1,0 +1,250 @@
+{
+  "Products": [
+    {
+      "Id": 1,
+      "Name": "\u00C1o thun Cotton Basic",
+      "Category": "N\u1EEF",
+      "Price": 299000,
+      "Image": "/images/products/aothun01.jpg",
+      "Color": "Tr\u1EAFng",
+      "Description": "Cotton m\u1EC1m m\u1EA1i, phom d\u1EC5 m\u1EB7c. Ph\u00F9 h\u1EE3p v\u1EDBi nh\u1EEFng ng\u00E0y b\u1EA1n mu\u1ED1n tho\u1EA3i m\u00E1i m\u00E0 v\u1EABn ch\u1EC9n chu.",
+      "Stock": 14,
+      "Active": true,
+      "IsNew": false,
+      "OnSale": false
+    },
+    {
+      "Id": 2,
+      "Name": "\u00C1o thun Essential",
+      "Category": "Nam",
+      "Price": 349000,
+      "Image": "/images/products/aothun02.jpg",
+      "Color": "\u0110en",
+      "Description": "Cotton m\u1EC1m m\u1EA1i, phom d\u1EC5 m\u1EB7c. Ph\u00F9 h\u1EE3p v\u1EDBi nh\u1EEFng ng\u00E0y b\u1EA1n mu\u1ED1n tho\u1EA3i m\u00E1i m\u00E0 v\u1EABn ch\u1EC9n chu.",
+      "Stock": 18,
+      "Active": true,
+      "IsNew": false,
+      "OnSale": false
+    },
+    {
+      "Id": 3,
+      "Name": "\u00C1o thun Premium",
+      "Category": "N\u1EEF",
+      "Price": 399000,
+      "Image": "/images/products/aothun03.jpg",
+      "Color": "Tr\u1EAFng",
+      "Description": "Cotton m\u1EC1m m\u1EA1i, phom d\u1EC5 m\u1EB7c. Ph\u00F9 h\u1EE3p v\u1EDBi nh\u1EEFng ng\u00E0y b\u1EA1n mu\u1ED1n tho\u1EA3i m\u00E1i m\u00E0 v\u1EABn ch\u1EC9n chu.",
+      "Stock": 20,
+      "Active": true,
+      "IsNew": false,
+      "OnSale": true
+    },
+    {
+      "Id": 4,
+      "Name": "\u00C1o thun Unisex",
+      "Category": "Nam",
+      "Price": 449000,
+      "Image": "/images/products/aothun04.jpg",
+      "Color": "\u0110en",
+      "Description": "Cotton m\u1EC1m m\u1EA1i, phom d\u1EC5 m\u1EB7c. Ph\u00F9 h\u1EE3p v\u1EDBi nh\u1EEFng ng\u00E0y b\u1EA1n mu\u1ED1n tho\u1EA3i m\u00E1i m\u00E0 v\u1EABn ch\u1EC9n chu.",
+      "Stock": 24,
+      "Active": true,
+      "IsNew": false,
+      "OnSale": false
+    },
+    {
+      "Id": 5,
+      "Name": "\u00C1o thun Everyday",
+      "Category": "N\u1EEF",
+      "Price": 499000,
+      "Image": "/images/products/aothun05.jpg",
+      "Color": "Tr\u1EAFng",
+      "Description": "Cotton m\u1EC1m m\u1EA1i, phom d\u1EC5 m\u1EB7c. Ph\u00F9 h\u1EE3p v\u1EDBi nh\u1EEFng ng\u00E0y b\u1EA1n mu\u1ED1n tho\u1EA3i m\u00E1i m\u00E0 v\u1EABn ch\u1EC9n chu.",
+      "Stock": 27,
+      "Active": true,
+      "IsNew": true,
+      "OnSale": false
+    },
+    {
+      "Id": 6,
+      "Name": "\u00C1o thun Junior",
+      "Category": "Tr\u1EBB em",
+      "Price": 549000,
+      "Image": "/images/products/aothun01.jpg",
+      "Color": "\u0110en",
+      "Description": "Cotton m\u1EC1m m\u1EA1i, phom d\u1EC5 m\u1EB7c. Ph\u00F9 h\u1EE3p v\u1EDBi nh\u1EEFng ng\u00E0y b\u1EA1n mu\u1ED1n tho\u1EA3i m\u00E1i m\u00E0 v\u1EABn ch\u1EC9n chu.",
+      "Stock": 30,
+      "Active": true,
+      "IsNew": true,
+      "OnSale": false
+    },
+    {
+      "Id": 7,
+      "Name": "\u00C1o thun Weekend",
+      "Category": "N\u1EEF",
+      "Price": 599000,
+      "Image": "/images/products/aothun02.jpg",
+      "Color": "Tr\u1EAFng",
+      "Description": "Cotton m\u1EC1m m\u1EA1i, phom d\u1EC5 m\u1EB7c. Ph\u00F9 h\u1EE3p v\u1EDBi nh\u1EEFng ng\u00E0y b\u1EA1n mu\u1ED1n tho\u1EA3i m\u00E1i m\u00E0 v\u1EABn ch\u1EC9n chu.",
+      "Stock": 32,
+      "Active": true,
+      "IsNew": true,
+      "OnSale": false
+    },
+    {
+      "Id": 8,
+      "Name": "\u00C1o thun Relaxed",
+      "Category": "Nam",
+      "Price": 649000,
+      "Image": "/images/products/aothun03.jpg",
+      "Color": "\u0110en",
+      "Description": "Cotton m\u1EC1m m\u1EA1i, phom d\u1EC5 m\u1EB7c. Ph\u00F9 h\u1EE3p v\u1EDBi nh\u1EEFng ng\u00E0y b\u1EA1n mu\u1ED1n tho\u1EA3i m\u00E1i m\u00E0 v\u1EABn ch\u1EC9n chu.",
+      "Stock": 36,
+      "Active": true,
+      "IsNew": true,
+      "OnSale": false
+    }
+  ],
+  "Customers": [
+    {
+      "Id": 1,
+      "Name": "Qu\u1EA3n tr\u1ECB c\u1EEDa h\u00E0ng",
+      "Email": "admin@qoanh.local",
+      "Phone": "",
+      "Address": "",
+      "PasswordHash": "AQAAAAIAAYagAAAAEPf4HCeGeaRarlp8AHMXzK9Pzj6bHPeuK0bTCMvZWdF\u002BE3oeI1/eLTpTEbIZbbifcw==",
+      "Role": "Admin"
+    },
+    {
+      "Id": 2,
+      "Name": "Kh\u00E1ch h\u00E0ng demo",
+      "Email": "khach@qoanh.local",
+      "Phone": "0901234567",
+      "Address": "TP. H\u1ED3 Ch\u00ED Minh",
+      "PasswordHash": "AQAAAAIAAYagAAAAEOjmujh1ybT/DhQChP3kvV7Z\u002B4s/Q8ACNyRvPNtsdbwvHHFwFj8\u002B6SSKKU0U3H3Ckw==",
+      "Role": "Customer"
+    },
+    {
+      "Id": 3,
+      "Name": "Tr\u1EA7n Kh\u1EA3i",
+      "Email": "juntrann0608@gmail.com",
+      "Phone": "0366554532",
+      "Address": "96 v\u00F5 v\u0103n ng\u00E2n",
+      "PasswordHash": "AQAAAAIAAYagAAAAEEY8wYaIFrOQ1ntbteBaqmmSasEvMf9t8hpbG4SneOby0bhNHR6EApqzUuelT98D0w==",
+      "Role": "Customer"
+    },
+    {
+      "Id": 4,
+      "Name": "Noanh",
+      "Email": "oanh@gmail.com",
+      "Phone": "",
+      "Address": "",
+      "PasswordHash": "AQAAAAIAAYagAAAAEGq8sVkemOC8skExMdbgYJVGceEIubdsm9LlsPXuEnGo0MLKdKnNCuEXDYCP17mSOQ==",
+      "Role": "Customer"
+    }
+  ],
+  "Orders": [
+    {
+      "Id": "QH-DEMO01",
+      "CustomerId": 2,
+      "Created": "2026-09-27T19:11:59.9366373+07:00",
+      "Name": "Kh\u00E1ch h\u00E0ng demo",
+      "Phone": "0901234567",
+      "Address": "TP. H\u1ED3 Ch\u00ED Minh",
+      "Note": "",
+      "Status": "\u0110\u00E3 giao",
+      "Payment": "Thanh to\u00E1n khi nh\u1EADn h\u00E0ng",
+      "Lines": [
+        {
+          "ProductId": 1,
+          "Name": "\u00C1o thun Cotton Basic",
+          "Image": "/images/products/aothun01.jpg",
+          "Size": "M",
+          "Quantity": 2,
+          "Price": 299000
+        }
+      ],
+      "Subtotal": 598000,
+      "Shipping": 30000,
+      "Total": 628000
+    },
+    {
+      "Id": "QH-47DEA8A753",
+      "CustomerId": 3,
+      "Created": "2026-09-30T21:36:38.5335611+07:00",
+      "Name": "Tr\u1EA7n Kh\u1EA3i",
+      "Phone": "0366554532",
+      "Address": "96 v\u00F5 v\u0103n ng\u00E2n",
+      "Note": "zxcvbnm",
+      "Status": "Ch\u1EDD x\u00E1c nh\u1EADn",
+      "Payment": "Thanh to\u00E1n khi nh\u1EADn h\u00E0ng",
+      "Lines": [
+        {
+          "ProductId": 7,
+          "Name": "\u00C1o thun Weekend",
+          "Image": "/images/products/aothun02.jpg",
+          "Size": "XL",
+          "Quantity": 1,
+          "Price": 599000
+        }
+      ],
+      "Subtotal": 599000,
+      "Shipping": 30000,
+      "Total": 629000
+    },
+    {
+      "Id": "QH-CFBAD3CEDD",
+      "CustomerId": 4,
+      "Created": "2026-10-14T16:16:49.1584265+07:00",
+      "Name": "Noanh",
+      "Phone": "123456789",
+      "Address": "90, \u0111\u01B0\u1EDDng 34, X\u00E3 Hoa Th\u00E1m, T\u1EC9nh L\u1EA1ng S\u01A1n",
+      "Note": "vjfjgc",
+      "Status": "\u0110\u00E3 giao",
+      "Payment": "Thanh to\u00E1n khi nh\u1EADn h\u00E0ng",
+      "Lines": [
+        {
+          "ProductId": 1,
+          "Name": "\u00C1o thun Cotton Basic",
+          "Image": "/images/products/aothun01.jpg",
+          "Size": "L",
+          "Quantity": 1,
+          "Price": 299000
+        },
+        {
+          "ProductId": 3,
+          "Name": "\u00C1o thun Premium",
+          "Image": "/images/products/aothun03.jpg",
+          "Size": "M",
+          "Quantity": 1,
+          "Price": 399000
+        }
+      ],
+      "Subtotal": 698000,
+      "Shipping": 30000,
+      "Total": 728000
+    }
+  ],
+  "Promotions": [
+    {
+      "Id": 1,
+      "Name": "\u01AFu \u0111\u00E3i b\u1ED9 s\u01B0u t\u1EADp m\u1EDBi",
+      "Code": "HELLO10",
+      "Percent": 10,
+      "Until": "2026-10-30T00:00:00+07:00",
+      "Active": true
+    }
+  ],
+  "Categories": [
+    "N\u1EEF",
+    "Nam",
+    "Tr\u1EBB em",
+    "Ph\u1EE5 ki\u1EC7n"
+  ],
+  "Settings": {
+    "Name": "QOANH",
+    "Email": "hello@qoanh.example",
+    "Phone": "0900 123 456",
+    "Address": "TP. H\u1ED3 Ch\u00ED Minh"
+  }
+}

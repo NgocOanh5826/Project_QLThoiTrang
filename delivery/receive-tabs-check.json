@@ -1,0 +1,10 @@
+{
+  "executedUtc": "2026-11-03T09:15:21.153460+00:00",
+  "status": "PASS",
+  "checks": [
+    "GET single: only selected form and active tab",
+    "GET many: only selected form and active tab",
+    "Invalid many-line submission stays on many tab",
+    "Invalid single-line submission stays on single tab"
+  ]
+}

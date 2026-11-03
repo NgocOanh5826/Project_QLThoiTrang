@@ -1,0 +1,122 @@
+{
+  "executedUtc": "2026-11-03T10:19:51.153743+00:00",
+  "total": 23,
+  "failed": 0,
+  "results": [
+    {
+      "id": "PAGE/Finance",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Finance/Suppliers",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Finance/Receipt/1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Valuation",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Valuation/Edit/1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Chat",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Chat?customerId=1",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Shipping?id=QH-DEMO01",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE-customer-chat",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AUTH-customer-finance-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AUTH-customer-shipping-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AUTH-customer-valuation-denied",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "AUTH-guest-chat-login",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Recovery/Forgot",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PAGE/Recovery/Reset",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "OTP-generic-response-when-unconfigured",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "CHAT-customer-conversation-isolation-and-idempotency",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "BANK-QR-only-checkout-and-manual-reconciliation",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PDF-order-owner",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PDF-receipt-inventory",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PDF-return-admin",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PDF-other-customer-order-hidden",
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "id": "PDF-customer-receipt-denied",
+      "status": "PASS",
+      "error": ""
+    }
+  ]
+}

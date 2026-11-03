@@ -1,0 +1,573 @@
+
+TRƯỜNG CAO ĐẲNG CÔNG NGHỆ THỦ ĐỨC
+KHOA CÔNG NGHỆ THÔNG TIN
+––––––––––––––––––
+
+
+
+
+
+BÁO CÁO ĐỒ ÁN
+ĐỀ TÀI: QUẢN LÝ CỬA HÀNG THỜI TRANG QOANH
+
+
+GVHD:
+NGUYỄN HOÀNG NGUYÊN
+
+
+SV1:
+NGUYỄN PHƯỚC NGỌC OANH
+MSSV:
+24211TT4187
+SV2:
+TRẦN THỊ PHÚC TÀI
+MSSV:
+24211TT0134
+SV3
+TRẦN KHẢI
+MSSV:
+24211TT0573
+
+
+
+TP Hồ Chí Minh, tháng 9 năm 2026
+
+
+MỤC LỤC
+LỜI MỞ ĐẦU1
+Chương 1 Giới thiệu2
+1.1 Mục đích2
+1.2 Đối tượng2
+1.3 Mục đích sử dụng2
+1.4 Phạm vi2
+1.5 Định nghĩa viết tắt3
+Chương 2 Phân tích và thiết kế hệ thống3
+2.1 Yêu cầu về chức năng4
+2.2 Yêu cầu về giao diện bên ngoài4
+2.3 Tính năng của hệ thống5
+2.4 Các yêu cầu phi chức năng5
+2.5 Tổng quan dự án6
+2.6 Tác nhân của hệ thống6
+2.7 Danh sách ca sử dụng7
+2.8 Sơ đồ và đặc tả ca sử dụng8
+2.9 Mô hình dữ liệu và ERD13
+2.10 Kế hoạch thực hiện14
+2.11 Giao diện hệ thống17
+Chương 3 Kết luận27
+3.1 Kết quả đạt được27
+3.2 Hạn chế27
+3.3 Hướng phát triển27
+PHỤ LỤC28
+TÀI LIỆU THAM KHẢO29
+
+
+DANH MỤC HÌNH ẢNH
+Hình 1 : Sơ đồ ca sử dụng định hướng khách hàng9
+Hình 2 : Sơ đồ quản lý tài khoản và khách hàng10
+Hình 3 : Sơ đồ quản lý sản phẩm và kho11
+Hình 4 : Sơ đồ quản lý bán hàng và đơn hàng12
+Hình 5 : Sơ đồ quản lý tài khoản và phân quyền13
+Hình 6 : ERD định hướng mở rộng14
+Hình 7 : Trang chủ18
+Hình 8 : Danh sách sản phẩm theo danh mục19
+Hình 9 : Trang chi tiết sản phẩm20
+Hình 10 : Danh sách yêu thích21
+Hình 11 : Giỏ hàng21
+Hình 12 : Biểu mẫu thanh toán và giao hàng22
+Hình 13 : Tổng quan quản trị23
+Hình 14 : Quản lý sản phẩm23
+Hình 15 : Quản lý danh mục24
+Hình 16 : Quản lý đơn hàng24
+Hình 17 : Quản lý khách hàng25
+Hình 18 : Quản lý tồn kho25
+Hình 19 : Quản lý khuyến mãi26
+Hình 20 : Báo cáo kinh doanh26
+
+
+DANH MỤC BẢNG
+Bảng 1 : Định nghĩa viết tắt3
+Bảng 2 : Yêu cầu về chức năng4
+Bảng 3 : Tác nhân của hệ thống6
+Bảng 4 : Phân quyền hệ thống7
+Bảng 5 : Danh sách ca sử dụng8
+Bảng 6 : Chi tiết cơ sở dữ liệu14
+Bảng 7 : Kế hoạch phân công16
+Bảng 8 : Tỉ lệ thực hiện công việc17
+Bảng 9 : Các kịch bản kiểm thử đề xuất29
+
+
+
+LỜI MỞ ĐẦU
+Hoạt động kinh doanh thời trang cần theo dõi đồng thời thông tin sản phẩm, khách hàng, số lượng tồn và quá trình xử lý đơn hàng. Khi các dữ liệu này được ghi chép rời rạc, cửa hàng khó cập nhật kịp thời và khách hàng khó tra cứu tình trạng mua sắm. Nhóm xây dựng hệ thống quản lý cửa hàng thời trang QOANH nhằm hỗ trợ quy trình bán hàng trên website và công việc quản trị tập trung.
+Đồ án sử dụng ASP.NET Core MVC trên .NET 8, giao diện Razor và dữ liệu lưu trong tệp JSON. Phiên bản hiện tại đáp ứng luồng xem sản phẩm, quản lý giỏ hàng, đăng nhập, đặt hàng theo hình thức thanh toán khi nhận hàng và xử lý đơn từ phía quản trị. Báo cáo trình bày mục tiêu, yêu cầu, thiết kế, các ca sử dụng và giao diện; đồng thời xác định những chức năng cần tiếp tục phát triển.
+Chương 1 Giới thiệu
+1.1 Mục đích
+Xây dựng ứng dụng web hỗ trợ cửa hàng QOANH quản lý dữ liệu bán hàng trong một hệ thống thống nhất. Hệ thống giúp khách hàng lựa chọn sản phẩm và tạo đơn thuận tiện, đồng thời giúp người quản trị theo dõi hàng hóa, tồn kho, khách hàng và kết quả kinh doanh. Đồ án cũng vận dụng mô hình MVC, xác thực người dùng, kiểm tra dữ liệu và tổ chức nghiệp vụ trong tầng dịch vụ.
+1.2 Đối tượng
+Đối tượng sử dụng gồm khách truy cập chưa đăng nhập, khách hàng có tài khoản và người quản trị cửa hàng. Khách truy cập có thể xem, tìm kiếm sản phẩm, lưu yêu thích và tạo giỏ hàng. Khách hàng đã đăng nhập có thêm quyền đặt hàng, cập nhật hồ sơ, xem lịch sử và hủy đơn của mình theo điều kiện. Admin được truy cập khu vực quản trị và thực hiện các thao tác quản lý được hệ thống cung cấp.
+1.3 Mục đích sử dụng
+Khách hàng sử dụng website để tham khảo hàng hóa, lựa chọn kích cỡ, kiểm tra chi phí và gửi thông tin nhận hàng. Admin sử dụng hệ thống để duy trì danh mục sản phẩm, điều chỉnh số lượng tồn, xử lý trạng thái đơn, xem thông tin khách hàng, quản lý dữ liệu chương trình khuyến mãi và xem báo cáo. Các thao tác giúp liên kết dữ liệu mua hàng với dữ liệu quản lý của cửa hàng.
+1.4 Phạm vi
+Phạm vi triển khai là website demo cho một cửa hàng với hai vai trò Customer và Admin. Dữ liệu nghiệp vụ được lưu tại App_Data/store.json; giỏ hàng và yêu thích được lưu trong phiên làm việc. Phương thức thanh toán hiện tại là thanh toán khi nhận hàng (COD), chưa tích hợp cổng thanh toán trực tuyến.
+Phiên bản hiện tại chưa có quản lý thương hiệu, nhà cung cấp, phiếu nhập kho, đánh giá sản phẩm, tài khoản nhân viên hoặc cấp quyền cho nhiều nhóm Admin. Mỗi sản phẩm có một màu và một số tồn tổng; kích cỡ S, M, L, XL được chọn khi mua nhưng chưa có bảng biến thể và tồn kho theo từng kích cỡ. Dữ liệu khuyến mãi đã có màn hình quản lý, chưa được áp dụng vào tổng tiền đơn hàng.
+
+1.5 Định nghĩa viết tắt
+Thuật ngữ
+Ý nghĩa
+MVC
+Model View Controller, mô hình tách dữ liệu, giao diện và điều khiển.
+SRS
+Software Requirements Specification, đặc tả yêu cầu phần mềm.
+UC
+Use Case, ca sử dụng của hệ thống.
+ERD
+Entity Relationship Diagram, sơ đồ quan hệ thực thể.
+CRUD
+Thêm, xem, cập nhật và xóa dữ liệu.
+JSON
+Định dạng lưu trữ và trao đổi dữ liệu dạng văn bản.
+COD
+Thanh toán khi nhận hàng.
+Session và Cookie
+Phiên làm việc phía máy chủ và dữ liệu cookie dùng cho phiên, xác thực.
+Bảng 1: Định nghĩa viết tắt
+Chương 2 Phân tích và thiết kế hệ thống
+2.1 Yêu cầu về chức năng
+Nhóm chức năng
+Yêu cầu và phạm vi hiện tại
+Tài khoản
+Đăng ký, đăng nhập, đăng xuất; cập nhật họ tên, điện thoại, địa chỉ; phân biệt Customer và Admin.
+Tra cứu sản phẩm
+Xem sản phẩm đang hoạt động; tìm theo tên hoặc màu; lọc danh mục, hàng mới, hàng sale; sắp xếp tên và giá.
+Giỏ hàng và yêu thích
+Thêm hoặc bỏ yêu thích; thêm sản phẩm theo kích cỡ; cập nhật số lượng hoặc xóa dòng giỏ hàng.
+Đặt và theo dõi đơn
+Yêu cầu đăng nhập; kiểm tra thông tin nhận hàng, giá và tồn; tạo đơn COD; xem lịch sử và chi tiết đơn; hủy đơn chờ xác nhận.
+Quản lý hàng hóa
+Thêm, sửa, ẩn sản phẩm; thêm hoặc xóa danh mục hợp lệ; cập nhật tồn tổng của sản phẩm.
+Quản trị bán hàng
+Xem khách hàng và lịch sử mua; lọc và xử lý trạng thái đơn; quản lý khuyến mãi; cập nhật thông tin cửa hàng.
+Báo cáo
+Tổng quan, báo cáo theo khoảng ngày, số lượng sản phẩm đã giao và xuất toàn bộ đơn ra CSV.
+Bảng 2: Yêu cầu về chức năng
+2.2 Yêu cầu về giao diện bên ngoài
+Giao diện người dùng hoạt động trên trình duyệt web, sử dụng tiếng Việt và đơn vị tiền đồng. Bố cục gồm vùng điều hướng, danh sách sản phẩm, nội dung chi tiết và các biểu mẫu nhập liệu. Khu vực quản trị sử dụng bố cục riêng với thanh điều hướng tới tổng quan, sản phẩm, danh mục, đơn hàng, khách hàng, tồn kho, khuyến mãi, báo cáo và cài đặt.
+Ứng dụng sử dụng HTML, CSS, JavaScript và Razor View. Ảnh sản phẩm được phục vụ từ wwwroot/images/products; màn hình quản lý chỉ cho chọn trong năm ảnh có sẵn. Hệ thống trao đổi dữ liệu bằng các yêu cầu HTTP theo tuyến Controller/Action; thao tác thay đổi dữ liệu sử dụng biểu mẫu POST có cơ chế chống giả mạo yêu cầu. Chưa có giao tiếp API với ngân hàng, đơn vị giao hàng hoặc hệ thống ngoài.
+2.3 Tính năng của hệ thống
+Luồng chính của hệ thống bắt đầu từ trang chủ, chuyển tới danh mục hoặc chi tiết sản phẩm, thêm vào giỏ, đăng nhập và xác nhận thông tin giao hàng. Khi tạo đơn thành công, hệ thống sinh mã QH, trừ tồn kho và làm rỗng giỏ. Đơn mới có trạng thái Chờ xác nhận và được Admin xử lý theo các bước Đã xác nhận, Đang giao, Đã giao.
+Chi phí vận chuyển là 30.000 đồng khi tiền hàng dưới 700.000 đồng và miễn phí từ 700.000 đồng. Doanh thu trên trang tổng quan và báo cáo chỉ tính tiền hàng của đơn Đã giao, không gồm phí vận chuyển. Các sản phẩm có tồn không quá 5 được tính vào chỉ số sắp hết hàng.
+2.4 Các yêu cầu phi chức năng
+Bảo mật: mật khẩu được băm bằng PasswordHasher<Customer>, không lưu dạng văn bản rõ. Xác thực dùng cookie và các claim định danh, tên, email, vai trò. AdminController yêu cầu vai trò Admin; các trang đơn hàng của khách hàng kiểm tra CustomerId để giới hạn dữ liệu đúng chủ sở hữu. Đầu vào được kiểm tra bằng Data Annotations và kiểm tra nghiệp vụ bổ sung. Đây là các cơ chế đã có; trước triển khai thực tế cần bổ sung giới hạn thử đăng nhập, phục hồi tài khoản và quy trình bảo vệ dữ liệu.
+Tính nhất quán: StoreService dùng khóa trong tiến trình để tuần tự hóa đọc và ghi. Khi ghi, dịch vụ tạo bản sao dữ liệu, lưu vào tệp tạm rồi thay thế tệp chính; nếu lưu thất bại, khôi phục dữ liệu trong bộ nhớ. Cách này phù hợp ứng dụng demo một tiến trình, chưa bảo đảm phối hợp khi nhiều máy chủ cùng ghi một tệp.
+Khả năng sử dụng và bảo trì: thông báo lỗi phải gắn với dữ liệu nhập, các bảng có vùng cuộn và giao diện có quy tắc thích ứng trong CSS. Mã nguồn được tách thành Controllers, Models, Services và Views. Session có thời gian không hoạt động 2 giờ; nội dung giỏ và yêu thích không phải dữ liệu lưu bền theo tài khoản.
+Hiệu năng và độ tin cậy: chưa có số đo tải, thời gian phản hồi hoặc tỷ lệ sẵn sàng để kết luận hệ thống đạt các ngưỡng cụ thể. Khi mở rộng cần phân trang, tối ưu truy vấn, chuyển dữ liệu sang hệ quản trị cơ sở dữ liệu, thiết lập sao lưu và kiểm thử đồng thời.
+
+2.5 Tổng quan dự án
+Cửa hàng cần tập trung dữ liệu sản phẩm, khách hàng và đơn hàng để giảm thao tác tra cứu rời rạc. Bài toán chính của đồ án là liên kết thao tác mua hàng trên website với việc theo dõi hàng hóa và xử lý đơn trong khu vực quản trị.
+Giải pháp được tổ chức theo mô hình MVC. HomeController hiển thị trang chủ và trang thông tin; ShopController xử lý danh mục, chi tiết, giỏ, yêu thích và đặt hàng; AccountController xử lý xác thực, hồ sơ và đơn hàng của khách; AdminController xử lý nghiệp vụ quản trị. StoreService quản lý dữ liệu JSON, còn SessionStore quản lý dữ liệu phiên.
+Giá trị của hệ thống là tạo được quy trình mua hàng và quản trị thống nhất trong phạm vi demo. Việc lưu giá, tên và ảnh sản phẩm tại từng dòng đơn giúp giữ thông tin giao dịch đã tạo khi dữ liệu sản phẩm thay đổi. Các nghiệp vụ chưa triển khai được xem là hướng phát triển, không tính là kết quả đã hoàn thành.
+2.6 Tác nhân của hệ thống
+Tác nhân
+Quyền và trách nhiệm
+Khách truy cập
+Xem, tìm, lọc sản phẩm; xem chi tiết; giỏ hàng; yêu thích; truy cập đăng ký và đăng nhập.
+Khách hàng Customer
+Thực hiện thao tác khách truy cập, đặt đơn COD, sửa hồ sơ, xem đơn của mình và hủy đơn chờ xác nhận.
+Quản trị Admin
+Quản lý sản phẩm, danh mục, tồn, đơn, khách hàng, khuyến mãi, báo cáo và thông tin cửa hàng.
+Bảng 3: Tác nhân của hệ thống
+Actor ID
+Actor
+Loại
+Mô tả Mục tiêu/Quyền chính
+ACT-01
+Admin
+Human
+Quản trị và vận hành hệ thống cửa hàng
+
+
+
+Quản lý tài khoản và phân quyền, sản phẩm và biến thể, danh mục, thương hiệu, size và màu sắc
+
+
+
+Quản lý kho, nhập hàng, nhà cung cấp, đơn hàng, trả đổi
+
+
+
+Quản lý khách hàng, nhân viên, khuyến mãi, đánh giá
+
+
+
+Theo dõi Dashboard và thực hiện báo cáo, thống kê
+ACT-02
+User
+Human
+Người sử dụng hệ thống để mua sắm sản phẩm
+
+
+
+Đăng ký, đăng nhập và quản lý thông tin cá nhân
+
+
+
+Xem, tìm kiếm, lọc và xem chi tiết sản phẩm
+
+
+
+Quản lý giỏ hàng và sản phẩm yêu thích
+
+
+
+Sử dụng mã giảm giá, đặt hàng và thanh toán
+
+
+
+Theo dõi lịch sử đơn hàng, hủy đơn hàng và đánh giá sản phẩm
+Bảng 4: Phân quyền hệ thống
+2.7 Danh sách ca sử dụng
+Mã
+Ca sử dụng
+Tác nhân
+Mức triển khai
+UC-001
+Đặt hàng và thanh toán COD
+Khách hàng
+Đã có luồng đặt hàng; chưa thanh toán online.
+UC-002
+Quản lý khách hàng
+Admin
+Xem, tìm và xem lịch sử; chưa sửa khách từ Admin.
+UC-003
+Quản lý sản phẩm và lựa chọn kích cỡ
+Admin, khách hàng
+CRUD sản phẩm; kích cỡ chọn khi mua; chưa có bảng biến thể.
+UC-004
+Quản lý đơn hàng
+Admin
+Xem, lọc và chuyển trạng thái theo quy tắc.
+UC-005
+Tài khoản và phân quyền
+Khách hàng, Admin
+Đăng ký, đăng nhập, hồ sơ; hai vai trò cố định.
+Bảng 5: Danh sách ca sử dụng
+2.8 Sơ đồ và đặc tả ca sử dụng
+Các sơ đồ giữ lại dưới đây thể hiện định hướng phân tích ban đầu, trong đó có các nhóm Admin chuyên trách và nghiệp vụ mở rộng. Trong bản cài đặt hiện tại chỉ có một vai trò Admin chung. Phạm vi đã triển khai của từng ca sử dụng được xác định trong đặc tả sau, thay vì suy ra từ tất cả chức năng xuất hiện trên sơ đồ.
+Đặc tả các ca sử dụng chính
+UC 001 Đặt hàng và thanh toán COD
+Mục tiêu: tạo đơn mua hàng gắn với khách hàng đăng nhập. Tiền điều kiện: có sản phẩm trong giỏ, sản phẩm đủ tồn và thông tin người nhận hợp lệ. Tác nhân chính: khách hàng.
+Luồng chính: (1) Khách xem chi tiết và chọn kích cỡ S, M, L hoặc XL; (2) thêm sản phẩm vào giỏ và điều chỉnh số lượng; (3) chọn thanh toán, đăng nhập nếu cần; (4) nhập họ tên, điện thoại, địa chỉ và ghi chú; (5) hệ thống kiểm tra biểu mẫu, sản phẩm còn hoạt động, tổng số lượng theo ProductId và giá; (6) tạo đơn mang mã QH, lưu các dòng hàng, trừ tồn; (7) xóa giỏ và hiển thị xác nhận thành công.
+Ngoại lệ: giỏ trống không thể tạo đơn; dữ liệu giao hàng không hợp lệ được báo lỗi; sản phẩm không đủ tồn, bị ngừng bán hoặc giá thay đổi làm yêu cầu đặt hàng bị từ chối. Hậu điều kiện: đơn ở trạng thái Chờ xác nhận, phương thức COD. Hệ thống chưa thu tiền trực tuyến và chưa trừ tiền theo mã khuyến mãi.
+
+Hình 2: Sơ đồ ca sử dụng định hướng khách hàng
+Các ca sử dụng quản trị
+UC 002 Quản lý khách hàng
+Tiền điều kiện: người dùng đăng nhập với vai trò Admin. Luồng chính: mở danh sách khách hàng, tìm theo tên hoặc email, chọn khách để xem hồ sơ và các đơn liên quan. Danh sách loại bỏ tài khoản có vai trò Admin; không có bản ghi phù hợp thì hiển thị danh sách rỗng, mã khách không tồn tại trả về không tìm thấy.
+Hậu điều kiện: Admin tra cứu được dữ liệu phục vụ chăm sóc và xử lý đơn; dữ liệu không bị thay đổi bởi luồng này. Khách hàng tự sửa họ tên, điện thoại và địa chỉ ở trang hồ sơ. Các chức năng Admin sửa khách hàng, quản lý nhân viên và đánh giá trong sơ đồ là phạm vi mở rộng.
+
+Hình 3: Sơ đồ quản lý tài khoản và khách hàng
+UC 003 Quản lý sản phẩm và lựa chọn kích cỡ
+Admin mở danh sách, tìm theo tên, chọn thêm hoặc sửa sản phẩm. Biểu mẫu gồm tên, danh mục, giá, ảnh, màu, mô tả, số tồn và các cờ đang bán, hàng mới, sale. Hệ thống kiểm tra danh mục có tồn tại, ảnh thuộc thư viện, giá từ 1.000 đến 100.000.000 đồng và tồn từ 0 đến 100.000. Thêm mới sinh mã số kế tiếp; cập nhật thay thế dữ liệu sản phẩm tương ứng.
+Khi xóa, hệ thống chỉ đặt Active=false để ẩn sản phẩm và giữ lịch sử đơn. Khách lựa chọn kích cỡ khi thêm giỏ, mỗi dòng được phân biệt bằng ProductId và Size. Màu được lưu trên Product; tồn kho là một số tổng theo sản phẩm, chưa tách theo size hoặc màu. Quản lý thương hiệu, nhà cung cấp, phiếu nhập và bảng biến thể trong sơ đồ chưa thuộc chức năng đã cài đặt.
+
+Hình 4: Sơ đồ quản lý sản phẩm và kho
+UC 004 Quản lý đơn hàng
+Admin xem danh sách theo thời gian giảm dần, lọc trạng thái và mở chi tiết đơn. Từ Chờ xác nhận được chuyển sang Đã xác nhận hoặc Đã hủy; từ Đã xác nhận được chuyển sang Đang giao hoặc Đã hủy; từ Đang giao chỉ được chuyển sang Đã giao. Đơn Đã giao và Đã hủy không có bước chuyển tiếp.
+Hệ thống từ chối chuyển trạng thái ngoài quy tắc. Khi chuyển sang Đã hủy, số lượng từng dòng được cộng lại vào tồn sản phẩm. Khách hàng chỉ được hủy đơn của chính mình khi còn Chờ xác nhận. Việc xuất CSV hỗ trợ lấy toàn bộ đơn; bộ lọc ngày trên màn hình báo cáo không được áp dụng cho tệp xuất này.
+
+Hình 5: Sơ đồ quản lý bán hàng và đơn hàng
+UC 005 Tài khoản và phân quyền
+Khách đăng ký bằng họ tên, email, mật khẩu và xác nhận mật khẩu. Họ tên từ 2 đến 100 ký tự; email hợp lệ, không trùng không phân biệt hoa thường; mật khẩu từ 8 đến 100 ký tự và có ít nhất một chữ, một số. Tài khoản mới nhận vai trò Customer và được đăng nhập sau đăng ký.
+Đăng nhập xác minh email và mật khẩu đã băm, tạo cookie chứa claim người dùng và vai trò. Đích chuyển hướng phải là URL nội bộ; khi không có đích, Admin tới khu vực quản trị, khách tới hồ sơ. Đăng xuất dùng POST. Khu vực Admin được bảo vệ bằng Authorize(Roles="Admin").
+Đặc tả phân quyền nhiều nhóm Admin trong sơ đồ là định hướng thiết kế. Phiên bản hiện tại chưa cung cấp màn hình thêm Admin, gán hoặc thu hồi vai trò, khóa tài khoản hay quản lý nhân viên; không mô tả các thao tác này là đã hoàn thành.
+
+Hình 6: Sơ đồ quản lý tài khoản và phân quyền
+2.9 Mô hình dữ liệu và ERD
+Dữ liệu thực tế được tuần tự hóa thành StoreData trong tệp JSON, chưa có cơ sở dữ liệu quan hệ hay Entity Framework. Sơ đồ ERD có sẵn biểu diễn mô hình nghiệp vụ mở rộng; các thực thể thương hiệu, nhà cung cấp, nhập hàng, biến thể và đánh giá trong sơ đồ chưa có lớp lưu trữ tương ứng. Mô hình đã cài đặt gồm các thành phần dưới đây.
+
+Hình 7: ERD định hướng mở rộng
+Thành phần
+Thuộc tính chính và quan hệ
+Customer
+Id, Name, Email, Phone, Address, PasswordHash, Role. Một khách có nhiều Order theo CustomerId.
+Product
+Id, Name, Category, Price, Image, Color, Description, Stock, Active, IsNew, OnSale. Category là chuỗi trong danh sách Categories.
+Order
+Id, CustomerId, Created, Name, Phone, Address, Note, Status, Payment, Lines. Một Order chứa nhiều OrderLine.
+OrderLine
+ProductId, Name, Image, Size, Quantity, Price. Lưu ảnh chụp thông tin hàng tại lúc đặt; Subtotal là tổng Price × Quantity.
+Promotion
+Id, Name, Code, Percent, Until, Active. Chưa liên kết Order hoặc làm thay đổi Total.
+StoreSettings
+Name, Email, Phone, Address. Lưu cấu hình thông tin cửa hàng.
+CartItem và Wishlist
+CartItem gồm ProductId, Size, Quantity; Wishlist là danh sách ProductId. Cả hai lưu trong session, không nằm trong StoreData.
+Bảng 6: Chi tiết cơ sở dữ liệu
+2.10 Kế hoạch thực hiện
+Bảng dưới đây là kế hoạch phân công dự kiến của nhóm. Mốc thời gian và trạng thái là dữ liệu kế hoạch, không thay thế bằng chứng nghiệm thu. Các công việc về Identity đầy đủ, cơ sở dữ liệu, nhân viên, nhập hàng và đánh giá là hạng mục mở rộng so với mã nguồn hiện tại.
+STT
+Công việc
+Ngày bắt đầu
+Ngày kết thúc
+Người phụ trách
+Tình trạng
+1
+Viết tài liệu đặc tả yêu cầu phần mềm (SRS)
+21/9
+23/9
+Cả nhóm
+Hoàn thành
+2
+Phân tích yêu cầu đề tài, thiết kế cơ sở dữ liệu tổng thể (ERD)
+24/9
+27/9
+Cả nhóm
+Hoàn thành
+3
+Khởi tạo project ASP.NET Core MVC; cấu hình xác thực, vai trò và lưu trữ dữ liệu; định hướng mở rộng database
+24/9
+27/9
+Cả nhóm
+Hoàn thành
+4
+Đăng ký, đăng nhập; Quản lý thông tin cá nhân
+28/9
+4/10
+Trần Khải
+Hoàn thành
+5
+Quản lý danh mục, thương hiệu, size và màu sắc
+28/9
+4/10
+Trần Thị Phúc Tài
+Hoàn thành
+6
+Quản lý giỏ hàng
+28/9
+4/10
+Nguyễn Phước Ngọc Oanh
+Hoàn thành
+7
+Quản lý sản phẩm yêu thích (User); Quản lý tài khoản và phân quyền (Admin)
+5/10
+11/10
+Trần Khải
+Hoàn thành
+8
+Quản lý sản phẩm và biến thể; Xem, tìm kiếm, lọc sản phẩm; Xem chi tiết sản phẩm
+5/10
+11/10
+Trần Thị Phúc Tài
+Hoàn thành
+9
+Sử dụng mã giảm giá; Đặt hàng và thanh toán
+5/10
+11/10
+Nguyễn Phước Ngọc Oanh
+Hoàn thành
+10
+Quản lý khách hàng; Quản lý nhân viên (Admin)
+12/10
+18/10
+Trần Khải
+Hoàn thành
+11
+Quản lý kho; Quản lý nhập hàng
+12/10
+18/10
+Trần Thị Phúc Tài
+Hoàn thành
+12
+Theo dõi, xem lịch sử đơn hàng; Hủy đơn hàng
+12/10
+18/10
+Nguyễn Phước Ngọc Oanh
+Hoàn thành
+13
+Quản lý đánh giá (Admin)
+19/10
+25/10
+Trần Khải
+Hoàn thành
+14
+Quản lý nhà cung cấp; Đánh giá sản phẩm (User)
+19/10
+25/10
+Trần Thị Phúc Tài
+Hoàn thành
+15
+Dashboard; Quản lý đơn hàng (Admin)
+19/10
+25/10
+Nguyễn Phước Ngọc Oanh
+Hoàn thành
+16
+Kiểm thử module Tài khoản & khách hàng
+26/10
+1/11
+Trần Khải
+Hoàn thành
+17
+Kiểm thử module Sản phẩm & kho
+26/10
+1/11
+Trần Thị Phúc Tài
+Hoàn thành
+18
+Quản lý khuyến mãi; Báo cáo và thống kê; kiểm thử module Bán hàng & đơn hàng
+26/10
+1/11
+Nguyễn Phước Ngọc Oanh
+Hoàn thành
+19
+Kiểm thử tích hợp toàn hệ thống, sửa lỗi phát sinh
+2/11
+3/11
+Cả nhóm
+Hoàn thành
+20
+Hoàn thiện giao diện, viết báo cáo, chuẩn bị thuyết trình, nộp đồ án
+2/11
+4/11
+Cả nhóm
+Hoàn thành
+Bảng 7: Kế hoạch phân công
+
+Tên thành viên
+MSSV
+Số % thực hiện
+Nguyễn Phước Ngọc Oanh
+24211TT4187
+33%
+Trần Khải
+24211TT0573
+40%
+Trần Thị Phúc Tài
+24211TT0134
+27%
+Bảng 8: Tỉ lệ thực hiện công việc
+2.11 Giao diện hệ thống
+Các hình dưới đây minh họa giao diện QOANH theo từng bước mua hàng và tác vụ quản trị. Nội dung mô tả gắn với các tuyến và thao tác có trong ứng dụng.
+Giao diện khách hàng
+2.11.1 Trang chủ
+Trang /Home/Index hiển thị banner, sản phẩm và lối vào các nhóm hàng. Danh sách chỉ lấy sản phẩm Active=true, giúp khách bắt đầu tra cứu từ các sản phẩm đang bán.
+
+
+
+Hình 8: Trang chủ
+
+2.11.2 Danh mục sản phẩm
+Trang /Shop/Index cho phép tìm theo tên hoặc màu, lọc danh mục, hàng mới, hàng sale và sắp xếp theo giá hoặc tên. Trường hợp không phù hợp bộ lọc được hiển thị bằng trạng thái danh sách rỗng.
+
+Hình 9: Danh sách sản phẩm theo danh mục
+2.11.3 Chi tiết sản phẩm
+Trang /Shop/Detail/{id} hiển thị ảnh, tên, giá, màu, mô tả và số tồn. Khách chọn S, M, L hoặc XL, nhập số lượng và thêm giỏ; hệ thống gợi ý tối đa bốn sản phẩm cùng danh mục. Sản phẩm ẩn hoặc mã không tồn tại không được mở chi tiết.
+
+
+
+Hình 10: Trang chi tiết sản phẩm
+2.11.4 Sản phẩm yêu thích
+Trang /Shop/Wishlist hiển thị các sản phẩm đang hoạt động theo danh sách mã lưu trong session. Nút yêu thích thêm hoặc loại mã khỏi danh sách; dữ liệu chưa đồng bộ lâu dài theo tài khoản.
+
+Hình 11: Danh sách yêu thích
+2.11.5 Giỏ hàng
+Trang /Shop/Cart hiển thị từng dòng theo sản phẩm và kích cỡ, giá, số lượng, tiền hàng và phí giao. Khách có thể cập nhật hoặc xóa dòng. Cập nhật kiểm tra giới hạn 20 sản phẩm mỗi dòng và tổng số lượng của các size so với tồn.
+
+Hình 12: Giỏ hàng
+2.11.6 Thanh toán và giao hàng
+Trang /Shop/Checkout yêu cầu đăng nhập và giỏ có hàng. Biểu mẫu gồm họ tên, điện thoại, địa chỉ, ghi chú và tóm tắt đơn. Sau xác nhận hợp lệ, hệ thống tạo đơn COD rồi chuyển đến /Shop/Success để hiển thị kết quả.
+
+Hình 13: Biểu mẫu thanh toán và giao hàng
+Giao diện quản trị
+2.11.7 Tổng quan quản trị
+Trang /Admin/Index thống kê doanh thu tiền hàng của đơn Đã giao, số đơn Chờ xác nhận, sản phẩm đang bán và sản phẩm sắp hết với tồn ≤ 5. Bảng đơn gần đây lấy tối đa sáu đơn mới nhất.
+
+Hình 14: Tổng quan quản trị
+2.11.8 Quản lý sản phẩm
+Trang /Admin/Products hỗ trợ tìm tên và mở biểu mẫu thêm, sửa. Thao tác xóa cần xác nhận và chuyển sản phẩm sang trạng thái ẩn. Giá trị của các đơn đã tạo được lưu tại OrderLine nên không phụ thuộc trực tiếp vào giá hiện tại.
+
+Hình 15: Quản lý sản phẩm
+2.11.9 Quản lý danh mục
+Trang /Admin/Categories hiển thị danh mục và số sản phẩm. Tên thêm mới có độ dài 2–50 ký tự, không được trùng không phân biệt hoa thường. Danh mục có sản phẩm phải chuyển sản phẩm đi trước khi xóa.
+
+Hình 16: Quản lý danh mục
+2.11.10 Quản lý đơn hàng
+Trang /Admin/Orders cho phép lọc trạng thái và mở chi tiết để xem người nhận, các dòng hàng, phí giao và tổng tiền. Admin chỉ chuyển trạng thái theo các bước được cho phép; hủy đơn hoàn lại tồn.
+
+Hình 17: Quản lý đơn hàng
+2.11.11 Quản lý khách hàng
+Trang /Admin/Customers tìm khách theo tên hoặc email và loại tài khoản Admin khỏi danh sách. Màn hình chi tiết cho phép xem thông tin khách cùng lịch sử đơn; chưa có thao tác sửa hồ sơ khách hàng từ phía Admin.
+
+Hình 18: Quản lý khách hàng
+2.11.12 Quản lý tồn kho
+Trang /Admin/Inventory hiển thị tồn tổng theo sản phẩm và cho cập nhật số tồn tuyệt đối từ 0 đến 100.000. Đây chưa phải nghiệp vụ nhập kho có phiếu, nhà cung cấp và lịch sử biến động.
+
+Hình 19: Quản lý tồn kho
+2.11.13 Quản lý khuyến mãi
+Trang /Admin/Promotions và /Admin/Promotion quản lý tên, mã, phần trăm, ngày hết hạn và trạng thái. Mã được chuẩn hóa chữ hoa và kiểm tra trùng; tỷ lệ từ 1 đến 70%, ngày kết thúc không được trong quá khứ khi lưu. Mã chưa áp vào thanh toán.
+
+Hình 20: Quản lý khuyến mãi
+2.11.14 Báo cáo kinh doanh
+Trang /Admin/Reports lọc theo ngày tạo đơn, mặc định từ 30 ngày trước tới hôm nay. Doanh thu và sản phẩm bán được chỉ tính đơn Đã giao; thống kê kèm số đơn trong kỳ, đơn đã giao và đã hủy. Chức năng xuất CSV lấy toàn bộ đơn trong hệ thống.
+
+Hình 21: Báo cáo kinh doanh
+Chương 3 Kết luận
+3.1 Kết quả đạt được
+Đồ án đã hình thành một ứng dụng ASP.NET Core MVC có luồng mua hàng từ tra cứu sản phẩm đến tạo đơn COD, cùng khu vực quản trị phục vụ các tác vụ sản phẩm, danh mục, tồn kho, đơn hàng, khách hàng, dữ liệu khuyến mãi và báo cáo. Cơ chế băm mật khẩu, xác thực cookie, kiểm tra vai trò và xác minh quyền xem đơn giúp giới hạn truy cập theo người dùng. Dữ liệu được tổ chức qua tầng dịch vụ và lưu bền trong tệp JSON.
+3.2 Hạn chế
+Lưu trữ JSON phù hợp phạm vi demo nhưng chưa đáp ứng mô hình nhiều máy chủ và dữ liệu lớn. Hệ thống chưa có tồn kho theo biến thể, lịch sử nhập xuất, nhà cung cấp, đánh giá, quản lý nhân viên và phân quyền chi tiết. Khuyến mãi chưa tác động tới đơn hàng; thanh toán mới ở hình thức COD. Giỏ hàng và yêu thích phụ thuộc session. Chưa có kết quả kiểm thử hiệu năng hoặc nghiệm thu để xác nhận chất lượng vận hành thực tế.
+3.3 Hướng phát triển
+Ưu tiên chuyển dữ liệu sang SQL Server hoặc hệ quản trị tương đương, thiết kế khóa ngoại và giao dịch để bảo đảm nhất quán đơn hàng với tồn kho. Tiếp theo bổ sung biến thể theo size và màu, sổ nhập xuất, quản lý nhà cung cấp và áp khuyến mãi có điều kiện. Các bước tiếp theo gồm tích hợp thanh toán và vận chuyển, lưu giỏ theo tài khoản, bổ sung phục hồi mật khẩu, phân quyền nhân viên và kiểm thử tự động các nghiệp vụ chính.
+PHỤ LỤC
+A Cấu trúc và vận hành dự án
+Project_QLThoiTrang.sln là tệp solution. Thư mục Project_QLThoiTrang chứa Program.cs, cấu hình ứng dụng, Controllers, Models, Services, Views, wwwroot và App_Data/store.json. Thư mục BuildReview chứa bản build sẵn và các tệp cấu hình, dữ liệu tương ứng. Môi trường phát triển cần .NET 8 SDK; mở solution, khôi phục thành phần cần thiết, build rồi chạy cấu hình trong Properties/launchSettings.json.
+Khi khởi tạo StoreService, ứng dụng đọc StoreDataPath trong cấu hình nếu có, nếu không dùng App_Data/store.json dưới thư mục chạy. Chỉ khi tệp chưa tồn tại mới tạo dữ liệu seed. Do đó cần phân biệt dữ liệu tệp hiện có và dữ liệu seed khi thử nghiệm; sao lưu tệp trước khi thay đổi dữ liệu.
+B Các kịch bản kiểm thử đề xuất
+Các trường hợp dưới đây là tiêu chí kiểm thử và kết quả mong đợi; chưa phải biên bản chạy kiểm thử.
+Mã
+Kịch bản
+Kết quả mong đợi
+KT01
+Đăng ký email đã tồn tại
+Từ chối và báo email đã được sử dụng.
+KT02
+Đăng ký mật khẩu thiếu chữ hoặc số
+Biểu mẫu báo lỗi, không tạo tài khoản.
+KT03
+Customer truy cập /Admin
+Bị yêu cầu đúng quyền hoặc chuyển trang từ chối truy cập.
+KT04
+Thêm giỏ size không hợp lệ hoặc vượt tồn
+Không thêm, hiển thị thông báo lỗi.
+KT05
+Đặt đơn hợp lệ
+Tạo đơn Chờ xác nhận, trừ đúng tồn và xóa giỏ.
+KT06
+Tiền hàng 699.000 và 700.000 đồng
+Phí giao lần lượt 30.000 đồng và 0 đồng.
+KT07
+Xem đơn thuộc khách khác
+Không trả dữ liệu đơn; kết quả không tìm thấy.
+KT08
+Khách hủy đơn Chờ xác nhận
+Đơn Đã hủy, tồn được cộng lại; hủy lần hai không cộng thêm.
+KT09
+Admin chuyển Chờ xác nhận sang Đã giao
+Từ chối chuyển trạng thái không hợp lệ.
+KT10
+Xóa danh mục có sản phẩm
+Báo lỗi và giữ danh mục.
+KT11
+Báo cáo có đơn Đã giao và Đã hủy
+Doanh thu chỉ cộng tiền hàng của đơn Đã giao.
+KT12
+Tạo khuyến mãi rồi đặt đơn
+Tổng tiền chưa bị giảm bởi mã; phù hợp phạm vi demo.
+Bảng 9: Các kịch bản kiểm thử đề xuất
+TÀI LIỆU THAM KHẢO
+[1] Mã nguồn Project_QLThoiTrang, Project_QLThoiTrang.csproj và Program.cs. Căn cứ xác định nền tảng .NET 8, MVC và cấu hình xác thực, session.
+[2] Controllers/AccountController.cs, ShopController.cs, AdminController.cs, HomeController.cs. Căn cứ mô tả các luồng tài khoản, mua hàng và quản trị.
+[3] Models/Product.cs, Models/StoreModels.cs. Căn cứ xác định thực thể, thuộc tính, ràng buộc và quy tắc tính tiền.
+[4] Services/StoreService.cs, Services/SessionStore.cs và App_Data/store.json. Căn cứ mô tả lưu trữ, dữ liệu phiên và xác thực mật khẩu.
+[5] Views/Home, Views/Shop, Views/Account, Views/Admin và wwwroot/css. Căn cứ mô tả giao diện, báo cáo và các thao tác người dùng.
+[6] Tài liệu Intro_Template (2).docx. Cấu trúc báo cáo, thông tin nhóm, kế hoạch phân công và hình ảnh minh họa.

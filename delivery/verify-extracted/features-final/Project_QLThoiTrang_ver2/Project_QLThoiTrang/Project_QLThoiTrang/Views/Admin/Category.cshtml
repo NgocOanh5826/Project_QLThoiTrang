@@ -1,0 +1,3 @@
+@model string
+@{ViewData["Title"]="Thêm danh mục sản phẩm";}
+<div class="admin-form-page"><form asp-action="Category" method="post" class="panel form-stack"><div asp-validation-summary="All" class="validation"></div><label>Tên danh mục<input name="name" value="@Model" minlength="2" maxlength="50" required autofocus/></label><div class="actions"><button class="btn-black">Lưu danh mục</button><a href="/Admin/Categories" class="button-secondary">Hủy / quay lại</a></div></form></div>

@@ -167,8 +167,65 @@ document.querySelectorAll('[data-catalog-filter]').forEach((form) => {
     });
     query.addEventListener('compositionend', () => schedule(350));
 });
+// Filter the rendered administration list without changing its edit forms.
+document.querySelectorAll('[data-admin-list-filter]').forEach((toolbar) => {
+    const table = toolbar.closest('main')?.querySelector('.data-table');
+    if (!table?.tBodies.length) return;
+    const rows = Array.from(table.tBodies[0].rows);
+    const query = toolbar.querySelector('[data-admin-list-search]');
+    const selectors = Array.from(toolbar.querySelectorAll('[data-admin-row-filter]'));
+    const rowValue = (row, key) => row.getAttribute('data-filter-' + key) ?? (key === 'state' ? row.dataset.state : '') ?? '';
+    selectors.forEach((select) => {
+        if (select.dataset.adminFilterAuto !== 'true') return;
+        const key = select.dataset.adminRowFilter;
+        const choices = new Map();
+        rows.forEach((row) => {
+            const value = rowValue(row, key);
+            if (value) choices.set(value, row.getAttribute('data-filter-' + key + '-label') || value);
+        });
+        Array.from(choices).sort((a, b) => a[1].localeCompare(b[1], 'vi', { numeric: true })).forEach(([value, label]) => select.append(new Option(label, value)));
+    });
+    const count = toolbar.querySelector('[data-admin-list-count]');
+    const normalize = (text) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLocaleLowerCase('vi');
+    const empty = table.tBodies[0].insertRow();
+    empty.className = 'admin-list-empty';
+    const cell = empty.insertCell();
+    cell.colSpan = table.tHead?.rows[0]?.cells.length || 1;
+    cell.textContent = 'Không có dữ liệu phù hợp.';
+    function filter() {
+        const term = normalize(query.value.trim());
+        let visible = 0;
+        rows.forEach((row) => {
+            const matches = normalize(row.textContent).includes(term) && selectors.every((select) => !select.value || rowValue(row, select.dataset.adminRowFilter) === select.value);
+            row.hidden = !matches;
+            if (matches) visible++;
+        });
+        empty.hidden = visible > 0;
+        count.textContent = visible + ' / ' + rows.length + ' bản ghi';
+    }
+    query.addEventListener('input', filter);
+    selectors.forEach((select) => select.addEventListener('change', filter));
+    toolbar.querySelector('[data-admin-list-reset]').addEventListener('click', () => {
+        query.value = '';
+        selectors.forEach((select) => { select.value = ''; select.dispatchEvent(new Event('change', { bubbles: true })); });
+        filter();
+        query.focus();
+    });
+    filter();
+});
+document.querySelectorAll('[data-admin-server-filter]').forEach((form) => {
+    form.querySelectorAll('select').forEach((select) => select.addEventListener('change', () => form.requestSubmit()));
+});
+document.querySelectorAll('[data-admin-date-filter]').forEach((form) => {
+    const period = form.querySelector('[name="period"]');
+    period.addEventListener('change', (event) => { if (!event.detail?.dateChanged) form.requestSubmit(); });
+    form.querySelectorAll('input[type="date"]').forEach((input) => input.addEventListener('change', () => {
+        period.value = '';
+        period.dispatchEvent(new CustomEvent('change', { bubbles: true, detail: { dateChanged: true } }));
+    }));
+});
 // Shared select-only comboboxes, including dependent address fields.
-document.querySelectorAll('select:not([multiple])').forEach((select, selectIndex) => {
+document.querySelectorAll('select:not([multiple]):not([data-native-select])').forEach((select, selectIndex) => {
     if (select.size > 1) return;
     const baseId = 'styled-select-' + selectIndex;
     const nativeLabel = select.closest('label');

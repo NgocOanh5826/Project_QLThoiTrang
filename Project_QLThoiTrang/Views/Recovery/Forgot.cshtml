@@ -1,0 +1,3 @@
+@model ForgotInput
+@{ViewData["Title"]="Quên mật khẩu";}
+<section class="page-section narrow"><h1>Quên mật khẩu</h1><form method="post" class="panel form-stack"><div asp-validation-summary="All" class="validation"></div><p>Nhập email tài khoản khách hàng để nhận mã OTP có hiệu lực 10 phút.</p>@if(ViewBag.Ready!=true){<p class="notice">Chức năng gửi email chưa được cửa hàng cấu hình. Vui lòng liên hệ hỗ trợ.</p>}<label>Email<input asp-for="Email" type="email" autocomplete="email" required/></label><button class="btn-black" disabled="@(ViewBag.Ready!=true)">Gửi mã OTP</button><a href="/Recovery/Reset">Tôi đã có mã OTP</a><a href="/Account/Login">Quay lại đăng nhập</a></form></section>

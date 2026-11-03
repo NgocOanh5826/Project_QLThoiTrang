@@ -1,3 +1,11 @@
 @model Order
 @{ViewData["Title"]="Đơn hàng "+Model.Id;}
 <section class="page-section"><div class="page-heading"><div><p class="eyebrow">ĐƠN HÀNG CỦA BẠN</p><h1>@Model.Id</h1><p class="muted">@Model.Created.ToString("dd/MM/yyyy HH:mm") · <span class="status">@Model.Status</span></p></div><a href="/Account/Orders" class="button-secondary">Tất cả đơn hàng</a></div><div class="checkout-grid"><div class="panel"><h2>Sản phẩm trong đơn</h2><partial name="_OrderLines" model="Model"/></div><aside class="panel form-stack"><h2>Giao đến</h2><p>@Model.Name<br/>@Model.Phone<br/>@Model.Address</p><p>@Model.Note</p><p class="muted">@Model.Payment</p>@if(Model.Status=="Chờ xác nhận"){<form asp-action="Cancel" method="post" data-confirm="Hủy đơn hàng này?"><input type="hidden" name="id" value="@Model.Id"/><button class="button-danger">Hủy đơn hàng</button></form>}<a href="/Home/Info/contact" class="text-link">Liên hệ hỗ trợ</a></aside></div></section>
+
+<partial name="_PaymentStatus" model="Model"/><partial name="_ReturnRequest" model="Model"/>
+
+<partial name="_OrderHistory" model="Model"/>
+
+<div class="actions toolbar-actions"><a href="/Documents/Order/@Model.Id" class="button-secondary">Tải PDF đơn hàng</a></div>
+
+<partial name="_ShipmentStatus" model="Model"/>

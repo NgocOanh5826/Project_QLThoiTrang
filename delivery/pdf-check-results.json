@@ -1,0 +1,26 @@
+[
+  {
+    "file": "multipage.pdf",
+    "pages": 3,
+    "textExtracted": true,
+    "replacementGlyph": false
+  },
+  {
+    "file": "order.pdf",
+    "pages": 1,
+    "textExtracted": true,
+    "replacementGlyph": false
+  },
+  {
+    "file": "receipt.pdf",
+    "pages": 1,
+    "textExtracted": true,
+    "replacementGlyph": false
+  },
+  {
+    "file": "return.pdf",
+    "pages": 1,
+    "textExtracted": true,
+    "replacementGlyph": false
+  }
+]

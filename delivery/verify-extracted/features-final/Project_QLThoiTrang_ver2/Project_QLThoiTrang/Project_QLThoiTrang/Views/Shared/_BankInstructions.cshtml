@@ -1,0 +1,4 @@
+@model Order
+@if(Model.Payment=="Chuyển khoản"&&Model.PaidAmount<Model.Total&&Model.Status!="Đã hủy"&&!string.IsNullOrWhiteSpace(Model.BankQrImage)){
+ <div class="bank-instructions"><h3>Quét QR để chuyển khoản</h3><img class="bank-qr" src="@Model.BankQrImage" alt="Mã QR nhận chuyển khoản của cửa hàng" width="256" height="256"/><p>Số tiền còn phải chuyển: <strong>@((Model.Total-Model.PaidAmount).ToString("N0")) đ</strong></p><p>Nội dung chuyển khoản: <strong class="transfer-reference">@Model.TransferReference</strong></p><p class="notice">QR tĩnh không điền sẵn số tiền và nội dung. Nhập đúng hai thông tin trên trong ứng dụng ngân hàng; kiểm tra người nhận trước khi chuyển. Cửa hàng xác nhận sau khi đối soát tiền nhận được.</p></div>
+}

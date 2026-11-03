@@ -1,0 +1,4 @@
+@model List<Project_QLThoiTrang.Data.Native.LichSuDangNhapRow>
+@{ViewData["Title"]="Lịch sử đăng nhập";}
+@{ViewData["TableFilters"]=new[]{AdminListFilter.Choice("actor","Loại tài khoản",("customer","Khách hàng"),("staff","Nhân viên")),new AdminListFilter("result","Kết quả"),new AdminListFilter("month","Tháng đăng nhập")};}
+<partial name="_AdminListToolbar"/><div class="panel table-scroll"><table class="data-table"><thead><tr><th>Khách / nhân viên</th><th>Đăng nhập</th><th>Đăng xuất</th><th>IP / thiết bị</th><th>Kết quả</th></tr></thead><tbody>@foreach(var r in Model){<tr data-filter-actor="@(r.MaNV.HasValue?"staff":"customer")" data-filter-result="@r.TrangThai" data-filter-month="@r.ThoiGianDangNhap.ToString("yyyy-MM")"><td>@r.MaKH / @r.MaNV</td><td>@r.ThoiGianDangNhap</td><td>@r.ThoiGianDangXuat</td><td>@r.DiaChiIP<br/>@r.ThietBi</td><td>@r.TrangThai</td></tr>}</tbody></table></div>

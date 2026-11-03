@@ -1,0 +1,11 @@
+{
+  "executedUtc": "2026-11-03T09:21:06.679146+00:00",
+  "status": "PASS",
+  "checks": [
+    "Admin: five groups; only current inventory group open",
+    "Supplier page does not show product-category tabs",
+    "Overview: groups collapsed",
+    "kho@shop.com: only authorized group visible",
+    "sanpham@shop.com: only authorized group visible"
+  ]
+}

@@ -1,0 +1,4 @@
+@model List<(int Id,string Name,DateTime Updated,int Unread)>
+@{Layout="_AdminLayout";ViewData["Title"]="Tin nhắn khách hàng";}
+<partial name="_AdminListToolbar"/>
+<div class="panel table-scroll"><table class="data-table"><thead><tr><th>Khách hàng</th><th>Tin mới</th><th>Cập nhật</th><th></th></tr></thead><tbody>@foreach(var t in Model){<tr><td>@t.Name</td><td>@t.Unread</td><td>@t.Updated.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td><td><a href="/Chat?customerId=@t.Id" class="button-secondary">Trả lời</a></td></tr>}</tbody></table></div>

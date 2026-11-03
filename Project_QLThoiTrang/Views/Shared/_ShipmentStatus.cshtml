@@ -1,0 +1,4 @@
+@model Order
+@inject Project_QLThoiTrang.Services.StoreService Store
+@{var s=Store.NativeRead(db=>db.Shipments.SingleOrDefault(s=>s.OrderId==Model.DatabaseId));}
+@if(s!=null){<section class="panel"><h2>Vận chuyển GHN</h2><p>Mã vận đơn: @(s.TrackingCode??"Đang đối soát")</p><p>Trạng thái: @s.Status</p><p class="muted small">Cập nhật @s.UpdatedUtc.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</p></section>}

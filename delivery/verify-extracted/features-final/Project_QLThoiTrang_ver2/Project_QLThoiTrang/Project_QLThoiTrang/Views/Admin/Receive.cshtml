@@ -1,0 +1,20 @@
+@model ReceiveInput
+@{ViewData["Title"]="Nhập kho";var variants=(List<Variant>)ViewBag.Variants;var products=(List<Product>)ViewBag.Products;var warehouses=(List<Warehouse>)ViewBag.Warehouses;var suppliers=(List<Supplier>)ViewBag.Suppliers;var tab=ViewBag.ReceiveTab as string??"single";}
+<nav class="admin-tabs" aria-label="Loại phiếu nhập kho">
+ <a href="/Admin/Receive?tab=single" class="button-secondary @(tab=="single"?"is-active":"")" aria-current="@(tab=="single"?"page":null)">Phiếu 1 dòng</a>
+ <a href="/Admin/Receive?tab=many" class="button-secondary @(tab=="many"?"is-active":"")" aria-current="@(tab=="many"?"page":null)">Phiếu nhiều dòng</a>
+</nav>
+@if(tab=="single"){
+<form method="post" class="panel form-stack"><h2>Phiếu một dòng</h2><div asp-validation-summary="All" class="validation"></div>
+<label>Biến thể<select asp-for="VariantId">@foreach(var v in variants){<option value="@v.Id">@products.Single(p=>p.Id==v.ProductId).Name · @v.Size / @v.Color · @v.Sku</option>}</select></label>
+<label>Kho nhận<select asp-for="WarehouseId">@foreach(var w in warehouses){<option value="@w.Id">@w.Name</option>}</select></label>
+<label>Nhà cung cấp<select asp-for="SupplierId">@foreach(var s in suppliers){<option value="@s.Id">@s.Name</option>}</select></label>
+<label>Số lượng<input asp-for="Quantity" type="number" min="1" max="100000" required/></label><label>Đơn giá nhập<input asp-for="UnitCost" type="number" min="0.01" max="100000000" step="0.01" required/></label><label>Mã phiếu duy nhất<input asp-for="Reference" maxlength="60" required/></label><button class="btn-black">Xác nhận đã nhận hàng và nhập kho</button></form>
+}else{
+<form asp-action="ReceiveMany" method="post" class="panel form-stack" id="receipt-many"><h2>Phiếu nhiều dòng</h2>
+<label>Mã phiếu<input name="reference" maxlength="60" required/></label><label>Kho<select name="warehouseId">@foreach(var w in warehouses){<option value="@w.Id">@w.Name</option>}</select></label><label>Nhà cung cấp<select name="supplierId">@foreach(var s in suppliers){<option value="@s.Id">@s.Name</option>}</select></label>
+<div id="receipt-lines"><div class="form-grid receipt-line"><label>Biến thể<select name="lines[0].VariantId" data-native-select>@foreach(var v in variants){<option value="@v.Id">@products.Single(p=>p.Id==v.ProductId).Name · @v.Sku · @v.Size / @v.Color</option>}</select></label><label>Số lượng<input name="lines[0].Quantity" type="number" min="1" max="100000" required/></label><label>Giá nhập<input name="lines[0].UnitCost" type="number" min="0.01" max="100000000" step="0.01" required/></label></div></div>
+<div class="actions"><button type="button" class="button-secondary" id="add-receipt-line">Thêm dòng</button><button type="button" class="button-secondary" id="remove-receipt-line">Bỏ dòng cuối</button></div><button class="btn-black">Xác nhận nhận toàn bộ phiếu</button><p class="notice">Mọi dòng cùng phiếu được ghi trong một transaction. Chỉ xác nhận khi thực nhận hàng.</p></form>
+<script>document.getElementById('add-receipt-line').addEventListener('click',()=>{const list=document.getElementById('receipt-lines');if(list.children.length>=100)return;const row=list.firstElementChild.cloneNode(true);row.querySelectorAll('[name]').forEach(x=>{x.name=x.name.replace(/\[\d+\]/g,'['+list.children.length+']');if(x.tagName==='INPUT')x.value='';});list.appendChild(row);});document.getElementById('remove-receipt-line').addEventListener('click',()=>{const list=document.getElementById('receipt-lines');if(list.children.length>1)list.lastElementChild.remove();});</script>
+}
+<a class="button-secondary" href="/Admin/Receipts">Xem phiếu đã nhập</a>

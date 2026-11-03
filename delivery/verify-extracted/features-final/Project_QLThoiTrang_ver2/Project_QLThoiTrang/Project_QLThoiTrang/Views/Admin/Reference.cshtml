@@ -1,0 +1,12 @@
+@model ReferenceInput
+@{var titles=new Dictionary<string,string>{{"brands","thương hiệu"},{"sizes","kích thước"},{"colors","màu sắc"},{"warehouses","kho"},{"suppliers","nhà cung cấp"}};ViewData["Title"]=(Model.Id==0?"Thêm ":"Chỉnh sửa ")+titles[Model.Kind];ViewData["ReferenceKind"]=Model.Kind;}
+<div class="admin-form-page"><form asp-action="Reference" method="post" class="panel form-stack">
+<div asp-validation-summary="All" class="validation"></div><input asp-for="Id" type="hidden"/><input asp-for="Kind" type="hidden"/>
+<label>Tên<input asp-for="Name" required maxlength="@(Model.Kind=="sizes"?30:Model.Kind=="colors"?50:100)" autofocus/></label>
+@if(Model.Kind=="brands"){<label>Mô tả<textarea asp-for="Description" maxlength="500"></textarea></label>}
+@if(Model.Kind=="colors"){<label>Mã màu<input asp-for="Description" maxlength="20" placeholder="#26372e"/></label>}
+@if(Model.Kind is "warehouses" or "suppliers"){<label>Địa chỉ<input asp-for="Address" maxlength="255"/></label>}
+@if(Model.Kind=="suppliers"){<label>Điện thoại<input asp-for="Phone" maxlength="15"/></label><label>Email<input asp-for="Email" type="email" maxlength="150"/></label>}
+@if(Model.Kind is not ("sizes" or "colors")){<label class="checkbox"><input asp-for="Active"/>Đang hoạt động</label>}
+<div class="actions"><button class="btn-black">Lưu</button><a href="/Admin/References?kind=@Model.Kind" class="button-secondary">Hủy / quay lại</a></div>
+</form></div>

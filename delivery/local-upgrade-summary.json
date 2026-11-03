@@ -1,0 +1,8 @@
+{
+  "instance": ".\\MSSQLSERVER01",
+  "database": "QL_CuaHangThoiTrang",
+  "backup": "C:\\Program Files\\Microsoft SQL Server\\MSSQL16.MSSQLSERVER01\\MSSQL\\Backup\\QL_CuaHangThoiTrang_before_features_20261103_410DD628FE3F418BA42CCC032D90F4B7.bak",
+  "originalTableCount": 30,
+  "upgradedTableCount": 37,
+  "originalRowCountsUnchanged": true
+}

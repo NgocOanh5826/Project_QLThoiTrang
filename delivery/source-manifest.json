@@ -1,0 +1,1527 @@
+[
+  {
+    "path": ".gitattributes",
+    "bytes": 2581,
+    "sha256": "462475ee5301e77d2a54a64757d95c3f21fc3a79e92e6ec94bdfcc8b36e48964"
+  },
+  {
+    "path": ".gitignore",
+    "bytes": 6639,
+    "sha256": "99886ae467dbf1ad9127215ee513d709b5962bf6c67fef6c4d1f618dd336d9f0"
+  },
+  {
+    "path": "delivery/00-database.sql",
+    "bytes": 182,
+    "sha256": "5890e9f8693c28786efebb4e4eda738d85ddbd988dcad26526a1da526ddb0bf3"
+  },
+  {
+    "path": "delivery/01-schema.sql",
+    "bytes": 20384,
+    "sha256": "533fbb4629cee91e4dc35dfa18332e71b369e7c4fd21ff0442e49abd64ef5562"
+  },
+  {
+    "path": "delivery/02-sample-data.sql",
+    "bytes": 17394,
+    "sha256": "a4889a1f62fcd097cbd7b1a3230a8d45df25d4cbcb96c608101c02ff9cba7d91"
+  },
+  {
+    "path": "delivery/03-Insert_QLThoiTrang.sql",
+    "bytes": 9373,
+    "sha256": "72ebc371cbb3b58d2ace8c2f8532c9335f43e5103e6d1edae6bc07c05ca3a296"
+  },
+  {
+    "path": "delivery/04-qoanh-extensions.sql",
+    "bytes": 5884,
+    "sha256": "1f0a6fe4e7154f08a911f21abd87fbb262f7b3bf6e09c4258b298133027e25bc"
+  },
+  {
+    "path": "delivery/05-views-procedures.sql",
+    "bytes": 6225,
+    "sha256": "85a999e23e4b75a4cc94ad0ecac07cb5c8c9dac7c3b959923e64e02ab929bb81"
+  },
+  {
+    "path": "delivery/07-customer-finance-features.sql",
+    "bytes": 4448,
+    "sha256": "c94a441aaace7b120daf12a8fcec85493464e65d5eaf3f53e26f1f382a2cf1b3"
+  },
+  {
+    "path": "delivery/admin-filter-checks.log",
+    "bytes": 156,
+    "sha256": "ad38f1e5c3f85bb43d7c12137e565607b296c62de0551a099553baf8c6fc1355"
+  },
+  {
+    "path": "delivery/admin-layout-build.log",
+    "bytes": 468,
+    "sha256": "05fb7f1f0a78e3366f7592cd3c9b7daa2431be61d4e294e5bbcee3b9c886e555"
+  },
+  {
+    "path": "delivery/admin-layout-checks.log",
+    "bytes": 2130,
+    "sha256": "3efbbf6f8bc047b5e3ee9b9c1bc75862e24af2eed83672adfc1a080041194a3a"
+  },
+  {
+    "path": "delivery/admin-layout-http.log",
+    "bytes": 4012,
+    "sha256": "581bb5e40817a91ce6130c833a5c416de3a5b61d0c9b71a177c4a0215d252244"
+  },
+  {
+    "path": "delivery/admin-layout-results.json",
+    "bytes": 3851,
+    "sha256": "34163b2f3937c4720d80675771481f346caf962d756783eef50756f81414a0be"
+  },
+  {
+    "path": "delivery/admin-layout-server.log",
+    "bytes": 800,
+    "sha256": "bd5bacfc2ef76b88c448dd2024c0ed6ebde4453673bcab09c8daa63a1195ebc4"
+  },
+  {
+    "path": "delivery/admin-menu-build.log",
+    "bytes": 468,
+    "sha256": "e490a1888ef57cee84340b9106bfa99d2e2a73ee2209a7b7b557fef631aa73ef"
+  },
+  {
+    "path": "delivery/admin-menu-check.json",
+    "bytes": 361,
+    "sha256": "86e053dda4b558048856a4ceb9fc2855079a5a9ac877328062179b36d75aaac7"
+  },
+  {
+    "path": "delivery/admin-menu-regression.log",
+    "bytes": 2130,
+    "sha256": "3efbbf6f8bc047b5e3ee9b9c1bc75862e24af2eed83672adfc1a080041194a3a"
+  },
+  {
+    "path": "delivery/admin-menu-server.log",
+    "bytes": 800,
+    "sha256": "bd5bacfc2ef76b88c448dd2024c0ed6ebde4453673bcab09c8daa63a1195ebc4"
+  },
+  {
+    "path": "delivery/admin-purchase-results.json",
+    "bytes": 1001,
+    "sha256": "104061fd77bd0b382f13cfaf1d7a359569c876869ec6487523aab84690a7f6be"
+  },
+  {
+    "path": "delivery/admin-purchase-server.log",
+    "bytes": 800,
+    "sha256": "bd5bacfc2ef76b88c448dd2024c0ed6ebde4453673bcab09c8daa63a1195ebc4"
+  },
+  {
+    "path": "delivery/ADMIN_UI.md",
+    "bytes": 3576,
+    "sha256": "5e145b1d3b75c3177f1052965ca1e593338388c98ddf80d4bf84366ae8539b97"
+  },
+  {
+    "path": "delivery/archive-build.log",
+    "bytes": 640,
+    "sha256": "06aa2d68cce5e055526e94d823b9b581109c2fb4bcda447cbe879dc78fb86032"
+  },
+  {
+    "path": "delivery/archive-restore.log",
+    "bytes": 522,
+    "sha256": "93c98d9c8ac43dbc0838f40b651d7ac449434e243ceb63871dd3f93b0d146ff7"
+  },
+  {
+    "path": "delivery/BAO_CAO.md",
+    "bytes": 11690,
+    "sha256": "e3f37f86df814365b50e13c1de47fa0fb345f348de4b465a21d4cf884448f1e0"
+  },
+  {
+    "path": "delivery/build-release.log",
+    "bytes": 468,
+    "sha256": "2e2442f987f2eb3b31063ce75368a3aafe8f2e2a429b79f387a67e508a0bccb8"
+  },
+  {
+    "path": "delivery/business-check-results.json",
+    "bytes": 14598,
+    "sha256": "b902063575359fb3dbff83a7072df323424b95a97d55ffa1e35cc0704643669b"
+  },
+  {
+    "path": "delivery/current-business-check.log",
+    "bytes": 1914,
+    "sha256": "c6fc6944f1156adedfb4f9452b2d973c7f248993b3c93e6ca932c469de1347ae"
+  },
+  {
+    "path": "delivery/current-extension-repeat.log",
+    "bytes": 87,
+    "sha256": "d53d0440d40ae37841665b767569674ec156c7ce3b210e73a328acbeea9169e0"
+  },
+  {
+    "path": "delivery/current-http-check.log",
+    "bytes": 7340,
+    "sha256": "0e0c1d39783f55b48c0c8a87f394c1710278a0c9427f15e8155dda74e48f3011"
+  },
+  {
+    "path": "delivery/current-sql-deploy.log",
+    "bytes": 1673,
+    "sha256": "e2c2c125e2dd49fd86d37d6b3902c89475ae7d513b58742800d1d94cca165159"
+  },
+  {
+    "path": "delivery/current-web-server.log",
+    "bytes": 800,
+    "sha256": "bd5bacfc2ef76b88c448dd2024c0ed6ebde4453673bcab09c8daa63a1195ebc4"
+  },
+  {
+    "path": "delivery/Deploy.sql",
+    "bytes": 364,
+    "sha256": "01bcef7d700782ec5309ab24ab539d9f0ad831cfed6691261701a28ef39a262f"
+  },
+  {
+    "path": "delivery/DOI_CHIEU_YEU_CAU.md",
+    "bytes": 4644,
+    "sha256": "30f2ff00a6119c105b7de1102d3fa2635ed4c616034493d01a500c558e6eb627"
+  },
+  {
+    "path": "delivery/features-build.log",
+    "bytes": 468,
+    "sha256": "4f888bb12395c93ff5eb063e3ab16f4471460d697c13d65f5b6f09146e3f43f1"
+  },
+  {
+    "path": "delivery/features-business-regression.log",
+    "bytes": 1924,
+    "sha256": "d3c509bcdf806d1e17bfc202f5762b49d4e86bfcc7b1e93aca9a4577856e6694"
+  },
+  {
+    "path": "delivery/features-check-results.json",
+    "bytes": 3440,
+    "sha256": "5f4afc612bc23ff5fbacfabc3ca4e23894bf2dbfd120907ce9dd900218748bcc"
+  },
+  {
+    "path": "delivery/features-check.log",
+    "bytes": 2420,
+    "sha256": "aa0873cb54319185bc0960f6ea8d479743b12553b9ad6d25df855faabf8ffb34"
+  },
+  {
+    "path": "delivery/features-deploy.log",
+    "bytes": 1769,
+    "sha256": "e1bb0f2e48402c4f5f356c890443a71a2f7e0bd263715212dfa0936e35661d19"
+  },
+  {
+    "path": "delivery/features-http-regression.log",
+    "bytes": 4012,
+    "sha256": "581bb5e40817a91ce6130c833a5c416de3a5b61d0c9b71a177c4a0215d252244"
+  },
+  {
+    "path": "delivery/features-http-results.json",
+    "bytes": 2418,
+    "sha256": "abf7b952882855ef95787015743d5110c11381a613f89a1cfdd50b931cb7f891"
+  },
+  {
+    "path": "delivery/features-http.log",
+    "bytes": 1472,
+    "sha256": "bc6eee3603d49beba5466b179c3cc42eeee85a92f10bd27d157f4d76aef1c2d0"
+  },
+  {
+    "path": "delivery/features-publish.log",
+    "bytes": 528,
+    "sha256": "06e83f45bda97d8eda13b39a363a93bd1eaa77227d2fa023ff8feafa2f53a47f"
+  },
+  {
+    "path": "delivery/features-upgrade-repeat.log",
+    "bytes": 71,
+    "sha256": "73bd39a34f2a7308b74e60bad3fd5258104413570adf7842eefb521d905bad15"
+  },
+  {
+    "path": "delivery/features-web.log",
+    "bytes": 800,
+    "sha256": "bd5bacfc2ef76b88c448dd2024c0ed6ebde4453673bcab09c8daa63a1195ebc4"
+  },
+  {
+    "path": "delivery/FEATURES.md",
+    "bytes": 10619,
+    "sha256": "082f09650906a3f2a04b3ca18e8146564011c940b345962ade3edfac316d7426"
+  },
+  {
+    "path": "delivery/fix-local-database.sql",
+    "bytes": 2336,
+    "sha256": "719f2382ffb58c78ea417c017cecaa692d8dba3a9cd4afd24156c3e3c686bda1"
+  },
+  {
+    "path": "delivery/http-check-results.json",
+    "bytes": 6556,
+    "sha256": "61cc97ee6ba17fefd66ddf95c4e5506bf4c00e52aab21e0a4787d9cedc2bafb1"
+  },
+  {
+    "path": "delivery/input-inventory.json",
+    "bytes": 730,
+    "sha256": "59c97fd7999dd34e88a031a3895670460a0df2d5f2f8afdacd1359de60cfa2b1"
+  },
+  {
+    "path": "delivery/local-database-upgrade.log",
+    "bytes": 12505,
+    "sha256": "8067855986d5484de90c13e3bf784e916ecedb39c31e0695e1ea880ede60abe2"
+  },
+  {
+    "path": "delivery/local-debug-build.log",
+    "bytes": 464,
+    "sha256": "9ff28eee369cd16167478d041243fea41a67c87e89fc8a2eec5daaac3c9de346"
+  },
+  {
+    "path": "delivery/local-features-upgrade.log",
+    "bytes": 2669,
+    "sha256": "32f9e2fa050ec1d487fc4a5c7fb01f967f4fd591768a12ed5765ecb70157a852"
+  },
+  {
+    "path": "delivery/local-json-import.log",
+    "bytes": 64,
+    "sha256": "e6a40a7cd5db6dd1fa4c4482015ef5da6b777fc6f13617ed28280d5286147988"
+  },
+  {
+    "path": "delivery/local-password-migration.log",
+    "bytes": 142,
+    "sha256": "9effe828d3bcc9fa587dda2aef21bbe0b17f57ab39f87f475df68f401f6ed323"
+  },
+  {
+    "path": "delivery/local-schema-fix-results.json",
+    "bytes": 606,
+    "sha256": "8a5af788a3505976e38dca8ff048180c33a003cc3388c59139d30c6b55c41cd1"
+  },
+  {
+    "path": "delivery/local-upgrade-summary.json",
+    "bytes": 350,
+    "sha256": "064da3d9b00f203188ec525286dbdd16e5b6ccdf961d69fb6abcfd7ee96846d2"
+  },
+  {
+    "path": "delivery/local-upgrade-web.log",
+    "bytes": 800,
+    "sha256": "bd5bacfc2ef76b88c448dd2024c0ed6ebde4453673bcab09c8daa63a1195ebc4"
+  },
+  {
+    "path": "delivery/native-business-check.log",
+    "bytes": 1858,
+    "sha256": "27dc7497b3cf2d7742e4aca0b5fbf66e3645305e6445c35edbf2a2c902c42dd3"
+  },
+  {
+    "path": "delivery/native-http-check.log",
+    "bytes": 3812,
+    "sha256": "020e4f4e84a153b4040039de1af30d9ec0fa775537dac4a4c621a5720de818c9"
+  },
+  {
+    "path": "delivery/native-model.generated.sql",
+    "bytes": 22627,
+    "sha256": "7556005118bbc5d102e40abceb0146a118b43f97c3a656042b2f6445c9be56c9"
+  },
+  {
+    "path": "delivery/native-sql-deploy.log",
+    "bytes": 1698,
+    "sha256": "c39f4dca5af5f9501c265acd91bd8b2fb2b780e1053643f4d72a1b5dea9d2704"
+  },
+  {
+    "path": "delivery/native-upgrade-repeat.log",
+    "bytes": 92,
+    "sha256": "e8f83b37553e4d96099de18faeb318e5ef16be033afd7f9ab6d9143bd41345fe"
+  },
+  {
+    "path": "delivery/original-schema-map.json",
+    "bytes": 38333,
+    "sha256": "04e5869fe2d085c3e66a74eb05eaa31c0cc6ac823a76a02f004fb70e8c9a6652"
+  },
+  {
+    "path": "delivery/original-zip-comparison.json",
+    "bytes": 79,
+    "sha256": "6081a46c9a79f38c349670498faebedc237084b7eea18ccf50c29ad99566f599"
+  },
+  {
+    "path": "delivery/page-filter-results.json",
+    "bytes": 1656,
+    "sha256": "7eb3880f6d0ea760bdb8cfe9f9757e7a42cc70343f62ad455bd4625e8562e909"
+  },
+  {
+    "path": "delivery/page-filters-build.log",
+    "bytes": 468,
+    "sha256": "084bb38d877d18390cf68a49dae85fafa01ca503263c5e82eb138d4084d44020"
+  },
+  {
+    "path": "delivery/page-filters-layout-check.log",
+    "bytes": 2130,
+    "sha256": "3efbbf6f8bc047b5e3ee9b9c1bc75862e24af2eed83672adfc1a080041194a3a"
+  },
+  {
+    "path": "delivery/page-filters-web.log",
+    "bytes": 800,
+    "sha256": "bd5bacfc2ef76b88c448dd2024c0ed6ebde4453673bcab09c8daa63a1195ebc4"
+  },
+  {
+    "path": "delivery/PAGE_FILTERS.md",
+    "bytes": 3678,
+    "sha256": "3b96076fe53a2f9b5865bb71f7dcdc114971c2125da098ef43c9472de5df2648"
+  },
+  {
+    "path": "delivery/pdf-check-results.json",
+    "bytes": 462,
+    "sha256": "782878d95fe171528aed34b2c1e6ed1911a39b31045864c30073bb618f84c073"
+  },
+  {
+    "path": "delivery/preservation-check.json",
+    "bytes": 21711,
+    "sha256": "d2f55e0833eed27bf59dee140156717dcbeb1fc81c64d5717357a481677bbf4d"
+  },
+  {
+    "path": "delivery/product-id-check.json",
+    "bytes": 350,
+    "sha256": "379ada099238becb5dcacde6f0b3be291fdf263e275c37eca7d65fed471b9d49"
+  },
+  {
+    "path": "delivery/product-id-server.log",
+    "bytes": 800,
+    "sha256": "bd5bacfc2ef76b88c448dd2024c0ed6ebde4453673bcab09c8daa63a1195ebc4"
+  },
+  {
+    "path": "delivery/publish-release.log",
+    "bytes": 528,
+    "sha256": "06e83f45bda97d8eda13b39a363a93bd1eaa77227d2fa023ff8feafa2f53a47f"
+  },
+  {
+    "path": "delivery/receive-tabs-check.json",
+    "bytes": 318,
+    "sha256": "4a2421526f505120d2bee3a38ad114df6708bd3094d563745c35bcddb83e77b5"
+  },
+  {
+    "path": "delivery/receive-tabs-server.log",
+    "bytes": 800,
+    "sha256": "bd5bacfc2ef76b88c448dd2024c0ed6ebde4453673bcab09c8daa63a1195ebc4"
+  },
+  {
+    "path": "delivery/review-build.log",
+    "bytes": 468,
+    "sha256": "51e914a4e9e3ebee34d2db7b5845b4645caba11b5d89d20825db38efba765609"
+  },
+  {
+    "path": "delivery/review-business-check.log",
+    "bytes": 1920,
+    "sha256": "832626a2fed4c0e1c5054711b508f689c9a3a7df6d57f1bcdaae14941b343b00"
+  },
+  {
+    "path": "delivery/review-extension-repeat.log",
+    "bytes": 90,
+    "sha256": "1f71010f903c07046fe21e7f3d33f7b97c6327e4c51f0f91d1bc7a484f252354"
+  },
+  {
+    "path": "delivery/review-http-check.log",
+    "bytes": 4012,
+    "sha256": "581bb5e40817a91ce6130c833a5c416de3a5b61d0c9b71a177c4a0215d252244"
+  },
+  {
+    "path": "delivery/review-input-inventory.json",
+    "bytes": 729,
+    "sha256": "cda4d7c48dc5abd5073ea71b9ff3a53ed237fb92d81a07f5f5447f32e1447ad5"
+  },
+  {
+    "path": "delivery/review-preservation.json",
+    "bytes": 14876,
+    "sha256": "d3280409b3a7ce2404b355cd3aeb71d4f3b26110981bebd80277af045d6665e4"
+  },
+  {
+    "path": "delivery/review-publish.log",
+    "bytes": 528,
+    "sha256": "06e83f45bda97d8eda13b39a363a93bd1eaa77227d2fa023ff8feafa2f53a47f"
+  },
+  {
+    "path": "delivery/review-schema-guard-invalid.log",
+    "bytes": 5426,
+    "sha256": "8d2ea1e0190551c5644e86280a957d0e0fa284c62e06dda663ed384d82f8e1da"
+  },
+  {
+    "path": "delivery/review-schema-guard-valid.log",
+    "bytes": 64,
+    "sha256": "e6a40a7cd5db6dd1fa4c4482015ef5da6b777fc6f13617ed28280d5286147988"
+  },
+  {
+    "path": "delivery/review-sql-deploy.log",
+    "bytes": 1688,
+    "sha256": "c9a897a645e1243f808487cc8ac344c68e325f8681b4195d73b050926c9a8e97"
+  },
+  {
+    "path": "delivery/review-web-server.log",
+    "bytes": 800,
+    "sha256": "bd5bacfc2ef76b88c448dd2024c0ed6ebde4453673bcab09c8daa63a1195ebc4"
+  },
+  {
+    "path": "delivery/schema-fix-build.log",
+    "bytes": 468,
+    "sha256": "388573b8ffc2180fd012b474f81c818940c77e5adfdc1a532f56364ccf2034d9"
+  },
+  {
+    "path": "delivery/schema-guard-web.log",
+    "bytes": 1220,
+    "sha256": "f0f81334969754ad3f427db60b2ef43ce5265d87617fd96d8312bdd11752c6d5"
+  },
+  {
+    "path": "delivery/sql-check-results.txt",
+    "bytes": 1469,
+    "sha256": "b3efb3744d43090bfb8002b0cc1e5319050f308bcce1d9845e5033ed4d45baed"
+  },
+  {
+    "path": "delivery/TESTCASES.md",
+    "bytes": 20913,
+    "sha256": "01bf81a07263a249fe2bf4ced40fc33b0c6425f596cbe748136a1610a8327894"
+  },
+  {
+    "path": "delivery/Upgrade-features.sql",
+    "bytes": 3203,
+    "sha256": "e0e4bdd0f2e8f00a39463a8a4d3f8bbcf76287c2d34e5bf245453a5d6163c6bb"
+  },
+  {
+    "path": "Project_QLThoiTrang/App_Data/store.json",
+    "bytes": 8023,
+    "sha256": "3898df4302a1bbab1649bba170c35757ab977ed5c7fc7b0c4f1f88e22596ae6b"
+  },
+  {
+    "path": "Project_QLThoiTrang/appsettings.Development.json",
+    "bytes": 309,
+    "sha256": "15e82075bcea27e0ad4ff121e8e5433dcaede43e540cf33d8c0012e8851ed57e"
+  },
+  {
+    "path": "Project_QLThoiTrang/appsettings.json",
+    "bytes": 826,
+    "sha256": "f2dc2f0446d814d6be95fc1eb008d618fe722d3d3bab0836ae15af2aceab7cc7"
+  },
+  {
+    "path": "Project_QLThoiTrang/Controllers/AccountController.cs",
+    "bytes": 5731,
+    "sha256": "68c85ca996615789e1016ee622a360a1ccf25e9dbdaaf5b899712f53be1bc6ee"
+  },
+  {
+    "path": "Project_QLThoiTrang/Controllers/AdminController.cs",
+    "bytes": 10290,
+    "sha256": "71ff3a975fcb2b853a8057bf670dd699761473bb72e8d4556d2da314c088cbf8"
+  },
+  {
+    "path": "Project_QLThoiTrang/Controllers/AdminExtensions.cs",
+    "bytes": 8526,
+    "sha256": "0d423d290da47f0ab13790e9d603b7ffdc171806b2168eba3f3b34a9193931ad"
+  },
+  {
+    "path": "Project_QLThoiTrang/Controllers/ChatController.cs",
+    "bytes": 1630,
+    "sha256": "8b77b8d8399f3da2ae3ca170df7e7dc75ca0c6cd23713b64e41c8a35dba36239"
+  },
+  {
+    "path": "Project_QLThoiTrang/Controllers/DocumentsController.cs",
+    "bytes": 3276,
+    "sha256": "955d801ec54aa85035ff0887b484f792c2b9acb904dfa6a9b28e1e562a11c53b"
+  },
+  {
+    "path": "Project_QLThoiTrang/Controllers/FinanceController.cs",
+    "bytes": 2684,
+    "sha256": "4844d0c3675a2448dd22907321945a5c841cacb51ff3b2e62c4f7cfc7e291044"
+  },
+  {
+    "path": "Project_QLThoiTrang/Controllers/HomeController.cs",
+    "bytes": 2424,
+    "sha256": "20a423b18e497aebbb91cb28eb0cfe947bc601f3cc5c756a59f180ca02023390"
+  },
+  {
+    "path": "Project_QLThoiTrang/Controllers/RecoveryController.cs",
+    "bytes": 1283,
+    "sha256": "aaf3aaa937d9a9cac0a41046aec2b359d7111e1fcef5f3ee2abc628e16800663"
+  },
+  {
+    "path": "Project_QLThoiTrang/Controllers/ShippingController.cs",
+    "bytes": 1814,
+    "sha256": "763945290f3cfd18f00f626903a7553cada5556fdc1d2b097911d2020c073584"
+  },
+  {
+    "path": "Project_QLThoiTrang/Controllers/ShopController.cs",
+    "bytes": 6094,
+    "sha256": "cc53f447734d3cb3c21c8cb4a3369e2b185e9205706d0ff543077b3dff54ac83"
+  },
+  {
+    "path": "Project_QLThoiTrang/Controllers/ShoppingSession.cs",
+    "bytes": 1096,
+    "sha256": "f88e6478952f0ed5222bace93ed84e33d473b4905de415692d30c8559b1660d7"
+  },
+  {
+    "path": "Project_QLThoiTrang/Controllers/ValuationController.cs",
+    "bytes": 1112,
+    "sha256": "2d945c0db654e461a449da6ba5d78db44671095589a20a8dec879a607aaaa330"
+  },
+  {
+    "path": "Project_QLThoiTrang/Data/FeatureMapping.cs",
+    "bytes": 3732,
+    "sha256": "ad5b9182a158380afaef420c36b343ca22a1896e2973dac307c614bbe76d1871"
+  },
+  {
+    "path": "Project_QLThoiTrang/Data/Native/Entities.cs",
+    "bytes": 8196,
+    "sha256": "66aef1a5d189942df451d7df4e4165ccf6eba2b76250b6ceda912f973a8a6dbe"
+  },
+  {
+    "path": "Project_QLThoiTrang/Data/Native/Mapping.cs",
+    "bytes": 28911,
+    "sha256": "b2f39fce59f41f04c2cd18b396088e82492adee298b592f2c2a17adb2f3e4fc4"
+  },
+  {
+    "path": "Project_QLThoiTrang/Data/StoreDbContext.cs",
+    "bytes": 2200,
+    "sha256": "7ff2b9cd4c5e86fc57e51288f880e33ff7d246eeea9bbcdee0998f31e93a480b"
+  },
+  {
+    "path": "Project_QLThoiTrang/Models/AdminListFilter.cs",
+    "bytes": 859,
+    "sha256": "ff1432dc80fc7470c05da2b514bbf969301cd6ba2305dbad6fb8134e6880f8d0"
+  },
+  {
+    "path": "Project_QLThoiTrang/Models/ErrorViewModel.cs",
+    "bytes": 213,
+    "sha256": "9945631e084f01d1c37f5a5a27328b54958cb99d52fb65e82e025865269bb296"
+  },
+  {
+    "path": "Project_QLThoiTrang/Models/FeatureModels.cs",
+    "bytes": 3424,
+    "sha256": "fec3cec0425547be435b0ce1c33e156bb7427c39a898b137d2a9ac202208b83d"
+  },
+  {
+    "path": "Project_QLThoiTrang/Models/ManagementModels.cs",
+    "bytes": 2000,
+    "sha256": "cc6f927ee8d660e7b0a18c984610469e9a887365cfe021a433b55ca86a22fca7"
+  },
+  {
+    "path": "Project_QLThoiTrang/Models/Operations.cs",
+    "bytes": 3462,
+    "sha256": "230b169af1dfb41bd0a74bbbee5f229cc0ecd0c73bdca80c7e024d36abaef1d5"
+  },
+  {
+    "path": "Project_QLThoiTrang/Models/Product.cs",
+    "bytes": 1128,
+    "sha256": "82bf3e0d4f1df7679918d3ba7260726fca48a5e30dead650e65ce9cd3e9b5146"
+  },
+  {
+    "path": "Project_QLThoiTrang/Models/StoreModels.cs",
+    "bytes": 7377,
+    "sha256": "5834b0c0fa6142c76fc2f0f890518b233da647a9e0d24ffd15c3cb1640113503"
+  },
+  {
+    "path": "Project_QLThoiTrang/Program.cs",
+    "bytes": 5105,
+    "sha256": "9d6b576c00dd7511af7adbb72ac47bd3865925067f4da18c2c126b137c959c10"
+  },
+  {
+    "path": "Project_QLThoiTrang/Project_QLThoiTrang.csproj",
+    "bytes": 464,
+    "sha256": "d6d9877bd43682951ebe675918ef13ab0f2e078ce33c6989a8d33bcc66f35f83"
+  },
+  {
+    "path": "Project_QLThoiTrang/Properties/launchSettings.json",
+    "bytes": 1032,
+    "sha256": "14dc35de0a0281976f966ec66f9337a0d08334103349102e46ffaf5e5842eb20"
+  },
+  {
+    "path": "Project_QLThoiTrang/Services/CustomerFeatures.cs",
+    "bytes": 6945,
+    "sha256": "dd6f862ace0b54fa415d4a215b6184b64f1b131f13681ad697659c23c8606810"
+  },
+  {
+    "path": "Project_QLThoiTrang/Services/DatabaseSchemaGuard.cs",
+    "bytes": 3148,
+    "sha256": "44bbdaf260887d80e78536d228f434f3202b67760967cc28f8244096f74dbb40"
+  },
+  {
+    "path": "Project_QLThoiTrang/Services/Finance.cs",
+    "bytes": 5027,
+    "sha256": "62cb2c8431642288f6a8745bde3c6e4e7ea82c961da3f930c24a93cf625e9b3d"
+  },
+  {
+    "path": "Project_QLThoiTrang/Services/JsonMigration.cs",
+    "bytes": 2632,
+    "sha256": "dfe15dc4a45256d03198c2c08196cd614fb2a1c4cf798189528555adc9be336f"
+  },
+  {
+    "path": "Project_QLThoiTrang/Services/NativeManagement.cs",
+    "bytes": 10657,
+    "sha256": "30005b3592f16af352848b4723571cf94ea7975ed431260b7ea3b06e2863d883"
+  },
+  {
+    "path": "Project_QLThoiTrang/Services/NativeStoreAdapter.cs",
+    "bytes": 18006,
+    "sha256": "a78692f38921984d61d9e011d3d26be5b3bee59d1144ceb6cd8720b3386d7eca"
+  },
+  {
+    "path": "Project_QLThoiTrang/Services/PasswordStorage.cs",
+    "bytes": 1023,
+    "sha256": "29a22d8320e41e1e51517ac8c2a93568874d5c3a6d217043dc3b9d1100009eeb"
+  },
+  {
+    "path": "Project_QLThoiTrang/Services/PdfDocuments.cs",
+    "bytes": 3489,
+    "sha256": "d30c66219da75bb95ebebbbcec0fb08e7a9a2b7706c2e29f487d92f4568de7b8"
+  },
+  {
+    "path": "Project_QLThoiTrang/Services/PersistentShopping.cs",
+    "bytes": 2731,
+    "sha256": "1e1ab214e48a02edeac7e9b4597830e14723f54bb7a14aa9282d9c3b5f6591b8"
+  },
+  {
+    "path": "Project_QLThoiTrang/Services/SessionStore.cs",
+    "bytes": 964,
+    "sha256": "a70e93517d3c9ab04e54d5e15b1a44ce88e0db5018c96d84c9ad54c8a194bfa4"
+  },
+  {
+    "path": "Project_QLThoiTrang/Services/Shipping.cs",
+    "bytes": 7067,
+    "sha256": "8a5914bbe0a81713c02a1dd0d1fe72893b8ff82b1f218fc2fa4c60b4089fe07d"
+  },
+  {
+    "path": "Project_QLThoiTrang/Services/StoreOperations.cs",
+    "bytes": 15650,
+    "sha256": "2b9063e66ce7f0b84d432aca6d1ecc70e752f97ebba054cc96d2b6bead5ab99f"
+  },
+  {
+    "path": "Project_QLThoiTrang/Services/StoreSeed.cs",
+    "bytes": 1525,
+    "sha256": "ec17f846e689dc2b2c2e4fece5e1a9e2c985da472369ece461e485f4ee8ea355"
+  },
+  {
+    "path": "Project_QLThoiTrang/Services/StoreService.cs",
+    "bytes": 5738,
+    "sha256": "197534a734d9389438e87e45fe9535bde71538037b582d7103c3903f2868fa49"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/_ViewImports.cshtml",
+    "bytes": 120,
+    "sha256": "0fe9d53c6340103d71827af8c935dda68de84e937488804d6c8080b9ce819151"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/_ViewStart.cshtml",
+    "bytes": 35,
+    "sha256": "47e02b4da20d198892b7b1b00b12944068797c438ef2e82d20ff70b4d56bad39"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Account/Denied.cshtml",
+    "bytes": 355,
+    "sha256": "468b820109d5fa2b2cb62ac93770e7ba43c460e6eacc6fa3f35670cab6b486a9"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Account/Index.cshtml",
+    "bytes": 3674,
+    "sha256": "b96c66435118c5494fc82ae4d62cde5aa404ef58fadccc5deccaa80e367ce8c3"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Account/Login.cshtml",
+    "bytes": 2960,
+    "sha256": "8d7c30aedfaac36371c712081f0b5da16d5da9e13bb8e985218dd7b0ce195aed"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Account/Order.cshtml",
+    "bytes": 1331,
+    "sha256": "dfd4d6b0e6a67d382f0406837063a8ad43075ddd71a0d4cca1ee0cab696dde6c"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Account/Orders.cshtml",
+    "bytes": 932,
+    "sha256": "b460606794e21483a21d0c46d9763c2f3153ad4227f6dd57455d8b272ba1aef8"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Account/Password.cshtml",
+    "bytes": 605,
+    "sha256": "e8f3f09941189bfc22c77c50b4e69bf83e84de52d62c24df4ab736a846184416"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Account/Register.cshtml",
+    "bytes": 3720,
+    "sha256": "87e0f7e5ad6a1c0dd8a2d01c1ba863c593bb6310c1a69447533fbf61cf397455"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/_ViewStart.cshtml",
+    "bytes": 26,
+    "sha256": "7033874cd8d0e9b48efc76dbe317e0368b86139c8ba7049b62903824e9e8b46e"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Categories.cshtml",
+    "bytes": 1109,
+    "sha256": "07de388ee7cefe4598690bb7cc004e8ebf4d3f6e9d3a703a0f3a6318b044da72"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Category.cshtml",
+    "bytes": 505,
+    "sha256": "900800d90233071dc9127ab1b7c0f581071beca2cdf45abfbf78ef18393fe560"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Customer.cshtml",
+    "bytes": 985,
+    "sha256": "164517d0405c4ebe55298f8a1367044348a5ef6752dbce9ae68600d7ae1b67e5"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Customers.cshtml",
+    "bytes": 1667,
+    "sha256": "17605eb3d3a13d42e2c89ce5dfec6478c0bd9d8e3e48da63977b041c38b8d054"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/DeleteProduct.cshtml",
+    "bytes": 601,
+    "sha256": "70d2afc527202c7abc3e1dfa11e843697edee76d9facc120e962b5fb3783d28b"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/EditCustomer.cshtml",
+    "bytes": 599,
+    "sha256": "622ae41308ca705feaba2af34e18e5e0b98c7215c8dcd61259007cb41edf89d9"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Index.cshtml",
+    "bytes": 1837,
+    "sha256": "982ca149cb3576e09e3246dac5d45e0d174936067d997d74b339aab0effcb87a"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Inventory.cshtml",
+    "bytes": 1164,
+    "sha256": "aee1e678b49cc73417e8d86c9c605610e24a7a646a28cd0a8b6bbc97c7bf2879"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/LoginHistory.cshtml",
+    "bytes": 946,
+    "sha256": "821c6a72aeca63b84841d6b9dd44fdba06e6949329c8d67f6f0d9ada2ecdd13d"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Order.cshtml",
+    "bytes": 1742,
+    "sha256": "166ced9807cf5bb264b6419c8bec1daf0d1bbeb4ef21de04096830039615e6ee"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Orders.cshtml",
+    "bytes": 2230,
+    "sha256": "ed0ebe8855023d8e6fbe93176be31cb2484ddcb1803f3897cfbf13aceee9db85"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Product.cshtml",
+    "bytes": 1759,
+    "sha256": "6d753c89166ae2e02f92d2ca27cc3d2947faa47aac1f0847caecd3f64eec4385"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Products.cshtml",
+    "bytes": 2292,
+    "sha256": "c4e4420bb1b3f8bcf6477d077f3e0fa6b95c0717fae4fd3a73c0d247f1f522df"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Promotion.cshtml",
+    "bytes": 1430,
+    "sha256": "bf0b10f1b5590473d42d2f3a7fca37a11c312fb4e74d6517fbf963abed9c6208"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Promotions.cshtml",
+    "bytes": 1529,
+    "sha256": "dfeb5f52ef2efbb1ed54beec7b1ac7995ebe242961dd1c999fa0060854724b11"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Receipt.cshtml",
+    "bytes": 1051,
+    "sha256": "19ffe3a82cd06c96ffbaccd9fbfc0fdf3c151000285382a278d3fda696f627d3"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Receipts.cshtml",
+    "bytes": 1574,
+    "sha256": "ae6a3512e0070bf1e8b390852ac87861685ca7bfbd00bf7d331a4bd0bf0016ac"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Receive.cshtml",
+    "bytes": 3768,
+    "sha256": "f98771b6afd9fe1f30d4ac43bf0cddbf1594b2249eb3c35e5441dc4e46885742"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Reference.cshtml",
+    "bytes": 1501,
+    "sha256": "ae692cfed272e072b3830311176286fd3db16787dd9231d6efdad88ed959aa4a"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/References.cshtml",
+    "bytes": 2048,
+    "sha256": "a53fd825872bcdfd910052f6e237f63283554723c8a8aaed60dd070f6e3b60b8"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Reports.cshtml",
+    "bytes": 2243,
+    "sha256": "a63dfa4544c9b2f3bb0e4c98ef104bd5bbc54d4e962a0ed10811953d7cf47a99"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/ReturnRequest.cshtml",
+    "bytes": 1809,
+    "sha256": "3c3f154d5c384e8fc4ca48606fe7f483a1a8846c67823a737732cedeb716983a"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Returns.cshtml",
+    "bytes": 1057,
+    "sha256": "5ebd3d01dc9e7dc05e7c95ee3ab4e6051291ea9779713659a282c5b30c2b8d57"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Reviews.cshtml",
+    "bytes": 1218,
+    "sha256": "4121da2db4736958b1be01496d97dd90566d58652a55f9b9633b53452b6b7206"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Settings.cshtml",
+    "bytes": 639,
+    "sha256": "9082c309cff36c68fd43cc9ca9ab77fbe02566a1e469cc09d2e3bb034ccf9f37"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Staff.cshtml",
+    "bytes": 1116,
+    "sha256": "5997e9391ff80146842dea34ccaac030c08d8dc594564d687365d558bf4696d7"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/StaffMember.cshtml",
+    "bytes": 1023,
+    "sha256": "631110c9cd2a7bde5324aeb4aa82af2dfda39d4ba87ee8ba3b46f89e93e0b81c"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/StockCount.cshtml",
+    "bytes": 1105,
+    "sha256": "5f8f592a4becbee26a63b8ebec9afc353f5c727d21dac0d8a477f34f40849e19"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Variant.cshtml",
+    "bytes": 1157,
+    "sha256": "d36ad738c43e9765367b4f1802615c0b4638c76ab1443ffa3e11f7604c5e3fea"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/Variants.cshtml",
+    "bytes": 1509,
+    "sha256": "c687e01096b62681e91570fcd94b8d4f561f6eb47ce77879fdd7304bf09c0727"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Admin/VariantStock.cshtml",
+    "bytes": 1556,
+    "sha256": "98ad2935a9ce1f83fe32faedfb165a6ee47a212f7569a750b0bbc2892f954ebf"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Chat/Inbox.cshtml",
+    "bytes": 952,
+    "sha256": "e38c83c9936562cd257fa6263ad2146be558e792898323caf31a59c53c365297"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Chat/Index.cshtml",
+    "bytes": 969,
+    "sha256": "00ac531be78399481753b19ecaedc56ec3a5bb23a827c4e23848bf5aaba25fe2"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Finance/_ViewStart.cshtml",
+    "bytes": 26,
+    "sha256": "7033874cd8d0e9b48efc76dbe317e0368b86139c8ba7049b62903824e9e8b46e"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Finance/Index.cshtml",
+    "bytes": 2112,
+    "sha256": "fa6e567e99d91ea6c275ffbc9716cd7b0232564d060ee7e7c57eaff455c5d8ba"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Finance/Receipt.cshtml",
+    "bytes": 2465,
+    "sha256": "3898f4cf39532200973c9d4d5add2e35acab621466e34795392932d4a1f92ea3"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Finance/Suppliers.cshtml",
+    "bytes": 2466,
+    "sha256": "2b7572e0e294fb213af86e9406af6171a93416f69997772ed5d32647c32ef316"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Home/Index.cshtml",
+    "bytes": 2331,
+    "sha256": "de06017f43973ef83c77e4957b670e4249aae753c215b6ae8d2b05033c9b4fce"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Home/Info.cshtml",
+    "bytes": 372,
+    "sha256": "8b264763687e44d22dd242ff1385f49b88957b09c7ac72136a3a2ab352b9dede"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Home/Privacy.cshtml",
+    "bytes": 144,
+    "sha256": "0e00a4445b214863ea51c8985fae1970b43e932712216fa047faf3062bb23445"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Recovery/Forgot.cshtml",
+    "bytes": 759,
+    "sha256": "82c8f1e3e16a8f80ed25313e98e54029522372fe03669082245280b154c11477"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Recovery/Reset.cshtml",
+    "bytes": 844,
+    "sha256": "1e0364ae44b99590ccfafefa85e3bdf67a6713cc36b8dd58e97c0949869be8d1"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_AdminDatePeriod.cshtml",
+    "bytes": 451,
+    "sha256": "ab07a703e39e8861d7bfcd9b87f89f50f265809658fb3517f79f5c78791ad556"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_AdminLayout.cshtml",
+    "bytes": 1546,
+    "sha256": "cd2bda3883645e506b43c3fee96365efb1b04cdca284990af49ff4f8d9cf30c3"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_AdminListToolbar.cshtml",
+    "bytes": 1142,
+    "sha256": "0c19fc6d73bc7ca0f4208a4b029b3fe0ffa09e569f75ab0a0c8a4e9c1f0987e8"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_AdminNavigation.cshtml",
+    "bytes": 2949,
+    "sha256": "073bb8fb6f5fc07502b0c181e90aabad4a72275784017b9772c592fb8d111309"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_BankInstructions.cshtml",
+    "bytes": 844,
+    "sha256": "d8c3f88bf68758f54788f72e56dfa13e9df94aa9bf168546060c4830a51688cb"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_Layout.cshtml",
+    "bytes": 3118,
+    "sha256": "6e1cbfc88596cc1a480ce57a1c977c73d1774aeea70c452798e1a9aabca0e3e6"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_Layout.cshtml.css",
+    "bytes": 925,
+    "sha256": "a50ad1af0709e4a2cca3fed34a257fad983e2d8a8c344f2b417d6b0c8ba27532"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_Messages.cshtml",
+    "bytes": 193,
+    "sha256": "56f6ad530d4aa7690bf8ca14fe743891f0efe923b073d5a58ed330acc88df24a"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_OrderHistory.cshtml",
+    "bytes": 350,
+    "sha256": "0b25fea0b13ed29d833ddbb8aaa7bb3a6b92091227c64dcd98a913cfd140b960"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_OrderLines.cshtml",
+    "bytes": 853,
+    "sha256": "44b51b41422b234284d306785452667c59fdc64e08b939819321dd75c7904f96"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_PaymentStatus.cshtml",
+    "bytes": 1353,
+    "sha256": "225104c56355fcade1a5de53d7e06ffc4d62fab175fadee18c8955a6e332aedc"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_ProductCard.cshtml",
+    "bytes": 1313,
+    "sha256": "58d7e5e073f6c2a4064f03cad34e5651909c1e547364aa5bf407b0fc00c5aace"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_ReturnRequest.cshtml",
+    "bytes": 1753,
+    "sha256": "cc59697beb382be4184c4986a66c31863ad4cfea8d22ad37a007a482038af688"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_Reviews.cshtml",
+    "bytes": 738,
+    "sha256": "3c7926d8dae28ccead0139365379d76c62aa06659ca3874943a48972739c9e0b"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_ShipmentStatus.cshtml",
+    "bytes": 427,
+    "sha256": "47b3a3b30a7ae35f37ff16ba7c8206d19ee6c25ea622d4ae32451ab608e1182d"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_StockHistory.cshtml",
+    "bytes": 676,
+    "sha256": "a43c121ed48ca76464c7c26241683478ce0bb0b8ffdee26b83f99a7276439829"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/_ValidationScriptsPartial.cshtml",
+    "bytes": 176,
+    "sha256": "9ef82fee87759dfecf2638af263085e669aa14a40c723d556d790d65a525ba11"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shared/Error.cshtml",
+    "bytes": 884,
+    "sha256": "5dbf98b6b9394ad78206edce40cab1d7a238aa69cfefa41bab0ebc6aa22488aa"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shipping/_ViewStart.cshtml",
+    "bytes": 26,
+    "sha256": "7033874cd8d0e9b48efc76dbe317e0368b86139c8ba7049b62903824e9e8b46e"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shipping/Index.cshtml",
+    "bytes": 2135,
+    "sha256": "b670288148849381a9683a90078dbeeba1e58f53b969c6deeef68eff716719f2"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shop/Cart.cshtml",
+    "bytes": 2000,
+    "sha256": "783495c5dd29bb67473c73c35e37896ff2ee294fc778028a9fc56d04b13072f3"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shop/Checkout.cshtml",
+    "bytes": 2257,
+    "sha256": "3ed4ca2ec0d9f91f770e3bff072b020595983a6a17682bfc7d0a57d806d5020f"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shop/Detail.cshtml",
+    "bytes": 2698,
+    "sha256": "7d522054177525facfb33b9383f0a93650496711903b4d8a85123629c59eadb9"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shop/Index.cshtml",
+    "bytes": 2025,
+    "sha256": "a4811e40607a988a36ca482827972eedc0f43075e3aa9b1a87800ab4fe8766eb"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shop/Success.cshtml",
+    "bytes": 758,
+    "sha256": "f4088afa0854b32760edb63b967d7598df9892bdf6619e264df8641b8480a09e"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Shop/Wishlist.cshtml",
+    "bytes": 642,
+    "sha256": "3ed3c381b8ed097c819bf5babe09bb8c7c1c0a225539524795ef116ff5570491"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/TrangChu/Index.cshtml",
+    "bytes": 135,
+    "sha256": "dff7bb51938c710a6b31e5899c89296237cee3fde8a76134d0329445a67863bd"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Valuation/_ViewStart.cshtml",
+    "bytes": 26,
+    "sha256": "7033874cd8d0e9b48efc76dbe317e0368b86139c8ba7049b62903824e9e8b46e"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Valuation/Edit.cshtml",
+    "bytes": 967,
+    "sha256": "1e880c5881895cd057ac05e8c10e65c9cdd540f3841fc94ee66c8deda6b12218"
+  },
+  {
+    "path": "Project_QLThoiTrang/Views/Valuation/Index.cshtml",
+    "bytes": 1692,
+    "sha256": "09474dfa11449d324e95907c873ac74b2223f3bb9d2b9384fb054bd0d931355c"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/css/screens.css",
+    "bytes": 29773,
+    "sha256": "4dfcb030d0a711f39006a0e867cfee288e2a05d6f004b6604c373357613711b2"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/css/site.css",
+    "bytes": 12894,
+    "sha256": "159a9e6856dd4770db807b5cf978405fb33b5851be0333d16b72eacfce4a8e2a"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/data/provinces.json",
+    "bytes": 1986,
+    "sha256": "5b346ddc65c9a76afe546227127afd6b0bd1cbf55bbb3a733fb355e62d914031"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/data/wards.json",
+    "bytes": 424774,
+    "sha256": "0e29681ce340296e5b5f87e89773a57a50c8a7d90d528680e45584e3a8807a26"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/favicon.ico",
+    "bytes": 5430,
+    "sha256": "26dc5ff4bfb9213291735808465e156d4a4691135f3815e3613761243e1f69c3"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/images/banners/banner01.jpg",
+    "bytes": 33097,
+    "sha256": "a429b5418c61a9a94341bbac4e551becbca78232d418e8a0e368923b7694ff5e"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/images/banners/banner02.jpg",
+    "bytes": 78741,
+    "sha256": "29b4dcde2d77f4e8a781b834feb8d226d7f2f33a7f506d0e99e1515a36480f7b"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/images/payments/transfer-qr.png",
+    "bytes": 65006,
+    "sha256": "39df0e3973f0fc5ef5a81a6ed360c1adaef4fc09f22e3b5a8fc428040dd77a57"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/images/products/aothun01.jpg",
+    "bytes": 4404,
+    "sha256": "1b6dfcf2055a381961c6dc67c0febdcae2b1beb4646dcd0d2595c05e00accd27"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/images/products/aothun02.jpg",
+    "bytes": 9692,
+    "sha256": "d06471a6c090119901c2191ef9cfa8aa7670b223a768bb346c35c06b3194f69d"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/images/products/aothun03.jpg",
+    "bytes": 6745,
+    "sha256": "ba1bb806b9a7d31df7cc3e240f286521790759fc98252927a1f7a84392996f71"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/images/products/aothun04.jpg",
+    "bytes": 7335,
+    "sha256": "85f8ccd52661b16850106d382b334b959b7c271d6acc77a225846c6c7f050861"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/images/products/aothun05.jpg",
+    "bytes": 18146,
+    "sha256": "fe4b9a8bcb5d4a369ba65f822f5ce3d7a821797885f6e6c45febbc605b587d49"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/js/chat.js",
+    "bytes": 3126,
+    "sha256": "ea5bd8277ed5e581c7e82f58f5d6fddfb5b58478262486ae7e03b21f43b338f8"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/js/site.js",
+    "bytes": 19625,
+    "sha256": "4b55dc9bf45fe4800504041d980eaab7c5cf8631aea1b656c02eb23cf65362e4"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
+    "bytes": 70538,
+    "sha256": "26d92d822b9001df805deac29cf32b1c20f3d61e40b641f9b686efa6e1bbc59e"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map",
+    "bytes": 196535,
+    "sha256": "40ef1c31b5642e292d517d5c1de5d25127b99d7317520c8bf5c8f09cccb13ea7"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css",
+    "bytes": 51319,
+    "sha256": "cac053fc96311fd81c327c314f8f8c078b0fc4ec7f24c83dc22efb140d774fd0"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
+    "bytes": 117439,
+    "sha256": "ef60bfa83086bbe3b059e540d376dff4a7b44fca08a330ae6f495f26487386f1"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
+    "bytes": 70612,
+    "sha256": "def5099194a928bff31bbc7a18dbc38ecd13c58528f7332de9d01cf21a7d095a"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
+    "bytes": 196539,
+    "sha256": "aaf037f4e32512ce778da7b0a9516613c0d042b8a8e3b6d9b654ecf96bba53c8"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
+    "bytes": 51394,
+    "sha256": "3ba95bda45daac6815c38fd10c3e36c983e1648c1112d85385014a1a60fede3d"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
+    "bytes": 117516,
+    "sha256": "3434998c888c3d12283bbff0efe8c779ff2b7ad3f8ae241af0f323e015511a89"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css",
+    "bytes": 5850,
+    "sha256": "e336d6af440d161a54c06927e16746597b7cd0a9e1445bf4a97919c959e16a36"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map",
+    "bytes": 105138,
+    "sha256": "1591b42b16cda884d48b8418ed0bcf1514bf4dc727b4c7c559f49374737fa70b"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
+    "bytes": 4646,
+    "sha256": "cf4380a51f3c504a1c6174d71d4ed47b271a8a26fd5db0d499e97d1b1d206f1e"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
+    "bytes": 35330,
+    "sha256": "d816d1b04ffe7335f5b9f9833c6a67122782f6ee88de6e4128d0d25f5a1bde58"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
+    "bytes": 5827,
+    "sha256": "f0d5f0de4178f4591054f31d8e7183aa85d7454d13c33b0b7c219b2bd53c8279"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
+    "bytes": 105151,
+    "sha256": "fc47561cdeade5760fa650bcf2f8b119fac1bdf1228b5f6402cb1bfb4601554f"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
+    "bytes": 4718,
+    "sha256": "6b92a5832b19e1f417c38af322f5c31c4ac50cf7874522dc70fee45fa1eebd24"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
+    "bytes": 41570,
+    "sha256": "18c0e4e6903974590e8a69010167848d867eee58073d2d236259faa7f589558b"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css",
+    "bytes": 71584,
+    "sha256": "35b159c592e605534bcdbffb07459d15f6fafbc8d71c65fa5d8d7dd2ec206de7"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map",
+    "bytes": 192271,
+    "sha256": "e1622a3e87ffbeb5d83bf8de2787c33902946162307bae15dddfbdfea363bb6d"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css",
+    "bytes": 53479,
+    "sha256": "e7e13198c922688de47984112e13626c9e595e736e5916f0ad73806684d73058"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
+    "bytes": 111875,
+    "sha256": "a75768a78b2579f6612f8cc6da96bafb61d4ace63551402b1895e67adf0c77d7"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
+    "bytes": 71451,
+    "sha256": "a5e0061fc1aefd92fd5676d419230debd262e4cc706ef39be778035d4d9c3da4"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
+    "bytes": 192214,
+    "sha256": "a6e0e02b0be5140a2b77d47c1bca1ff4fd825582095054a821b8c32c4b0a107d"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
+    "bytes": 53407,
+    "sha256": "5a2e59b854872dfc7a7651208ef5b7058f530bfd4da9d0638fe5c589f492a8de"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
+    "bytes": 111710,
+    "sha256": "d3691ae329a8139c8479c2d49dc2c6dff4a8b9340c9d324e92d5fef7a3edffcf"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+    "bytes": 204136,
+    "sha256": "c657b1aa3f7f937ba86d5c067dc899723fde0dda2868d81c7f83852ed2d4ca03"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map",
+    "bytes": 536547,
+    "sha256": "0d1bd6af481a9e08f9ff94370d19fab6dce97160f39773a91e80300333434794"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+    "bytes": 162720,
+    "sha256": "cfc391e34328c09f0680ae8ff3d63e86224ae7e71c973147ccb84540b2fdd9b8"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map",
+    "bytes": 449111,
+    "sha256": "801c20dad980d028b6bb9e20305d63342564bbabf39daae42d2e83efa86d34d4"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css",
+    "bytes": 203803,
+    "sha256": "499da629a0f803e6fe1c8bedb7097e4ef2c59d5cbca3cfd7e348fe10a570caf6"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map",
+    "bytes": 536461,
+    "sha256": "545be68bf652c101668d2e8faf2f41f335de67f180d7af135cbcb290384d3191"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css",
+    "bytes": 162825,
+    "sha256": "db6c11e904e27687a24595e9eb391143231251bfc507e02fd758ea999245eae5"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
+    "bytes": 661035,
+    "sha256": "8fbbaa2b95684d3e2b50732bf75d50114e526bde25477ba1f44dbc5c1325ceb3"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
+    "bytes": 208492,
+    "sha256": "bd04dfe1ddd6262f6f99640d0389099e3a1e7601213055c50c4317aad1ed8339"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map",
+    "bytes": 425643,
+    "sha256": "80ee2e8717c6b8ad0e3634651eec1f82119f1174f96b39b5a075a74c41464df9"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
+    "bytes": 78468,
+    "sha256": "2aebc2552d7dadf4e3a0b80cc830c274e91146584dad8e29b04338b9ecedb363"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
+    "bytes": 327261,
+    "sha256": "c48041c433ef5a193cfc975a1446687a369d7da28551f645c114b50f8264baba"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js",
+    "bytes": 139019,
+    "sha256": "12e0d750960a9df66e3bc7522cdd1fe6255b55ab33dfa0113ae014dcd277241a"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map",
+    "bytes": 288320,
+    "sha256": "0a5942fec6cbbf22c4f5c4258e61519484dfa9d6519c1bf6cac5f92c9b65fdd8"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js",
+    "bytes": 72016,
+    "sha256": "2a3e22ad058fc1f49be4d15ea2cfe1d08ae8239fe7220d07b408d0fb0e2fe931"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
+    "bytes": 222508,
+    "sha256": "b0fab359c492f5a45ada0a564d5350cde99a8e7f21ac58e05cf8f78fd408b50a"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+    "bytes": 148168,
+    "sha256": "e884ad4507ab05c8584b0e89d8659339618e9c346b59799a1b4afa9c2c0de6ce"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/js/bootstrap.js.map",
+    "bytes": 289522,
+    "sha256": "424979999519eb869805a39144c3fd8df0f5933f09e85c2257633ce890c991d4"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+    "bytes": 59511,
+    "sha256": "7382e5e9e48883a128b6193ca4258017c684f76dc4bed535d69aa3072f8d8cd3"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map",
+    "bytes": 217145,
+    "sha256": "ba2fc5408fb2d0852c63c3db8bcd1bf2cdc67842fe3ecbdd68b4ce3686e99fcf"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/bootstrap/LICENSE",
+    "bytes": 1153,
+    "sha256": "647ea903a052c7a7ee1d9bdd68aa61d43c1427e55262294888442ef22967bea9"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/jquery/dist/jquery.js",
+    "bytes": 288580,
+    "sha256": "1fe2bb5390a75e5d61e72c107cab528fc3c29a837d69aab7d200e1dbb5dcd239"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/jquery/dist/jquery.min.js",
+    "bytes": 89501,
+    "sha256": "ff1523fb7389539c84c65aba19260648793bb4f5e29329d2ee8804bc37a3fe6e"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/jquery/dist/jquery.min.map",
+    "bytes": 137972,
+    "sha256": "399548fb0e7b146c12f5ba18099a47d594a970fee96212eee0ab4852f3e56782"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/jquery/LICENSE.txt",
+    "bytes": 1117,
+    "sha256": "86320192f9a0c505db3572b707d610dedd3a4702ee4124330bf769bee07f94c9"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/jquery-validation/dist/additional-methods.js",
+    "bytes": 52977,
+    "sha256": "e23adc2c1b22d14826f222ca76a0ec0326820e392c71865da06b8d1ffceab381"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/jquery-validation/dist/additional-methods.min.js",
+    "bytes": 22177,
+    "sha256": "375d48c89a474e00dc4826f701f5f856b067a4641e7a6d4da0dcf381c5d5c827"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+    "bytes": 51171,
+    "sha256": "9b497cd560cf886ec2706ec20ec4ee673bdc1afc859ab418e432c8c71dda446c"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+    "bytes": 24601,
+    "sha256": "270524b0d27afd1d3b6622d1a176c678daed94564c143297e217a63e21ce9820"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/jquery-validation/LICENSE.md",
+    "bytes": 1117,
+    "sha256": "81e1c4930fd618f75a1d0311ab91ee358f6c9e588dcd4ff2d8e5bcc9c9e1197c"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+    "bytes": 19385,
+    "sha256": "c0941a2745f29c11367eae827b15d78712aeedfb2d56641ced5d8c1cd4e8f964"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+    "bytes": 5824,
+    "sha256": "6096bb5bc12241d429924f778861238e72d25164694496d27f37d4461d64c73e"
+  },
+  {
+    "path": "Project_QLThoiTrang/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt",
+    "bytes": 1139,
+    "sha256": "d7a68596ab69b06f51ca278a6545148e4269a9381c26d597c13df5d88e08cf5b"
+  },
+  {
+    "path": "Project_QLThoiTrang.sln",
+    "bytes": 1169,
+    "sha256": "bbfdf92c725eb68a2435676b15783730695e82faecac3f9769418099299c4208"
+  },
+  {
+    "path": "README.md",
+    "bytes": 16575,
+    "sha256": "d515397c0ea4c1ad20454be70dea363a5c631eb2c3b997c90f2be09214dbf993"
+  },
+  {
+    "path": "scripts/admin_filter_checks.mjs",
+    "bytes": 2827,
+    "sha256": "a7f675488f2253996dcb0cbadeda9262318827a74be913deb4b1a7449112928b"
+  },
+  {
+    "path": "scripts/admin_layout_checks.py",
+    "bytes": 6999,
+    "sha256": "5fc07f26672346d9be38b7ae6460477fa51ff6514166008dfa15ebbf60bf954a"
+  },
+  {
+    "path": "scripts/admin_purchase_checks.py",
+    "bytes": 2639,
+    "sha256": "d97134bd224afe03baaac4b7ea22c0c57d5871eac14d079db4f419dc95724f00"
+  },
+  {
+    "path": "scripts/features_http_checks.py",
+    "bytes": 6006,
+    "sha256": "a382e88e1379ebf11eb6349d5de13ff71b8a8d0540617be461b29f100cf197fa"
+  },
+  {
+    "path": "scripts/finalize_native_sql.py",
+    "bytes": 3673,
+    "sha256": "c76b43a38dacfa3551699895c043a92d0e05f94c44ede354d29ed26bc5d24a21"
+  },
+  {
+    "path": "scripts/generate_testcase_index.py",
+    "bytes": 7120,
+    "sha256": "b780f9349c4d040932eaf7527d6b9f7940ddc284abda56e5e5264e3a64bd70ba"
+  },
+  {
+    "path": "scripts/http_checks.py",
+    "bytes": 11125,
+    "sha256": "0a487325a4b8bee967ad4d42e9727ed664b2bf1547bf3cfa04e91fc9eaecd27e"
+  },
+  {
+    "path": "scripts/integrate_original_schema.py",
+    "bytes": 7526,
+    "sha256": "b1dd784a89295d1afc8721a0aecc7553f6badc0fa415db9a2b756396baf3b7e0"
+  },
+  {
+    "path": "scripts/package_delivery.py",
+    "bytes": 4309,
+    "sha256": "36ac3f71b0cd9a5b7198d141305a7cfce320801aef5a6c4eef5d90f08fa59542"
+  },
+  {
+    "path": "scripts/page_filter_checks.py",
+    "bytes": 6512,
+    "sha256": "60074b7f79d38f37c598622e60ddedeabcb0a322775ebc6ba9f341297dc15173"
+  },
+  {
+    "path": "tests/BusinessChecks/BusinessChecks.csproj",
+    "bytes": 320,
+    "sha256": "83cd4240c19a9a6b6af12a2fba47a178e23360a58440c5f1c8cd6277b37b765d"
+  },
+  {
+    "path": "tests/BusinessChecks/Program.cs",
+    "bytes": 23868,
+    "sha256": "e9d2b96ba7d9205707549c6be4f732e50c9382d168d4a45ab4b6161c2e24656a"
+  },
+  {
+    "path": "tests/FeatureChecks/FeatureChecks.csproj",
+    "bytes": 315,
+    "sha256": "c6fbb55ea27d318e17871aaf1a0eb64249f404f26af9931d34921678733ef597"
+  },
+  {
+    "path": "tests/FeatureChecks/Program.cs",
+    "bytes": 14085,
+    "sha256": "d725dff6e4da38ff6e87a511cd4b391eff4152852fe375aaf03b3f5dfd072875"
+  }
+]

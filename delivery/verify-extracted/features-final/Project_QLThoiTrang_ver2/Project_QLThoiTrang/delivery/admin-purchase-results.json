@@ -1,0 +1,48 @@
+{
+  "executedUtc": "2026-11-03T08:22:26.740985+00:00",
+  "database": "QOANH_Verification_20261103_Review01",
+  "total": 10,
+  "failed": 0,
+  "results": [
+    {
+      "id": "ADMIN01-no-purchase-controls",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-denied-/Shop/Cart",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-denied-/Shop/Checkout",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-post-denied-/Shop/Add",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-post-denied-/Shop/UpdateCart",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-post-denied-/Shop/Checkout",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN02-management-retained",
+      "status": "PASS"
+    },
+    {
+      "id": "CUSTOMER01-purchase-controls",
+      "status": "PASS"
+    },
+    {
+      "id": "CUSTOMER02-cart-available",
+      "status": "PASS"
+    },
+    {
+      "id": "GUEST01-purchase-controls",
+      "status": "PASS"
+    }
+  ]
+}

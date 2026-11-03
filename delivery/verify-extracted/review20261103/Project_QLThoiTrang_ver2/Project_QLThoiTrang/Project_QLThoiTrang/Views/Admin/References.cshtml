@@ -1,0 +1,9 @@
+@model ReferencePage
+@{ViewData["Title"]="Danh mục mở rộng";}
+<nav class="filter-bar">@foreach(var x in new[]{("brands","Thương hiệu"),("sizes","Kích thước"),("colors","Màu sắc"),("warehouses","Kho"),("suppliers","Nhà cung cấp")}){<a class="button-secondary" href="/Admin/References?kind=@x.Item1">@x.Item2</a>}</nav>
+<form method="post" class="panel form-stack"><div asp-validation-summary="All" class="validation"></div><input name="Id" type="hidden" value="@Model.Input.Id"/><input name="Kind" type="hidden" value="@Model.Input.Kind"/>
+<label>Tên<input name="Name" value="@Model.Input.Name" required maxlength="100"/></label><label>Mô tả / mã màu<input name="Description" value="@Model.Input.Description" maxlength="500"/></label>
+@if(Model.Input.Kind is "warehouses" or "suppliers"){<label>Địa chỉ<input name="Address" value="@Model.Input.Address" maxlength="255"/></label>}
+@if(Model.Input.Kind=="suppliers"){<label>Điện thoại<input name="Phone" value="@Model.Input.Phone" maxlength="15"/></label><label>Email<input name="Email" type="email" value="@Model.Input.Email"/></label>}
+@if(Model.Input.Kind is not ("sizes" or "colors")){<label class="checkbox"><input name="Active" type="checkbox" value="true" checked="@Model.Input.Active"/>Đang hoạt động</label>}
+<button class="btn-black">Lưu</button></form><div class="panel table-scroll"><table class="data-table"><thead><tr><th>Mã</th><th>Tên</th><th>Thông tin</th><th>Hoạt động</th><th></th></tr></thead><tbody>@foreach(var r in Model.Rows){<tr><td>@r.Id</td><td>@r.Name</td><td>@r.Description @r.Address<br/>@r.Phone @r.Email</td><td>@r.Active</td><td><a href="/Admin/References?kind=@r.Kind&id=@r.Id">Chỉnh sửa</a></td></tr>}</tbody></table></div>

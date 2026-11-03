@@ -1,0 +1,5 @@
+@model List<(int Id,string Name,DateTime Updated,int Unread)>
+@{Layout="_AdminLayout";ViewData["Title"]="Tin nhắn khách hàng";}
+@{ViewData["TableFilters"]=new[]{AdminListFilter.Choice("unread","Tin nhắn",("unread","Có tin chưa đọc"),("read","Đã đọc hết")),new AdminListFilter("month","Tháng cập nhật")};}
+<partial name="_AdminListToolbar"/>
+<div class="panel table-scroll"><table class="data-table"><thead><tr><th>Khách hàng</th><th>Tin mới</th><th>Cập nhật</th><th></th></tr></thead><tbody>@foreach(var t in Model){<tr data-filter-unread="@(t.Unread>0?"unread":"read")" data-filter-month="@t.Updated.ToLocalTime().ToString("yyyy-MM")"><td>@t.Name</td><td>@t.Unread</td><td>@t.Updated.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td><td class="table-actions-cell"><div class="table-actions"><a href="/Chat?customerId=@t.Id" class="button-secondary table-action">Trả lời</a></div></td></tr>}</tbody></table></div>

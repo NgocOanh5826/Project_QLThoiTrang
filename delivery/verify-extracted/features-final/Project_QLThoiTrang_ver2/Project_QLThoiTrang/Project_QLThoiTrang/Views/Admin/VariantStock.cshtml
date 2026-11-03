@@ -1,0 +1,5 @@
+@model StoreData
+@{ViewData["CreateUrl"]="/Admin/Receive";ViewData["CreateLabel"]="Nhập kho";ViewData["Title"]="Tồn theo biến thể và kho";}
+<partial name="_AdminListToolbar"/><div class="panel table-scroll"><table class="data-table"><thead><tr><th>Kho</th><th>Sản phẩm / SKU</th><th>Size / màu</th><th>Tồn</th><th>Kiểm kê</th></tr></thead><tbody>
+@foreach(var w in Model.Warehouses.Where(w=>w.Active)){@foreach(var v in Model.Variants){var quantity=Model.Stocks.FirstOrDefault(s=>s.WarehouseId==w.Id&&s.VariantId==v.Id)?.Quantity??0;<tr><td>@w.Name</td><td>@Model.Products.Single(p=>p.Id==v.ProductId).Name<br/>@v.Sku</td><td>@v.Size / @v.Color</td><td>@quantity</td><td><a class="button-secondary compact" href="/Admin/StockCount?variantId=@v.Id&warehouseId=@w.Id">Kiểm kê</a></td></tr>}}
+</tbody></table></div>

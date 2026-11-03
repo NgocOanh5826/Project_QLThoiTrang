@@ -1,0 +1,3 @@
+@model List<Project_QLThoiTrang.Data.Native.LichSuDangNhapRow>
+@{ViewData["Title"]="Lịch sử đăng nhập";}
+<partial name="_AdminListToolbar"/><div class="panel table-scroll"><table class="data-table"><thead><tr><th>Khách / nhân viên</th><th>Đăng nhập</th><th>Đăng xuất</th><th>IP / thiết bị</th><th>Kết quả</th></tr></thead><tbody>@foreach(var r in Model){<tr><td>@r.MaKH / @r.MaNV</td><td>@r.ThoiGianDangNhap</td><td>@r.ThoiGianDangXuat</td><td>@r.DiaChiIP<br/>@r.ThietBi</td><td>@r.TrangThai</td></tr>}</tbody></table></div>

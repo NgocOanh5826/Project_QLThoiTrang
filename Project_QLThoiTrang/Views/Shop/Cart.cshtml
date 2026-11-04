@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Dựng giỏ từ Session và giá/biến thể hiện tại trên server bằng SessionStore.Cart;
-    ShoppingSession chặn tài khoản nhân viên mua hàng. DỮ LIỆU MODEL: CartViewModel. ĐIỂM XỬ LÝ:
-    Controllers/ShopController.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
-*@
-
 @model CartViewModel
 @inject Project_QLThoiTrang.Services.StoreService Store
 @{
@@ -40,17 +34,7 @@
                             </h3>
                             <p class="muted">Đơn giá: @line.Price.ToString("N0") đ</p>
                             <div class="cart-controls">
-                                @*
-                                    FORM POST: gửi các ô input/select/textarea theo thuộc tính name
-                                    tới /Shop/UpdateCart. Controller nhận dữ liệu và kiểm tra
-                                    ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu.
-                                    TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG:
-                                    Sửa màu/size/số lượng hoặc xóa dòng giỏ. remove = true hoặc
-                                    quantity = 0 thì Remove; khi đổi biến thể trùng dòng khác thì
-                                    gộp lượng. Kiểm tra tổng gộp không vượt 20/tồn trước khi lưu
-                                    Session.Các thuộc tính data-* nối form với sự kiện JavaScript
-                                    trong wwwroot/js.
-                                *@
+
                                 <form
                                     asp-action="UpdateCart"
                                     method="post"
@@ -114,17 +98,7 @@
                                         </button>
                                     </noscript>
                                 </form>
-                                @*
-                                    FORM POST: gửi các ô input/select/textarea theo thuộc tính name
-                                    tới /Shop/UpdateCart. Controller nhận dữ liệu và kiểm tra
-                                    ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu.
-                                    TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG:
-                                    Sửa màu/size/số lượng hoặc xóa dòng giỏ. remove = true hoặc
-                                    quantity = 0 thì Remove; khi đổi biến thể trùng dòng khác thì
-                                    gộp lượng. Kiểm tra tổng gộp không vượt 20/tồn trước khi lưu
-                                    Session.Các thuộc tính data-* nối form với sự kiện JavaScript
-                                    trong wwwroot/js.
-                                *@
+
                                 <form
                                     asp-action="UpdateCart"
                                     method="post"

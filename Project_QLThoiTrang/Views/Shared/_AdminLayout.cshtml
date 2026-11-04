@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Khung quản trị với điều hướng theo vai trò, thông báo và vùng RenderBody. Hiển thị
-    menu theo quyền không thay thế bộ lọc quyền trong AdminExtensions. Partial/layout được trang cha
-    gọi; không tự tạo URL/action riêng.
-*@
-
 @using Project_QLThoiTrang.Services
 @inject StoreService Store
 @{
@@ -25,11 +19,7 @@
                     @name
                     <span>STORE WORKSPACE</span>
                 </a>
-                @*
-                    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminNavigation.cshtml. Các liên kết quản
-                    trị theo vai trò; mỗi href trỏ tới controller/action tương ứng. Thêm mục menu
-                    không tự cấp quyền server.
-                *@
+
                 <partial name="_AdminNavigation"/>
                 <div class="sidebar-bottom">
                     <span>SQL SERVER · QOANH</span>
@@ -44,14 +34,8 @@
                     </div>
                     <div class="actions">
                         <a href="/Account" class="button-secondary compact">@User.Identity?.Name</a>
-                        @*
-                            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới
-                            /Account/Logout. Controller nhận dữ liệu và kiểm tra ModelState/quyền;
-                            service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo token
-                            chống CSRF khi áp dụng. CHỨC NĂNG: Nhận POST của tài khoản đã đăng nhập:
-                            ghi thời điểm đăng xuất, xóa Session và cookie rồi quay về trang chủ.Các
-                            thuộc tính data-* nối form với sự kiện JavaScript trong wwwroot/js.
-                        *@
+                        <a href="/Account/Password" class="button-secondary compact">Đổi mật khẩu</a>
+
                         <form
                             asp-controller="Account"
                             asp-action="Logout"
@@ -63,11 +47,7 @@
                     </div>
                 </header>
                 <main class="admin-content">
-                    @*
-                        THÀNH PHẦN DÙNG CHUNG: Views/Shared/_Messages.cshtml. Hiển thị TempData
-                        Success/Error sau chuyển hướng; dữ liệu lỗi/thành công do controller đặt,
-                        không tự thay đổi database.
-                    *@
+
                     <partial name="_Messages"/>
                     <div class="page-heading">
                         <div>

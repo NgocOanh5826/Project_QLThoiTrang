@@ -1,8 +1,3 @@
-// VAI TRÒ FILE: Mapping EF cho chat, OTP, giá vốn, công nợ và vận đơn; tên bảng đều được khai báo
-// trong ToTable bên
-// dưới.
-// TRA CỨU: HUONG_DAN_CODE.md ở thư mục gốc có đường dẫn và bảng chức năng.
-
 using Microsoft.EntityFrameworkCore;
 using Project_QLThoiTrang.Data.Native;
 using Project_QLThoiTrang.Models;
@@ -11,52 +6,15 @@ namespace Project_QLThoiTrang.Data;
 
 public partial class StoreDbContext
 {
-    // THUỘC TÍNH StoreDbContext.ChatThreads (DbSet<ChatThread>): cửa truy cập EF tới tập entity
-    // ChatThread; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<ChatThread> ChatThreads => Set<ChatThread>();
-    // THUỘC TÍNH StoreDbContext.ChatMessages (DbSet<ChatMessage>): cửa truy cập EF tới tập entity
-    // ChatMessage; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
-    // THUỘC TÍNH StoreDbContext.ResetCodes (DbSet<ResetCode>): cửa truy cập EF tới tập entity
-    // ResetCode; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<ResetCode> ResetCodes => Set<ResetCode>();
-    // THUỘC TÍNH StoreDbContext.InventoryValues (DbSet<InventoryValue>): cửa truy cập EF tới tập
-    // entity InventoryValue; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<InventoryValue> InventoryValues => Set<InventoryValue>();
-    // THUỘC TÍNH StoreDbContext.SupplierAccounts (DbSet<SupplierAccount>): cửa truy cập EF tới tập
-    // entity SupplierAccount; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<SupplierAccount> SupplierAccounts => Set<SupplierAccount>();
-    // THUỘC TÍNH StoreDbContext.SupplierPayments (DbSet<SupplierPayment>): cửa truy cập EF tới tập
-    // entity SupplierPayment; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<SupplierPayment> SupplierPayments => Set<SupplierPayment>();
-    // THUỘC TÍNH StoreDbContext.Shipments (DbSet<Shipment>): các vận đơn được Load vào ảnh
-    // StoreData, dùng kiểm tra trạng thái GHN liên quan tới đơn.
     public DbSet<Shipment> Shipments => Set<Shipment>();
 
-    // HÀM MapFeatures: Ánh xạ chat, OTP, giá vốn, công nợ và GHN sang bảng QOANH_*; cấu hình khóa
-    // ngoại Restrict và chỉ mục duy nhất để chống trùng token/chứng từ/mã vận đơn.
-    // THAM SỐ b (ModelBuilder): ModelBuilder của EF, dùng khai báo bảng, cột, khóa, chỉ mục và quan
-    // hệ; không chứa dữ liệu người dùng.
-    // TRẢ VỀ (void): không trả dữ liệu; hoàn tất tác động được mô tả ở nhiệm vụ hàm. Ngoại lệ báo
-    // lỗi cho caller.
-    // BIẾN LAMBDA x (ChatThread): hội thoại của một khách, chứa mốc đã đọc của khách và nhân viên;
-    // tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (ChatMessage): tin nhắn gồm người gửi, nội dung, thời gian và token chống gửi
-    // trùng; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (ResetCode): bản ghi OTP chỉ giữ hash, stamp mật khẩu, hạn dùng, số lần thử và
-    // trạng thái sử dụng; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (InventoryValue): bản ghi giá vốn bình quân của một biến thể; giá null nghĩa là
-    // chưa xác định; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (SupplierAccount): số phải trả đã đối soát của một phiếu nhập; tên này chỉ có
-    // nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (SupplierPayment): chứng từ chi thực tế cho công nợ nhà cung cấp; tên này chỉ
-    // có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (Shipment): yêu cầu/vận đơn GHN đã lưu, gồm mã đơn, request hash, trạng thái và
-    // mã vận đơn; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (DonHangRow): entity của bảng DonHang, đầu đơn hàng SQL; tên này chỉ có nghĩa
-    // trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (ChiTietDonHangRow): entity của bảng ChiTietDonHang, các dòng hàng đã mua; tên
-    // này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
+    // MapFeatures: Ánh xạ các bảng chức năng mở rộng.
     static void MapFeatures(ModelBuilder b)
     {
         b.Entity<ChatThread>().ToTable("QOANH_ChatThreads").HasKey(x => x.CustomerId);

@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Thanh tìm kiếm/lọc danh sách quản trị dùng lại qua partial; thuộc tính data-* kết
-    nối với bộ xử lý lọc trong wwwroot/js/site.js. Partial/layout được trang cha gọi; không tự tạo
-    URL/action riêng.
-*@
-
 @{
     var filters = ViewData["TableFilters"] as IEnumerable<AdminListFilter> ?? (
     ViewData["FilterStatus"] is true ? new[]

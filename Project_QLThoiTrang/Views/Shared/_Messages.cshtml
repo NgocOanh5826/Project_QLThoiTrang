@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Hiển thị TempData Success/Error sau chuyển hướng; dữ liệu lỗi/thành công do
-    controller đặt, không tự thay đổi database. Partial/layout được trang cha gọi; không tự tạo
-    URL/action riêng.
-*@
-
 @if (TempData["Success"] is string success)
 {
     <div class="notice success" role="status">@success</div>

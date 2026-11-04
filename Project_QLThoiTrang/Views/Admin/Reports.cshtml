@@ -1,10 +1,3 @@
-@*
-    VAI TRÒ VIEW: Chọn khoảng ngày báo cáo từ bộ lọc nhanh hoặc from/to; ngày bắt đầu sau ngày kết
-    thúc thì trả danh sách rỗng kèm lỗi. DỮ LIỆU MODEL: List<Order>. ĐIỂM XỬ LÝ:
-    Controllers/AdminController.cs và AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload
-    GET/POST.
-*@
-
 @model List<Order>
 @inject Project_QLThoiTrang.Services.StoreService Store
 @{
@@ -17,17 +10,9 @@
     0, (o.Subtotal == 0 ? 0 : decimal.Round(l.Price * l.Quantity * (o.Subtotal - o.Discount) / o
     .Subtotal, 2)) - returns.Where(r => r.OrderLineId == l.Id).Sum(r => r.Refund)) })).ToList();
 }
-@*
-    FORM GET: gửi các ô input/select/textarea theo thuộc tính name tới /Admin/Reports. Các giá trị
-    được gửi trong query string để đọc/lọc dữ liệu. CHỨC NĂNG: Chọn khoảng ngày báo cáo từ bộ lọc
-    nhanh hoặc from/to; ngày bắt đầu sau ngày kết thúc thì trả danh sách rỗng kèm lỗi.Các thuộc tính
-    data-* nối form với sự kiện JavaScript trong wwwroot/js.
-*@
+
 <form method="get" class="filter-bar admin-list-toolbar" data-admin-date-filter>
-    @*
-        THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminDatePeriod.cshtml. Các mốc thời gian nhanh cho báo
-        cáo/danh sách; controller chuyển period thành from/to, JavaScript gửi lại form khi thay đổi.
-    *@
+
     <partial name="_AdminDatePeriod"/>
     <label>
         Từ ngày

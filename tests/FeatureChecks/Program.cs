@@ -27,8 +27,8 @@ var config = new ConfigurationBuilder()
         {
             { "BankTransfer:Enabled", "true" },
             { "BankTransfer:QrImage", "/images/payments/transfer-qr.png" },
-            { "Smtp:Host", "fake.test" },
-            { "Smtp:From", "no-reply@example.test" },
+            { "EmailApi:ApiKey", "re_fake_test_key" },
+            { "EmailApi:From", "no-reply@example.test" },
             { "PasswordReset:HashKey", "test-only-secret-with-more-than-32-characters" },
             { "Ghn:Enabled", "true" },
             { "Ghn:Token", "FAKE-NOT-A-CREDENTIAL" },
@@ -654,9 +654,9 @@ class FakeMail : IMailSender
 {
     public string Code = "";
 
-    // CHỨC NĂNG: Gửi OTP qua SMTP TLS tới email được truyền vào; triển khai thật dùng
+    // CHỨC NĂNG: Giả lập gửi OTP qua API tới email được truyền vào; triển khai thật dùng
 
-    // SmtpMailSender, kiểm thử có
+    // ResendMailSender, kiểm thử có
     // thể thay bằng IMailSender giả lập.
     public Task SendCode(string email, string code, CancellationToken token)
     {

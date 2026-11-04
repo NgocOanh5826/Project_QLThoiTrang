@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Project_QLThoiTrang.Models;
@@ -5,87 +6,117 @@ using Project_QLThoiTrang.Services;
 
 namespace Project_QLThoiTrang.Controllers;
 
-// THAM SỐ KHỞI TẠO recovery (PasswordRecovery): PasswordRecovery phối hợp phát OTP, gửi mail và đổi
-// mật khẩu; do DI hoặc nơi gọi constructor truyền vào.
+[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
 public class RecoveryController(PasswordRecovery recovery) : Controller
 {
-    // HÀM Forgot: Mở form quên mật khẩu, ViewBag.Ready cho biết SMTP/khóa OTP đã cấu hình hay chưa.
-    // ĐẦU VÀO: không có tham số trực tiếp; đọc trạng thái/service trong phạm vi lớp nếu thân hàm sử
-    // dụng.
-    // TRẢ VỀ (IActionResult): phản hồi HTTP của MVC: View/JSON/File/chuyển hướng hoặc mã lỗi theo
-    // các nhánh return; caller là pipeline HTTP của ASP.NET Core.
-    // ĐIỂM VÀO: GET /Recovery/Forgot. Tham số hàm: ().
-    // GIAO DIỆN: Project_QLThoiTrang/Views/Recovery/Forgot.cshtml.
+    // Forgot: Hiển thị form gửi OTP qua email và đặt lại mật khẩu.
     public IActionResult Forgot()
     {
-        ViewBag.Ready = recovery.Ready;
-        return View(new ForgotInput());
+        SetChannelAvailability();
+        return View(
+            new ResetInput
+            {
+                Contact = TempData.Peek("RecoveryContact") as string ?? "",
+                Channel = "email",
+            }
+        );
     }
 
-    // HÀM Forgot: Kiểm tra email rồi yêu cầu gửi OTP qua PasswordRecovery; thông báo chung không
-    // xác nhận email có trong hệ thống. Áp dụng policy login để giới hạn yêu cầu.
-    // THAM SỐ input (ForgotInput): đối tượng nhận dữ liệu form; thuộc tính được bind theo
-    // name/asp-for, không được coi là đã hợp lệ trước ModelState và service.
-    // THAM SỐ cancellationToken (CancellationToken): tín hiệu hủy tác vụ từ request/caller; truyền
-    // xuống I/O để dừng khi yêu cầu bị hủy.
-    // TRẢ VỀ (Task<IActionResult>): phản hồi HTTP của MVC: View/JSON/File/chuyển hướng hoặc mã lỗi
-    // theo các nhánh return; Task bao kết quả vì có thao tác chờ bất đồng bộ.
-    // ĐIỂM VÀO: POST /Recovery/Forgot. Tham số hàm: (ForgotInput input, CancellationToken
-    // cancellationToken).
-    // GIAO DIỆN: Project_QLThoiTrang/Views/Recovery/Forgot.cshtml.
+    // Forgot: Yêu cầu gửi OTP tới email đã đăng ký.
     [HttpPost, EnableRateLimiting("login")]
     public async Task<IActionResult> Forgot(ForgotInput input, CancellationToken cancellationToken)
     {
-        ViewBag.Ready = recovery.Ready;
-        // DỮ LIỆU FORM: DataAnnotations hoặc lỗi binding chưa hợp lệ; nhánh này dừng xử lý để không
-        // lưu dữ liệu
-        // sai.
+        SetChannelAvailability();
         if (!ModelState.IsValid)
-            return View(input);
-        await recovery.Request(input.Email, cancellationToken);
-        TempData["Success"] = (
-            "Nếu email thuộc tài khoản khách hàng đang hoạt động, mã "
-            + "OTP sẽ được gửi khi dịch vụ email đã cấu hình."
-        );
-        return RedirectToAction(nameof(Reset));
+        {
+            if (WantsJson())
+                return BadRequest(new { message = "Kiểm tra lại email đã đăng ký." });
+            return View(new ResetInput { Contact = input.Contact, Channel = input.Channel });
+        }
+        if (!await recovery.Request(input, cancellationToken))
+        {
+            ModelState.AddModelError(
+                "",
+                "Chức năng gửi email chưa sẵn sàng. Vui lòng liên hệ hỗ trợ."
+            );
+            if (WantsJson())
+                return StatusCode(
+                    StatusCodes.Status503ServiceUnavailable,
+                    new { message = "Chức năng gửi email chưa sẵn sàng. Vui lòng liên hệ hỗ trợ." }
+                );
+            return View(new ResetInput { Contact = input.Contact, Channel = input.Channel });
+        }
+        TempData["RecoveryContact"] = input.Contact.Trim();
+        TempData["RecoveryChannel"] = input.Channel;
+        TempData["RecoveryRequestedAt"] = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+        const string message =
+            "Nếu thông tin khớp tài khoản khách hàng đang hoạt động, mã OTP sẽ được gửi. "
+            + "Nhập mã nhận được bên dưới. Mã có hiệu lực 10 phút.";
+        if (WantsJson())
+            return Json(new { message, resendAfter = 60 });
+        TempData["Success"] = message;
+        return RedirectToAction(nameof(Forgot));
     }
 
-    // HÀM Reset: Mở form nhập email, OTP và mật khẩu mới.
-    // ĐẦU VÀO: không có tham số trực tiếp; đọc trạng thái/service trong phạm vi lớp nếu thân hàm sử
-    // dụng.
-    // TRẢ VỀ (IActionResult): phản hồi HTTP của MVC: View/JSON/File/chuyển hướng hoặc mã lỗi theo
-    // các nhánh return; caller là pipeline HTTP của ASP.NET Core.
-    // ĐIỂM VÀO: GET /Recovery/Reset. Tham số hàm: ().
-    // GIAO DIỆN: Project_QLThoiTrang/Views/Recovery/Reset.cshtml.
-    public IActionResult Reset() => View(new ResetInput());
+    // Reset: Hiển thị form xác minh OTP và mật khẩu mới.
+    public IActionResult Reset() =>
+        View(
+            new ResetInput
+            {
+                Contact = TempData["RecoveryContact"] as string ?? "",
+                Channel = "email",
+            }
+        );
 
-    // HÀM Reset: Kiểm tra mẫu và hoàn tất khôi phục; OTP không hợp lệ/hết hạn/hết số lần thử thì
-    // trả lại form, thành công chuyển sang đăng nhập.
-    // THAM SỐ input (ResetInput): đối tượng nhận dữ liệu form; thuộc tính được bind theo
-    // name/asp-for, không được coi là đã hợp lệ trước ModelState và service.
-    // TRẢ VỀ (IActionResult): phản hồi HTTP của MVC: View/JSON/File/chuyển hướng hoặc mã lỗi theo
-    // các nhánh return; caller là pipeline HTTP của ASP.NET Core.
-    // ĐIỂM VÀO: POST /Recovery/Reset. Tham số hàm: (ResetInput input).
-    // GIAO DIỆN: Project_QLThoiTrang/Views/Recovery/Reset.cshtml.
+    // Reset: Xác minh OTP, đặt mật khẩu mới và đăng xuất.
     [HttpPost, EnableRateLimiting("login")]
-    public IActionResult Reset(ResetInput input)
+    public async Task<IActionResult> Reset(ResetInput input, bool inline = false)
     {
-        // DỮ LIỆU FORM: DataAnnotations hoặc lỗi binding chưa hợp lệ; nhánh này dừng xử lý để không
-        // lưu dữ liệu
-        // sai.
         if (!ModelState.IsValid)
-            return View(input);
-        // KIỂM TRA FORM: nhánh này thêm lỗi ", "; ModelState sẽ ngăn bước lưu bên dưới.
+            return ResetForm(input, inline);
         if (!recovery.Complete(input))
         {
             ModelState.AddModelError(
                 "",
-                "Mã không hợp lệ, hết hạn hoặc chức năng email chưa sẵn sàng."
+                "Mã OTP không hợp lệ, hết hạn hoặc đã hết số lần thử. Kiểm tra email, "
+                    + "hoặc yêu cầu mã mới."
             );
-            return View(input);
+            return ResetForm(input, inline);
         }
-
-        TempData["Success"] = "Đã đặt lại mật khẩu. Vui lòng đăng nhập.";
+        HttpContext.Session.Clear();
+        if (User.Identity?.IsAuthenticated == true)
+            await HttpContext.SignOutAsync();
+        TempData.Remove("RecoveryContact");
+        TempData.Remove("RecoveryChannel");
+        TempData.Remove("RecoveryRequestedAt");
+        TempData["Success"] = "Đã đặt lại mật khẩu. Đăng nhập bằng mật khẩu mới.";
         return RedirectToAction("Login", "Account");
     }
+
+    // SetChannelAvailability: Cập nhật trạng thái gửi email và thời gian chờ gửi lại.
+    void SetChannelAvailability()
+    {
+        ViewBag.EmailReady = recovery.EmailReady;
+        ViewBag.ResendSeconds = long.TryParse(
+            TempData.Peek("RecoveryRequestedAt") as string,
+            out var requestedAt
+        )
+            ? (int)Math.Clamp(60 - (DateTimeOffset.UtcNow.ToUnixTimeSeconds() - requestedAt), 0, 60)
+            : 0;
+    }
+
+    // ResetForm: Hiển thị lại form tương ứng khi xác minh thất bại.
+    IActionResult ResetForm(ResetInput input, bool inline)
+    {
+        if (!inline)
+            return View("Reset", input);
+        SetChannelAvailability();
+        return View("Forgot", input);
+    }
+
+    // WantsJson: Kiểm tra yêu cầu có cần phản hồi JSON.
+    bool WantsJson() =>
+        Request.Headers.Accept.Any(value =>
+            value?.Contains("application/json", StringComparison.OrdinalIgnoreCase) == true
+        );
 }

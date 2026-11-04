@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Các liên kết quản trị theo vai trò; mỗi href trỏ tới controller/action tương ứng.
-    Thêm mục menu không tự cấp quyền server. Partial/layout được trang cha gọi; không tự tạo
-    URL/action riêng.
-*@
-
 @{
     var current = ViewContext.RouteData.Values["action"]?.ToString();
     var kind = ViewData["ReferenceKind"]?.ToString() ?? Context.Request.Query["kind"].ToString();

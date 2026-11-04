@@ -1,8 +1,3 @@
-// VAI TRÒ FILE: Ánh xạ entity *Row tới đúng bảng SQL, khóa chính/ngoại, kiểu và chỉ mục. Thay
-// mapping phải khớp
-// schema triển khai; thêm/sửa nghiệp vụ ở service/controller.
-// TRA CỨU: HUONG_DAN_CODE.md ở thư mục gốc có đường dẫn và bảng chức năng.
-
 using Microsoft.EntityFrameworkCore;
 using Project_QLThoiTrang.Data.Native;
 
@@ -10,182 +5,36 @@ namespace Project_QLThoiTrang.Data;
 
 public partial class StoreDbContext
 {
-    // THUỘC TÍNH StoreDbContext.KhachHang (DbSet<KhachHangRow>): cửa truy cập EF tới tập entity
-    // KhachHangRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<KhachHangRow> KhachHang => Set<KhachHangRow>();
-    // THUỘC TÍNH StoreDbContext.NhanVien (DbSet<NhanVienRow>): cửa truy cập EF tới tập entity
-    // NhanVienRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<NhanVienRow> NhanVien => Set<NhanVienRow>();
-    // THUỘC TÍNH StoreDbContext.LichSuDangNhap (DbSet<LichSuDangNhapRow>): cửa truy cập EF tới tập
-    // entity LichSuDangNhapRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<LichSuDangNhapRow> LichSuDangNhap => Set<LichSuDangNhapRow>();
-    // THUỘC TÍNH StoreDbContext.DanhMuc (DbSet<DanhMucRow>): cửa truy cập EF tới tập entity
-    // DanhMucRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<DanhMucRow> DanhMuc => Set<DanhMucRow>();
-    // THUỘC TÍNH StoreDbContext.ThuongHieu (DbSet<ThuongHieuRow>): cửa truy cập EF tới tập entity
-    // ThuongHieuRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<ThuongHieuRow> ThuongHieu => Set<ThuongHieuRow>();
-    // THUỘC TÍNH StoreDbContext.SanPham (DbSet<SanPhamRow>): cửa truy cập EF tới tập entity
-    // SanPhamRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<SanPhamRow> SanPham => Set<SanPhamRow>();
-    // THUỘC TÍNH StoreDbContext.KichThuoc (DbSet<KichThuocRow>): tên size chụp trên dòng đơn.
     public DbSet<KichThuocRow> KichThuoc => Set<KichThuocRow>();
-    // THUỘC TÍNH StoreDbContext.MauSac (DbSet<MauSacRow>): tên màu chụp trên dòng đơn.
     public DbSet<MauSacRow> MauSac => Set<MauSacRow>();
-    // THUỘC TÍNH StoreDbContext.BienTheSanPham (DbSet<BienTheSanPhamRow>): cửa truy cập EF tới tập
-    // entity BienTheSanPhamRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<BienTheSanPhamRow> BienTheSanPham => Set<BienTheSanPhamRow>();
-    // THUỘC TÍNH StoreDbContext.HinhAnhSanPham (DbSet<HinhAnhSanPhamRow>): cửa truy cập EF tới tập
-    // entity HinhAnhSanPhamRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<HinhAnhSanPhamRow> HinhAnhSanPham => Set<HinhAnhSanPhamRow>();
-    // THUỘC TÍNH StoreDbContext.Kho (DbSet<KhoRow>): cửa truy cập EF tới tập entity KhoRow; ToTable
-    // trong mapping chỉ rõ tên bảng SQL.
     public DbSet<KhoRow> Kho => Set<KhoRow>();
-    // THUỘC TÍNH StoreDbContext.TonKho (DbSet<TonKhoRow>): cửa truy cập EF tới tập entity
-    // TonKhoRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<TonKhoRow> TonKho => Set<TonKhoRow>();
-    // THUỘC TÍNH StoreDbContext.NhaCungCap (DbSet<NhaCungCapRow>): cửa truy cập EF tới tập entity
-    // NhaCungCapRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<NhaCungCapRow> NhaCungCap => Set<NhaCungCapRow>();
-    // THUỘC TÍNH StoreDbContext.PhieuNhap (DbSet<PhieuNhapRow>): cửa truy cập EF tới tập entity
-    // PhieuNhapRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<PhieuNhapRow> PhieuNhap => Set<PhieuNhapRow>();
-    // THUỘC TÍNH StoreDbContext.ChiTietPhieuNhap (DbSet<ChiTietPhieuNhapRow>): cửa truy cập EF tới
-    // tập entity ChiTietPhieuNhapRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<ChiTietPhieuNhapRow> ChiTietPhieuNhap => Set<ChiTietPhieuNhapRow>();
-    // THUỘC TÍNH StoreDbContext.GioHang (DbSet<GioHangRow>): cửa truy cập EF tới tập entity
-    // GioHangRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<GioHangRow> GioHang => Set<GioHangRow>();
-    // THUỘC TÍNH StoreDbContext.ChiTietGioHang (DbSet<ChiTietGioHangRow>): cửa truy cập EF tới tập
-    // entity ChiTietGioHangRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<ChiTietGioHangRow> ChiTietGioHang => Set<ChiTietGioHangRow>();
-    // THUỘC TÍNH StoreDbContext.YeuThich (DbSet<YeuThichRow>): cửa truy cập EF tới tập entity
-    // YeuThichRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<YeuThichRow> YeuThich => Set<YeuThichRow>();
-    // THUỘC TÍNH StoreDbContext.KhuyenMai (DbSet<KhuyenMaiRow>): cửa truy cập EF tới tập entity
-    // KhuyenMaiRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<KhuyenMaiRow> KhuyenMai => Set<KhuyenMaiRow>();
-    // THUỘC TÍNH StoreDbContext.ChiTietKhuyenMai (DbSet<ChiTietKhuyenMaiRow>): cửa truy cập EF tới
-    // tập entity ChiTietKhuyenMaiRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<ChiTietKhuyenMaiRow> ChiTietKhuyenMai => Set<ChiTietKhuyenMaiRow>();
-    // THUỘC TÍNH StoreDbContext.DonHang (DbSet<DonHangRow>): cửa truy cập EF tới tập entity
-    // DonHangRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<DonHangRow> DonHang => Set<DonHangRow>();
-    // THUỘC TÍNH StoreDbContext.ChiTietDonHang (DbSet<ChiTietDonHangRow>): cửa truy cập EF tới tập
-    // entity ChiTietDonHangRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<ChiTietDonHangRow> ChiTietDonHang => Set<ChiTietDonHangRow>();
-    // THUỘC TÍNH StoreDbContext.ThanhToan (DbSet<ThanhToanRow>): cửa truy cập EF tới tập entity
-    // ThanhToanRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<ThanhToanRow> ThanhToan => Set<ThanhToanRow>();
-    // THUỘC TÍNH StoreDbContext.LichSuTrangThaiDonHang (DbSet<LichSuTrangThaiDonHangRow>): cửa truy
-    // cập EF tới tập entity LichSuTrangThaiDonHangRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<LichSuTrangThaiDonHangRow> LichSuTrangThaiDonHang =>
         Set<LichSuTrangThaiDonHangRow>();
-    // THUỘC TÍNH StoreDbContext.PhieuTraHang (DbSet<PhieuTraHangRow>): cửa truy cập EF tới tập
-    // entity PhieuTraHangRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<PhieuTraHangRow> PhieuTraHang => Set<PhieuTraHangRow>();
-    // THUỘC TÍNH StoreDbContext.ChiTietTraHang (DbSet<ChiTietTraHangRow>): cửa truy cập EF tới tập
-    // entity ChiTietTraHangRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<ChiTietTraHangRow> ChiTietTraHang => Set<ChiTietTraHangRow>();
-    // THUỘC TÍNH StoreDbContext.DanhGia (DbSet<DanhGiaRow>): cửa truy cập EF tới tập entity
-    // DanhGiaRow; ToTable trong mapping chỉ rõ tên bảng SQL.
     public DbSet<DanhGiaRow> DanhGia => Set<DanhGiaRow>();
 
-    // HÀM MapNative: Ánh xạ các lớp *Row sang bảng/cột SQL gốc và các khóa/chỉ mục/quan hệ; đây là
-    // nơi tra tên bảng thật khi cần hiểu dữ liệu được lưu ở đâu.
-    // THAM SỐ b (ModelBuilder): ModelBuilder của EF, dùng khai báo bảng, cột, khóa, chỉ mục và quan
-    // hệ; không chứa dữ liệu người dùng.
-    // TRẢ VỀ (void): không trả dữ liệu; hoàn tất tác động được mô tả ở nhiệm vụ hàm. Ngoại lệ báo
-    // lỗi cho caller.
-    // BIẾN LAMBDA x (KhachHangRow): entity của bảng KhachHang, dữ liệu khách hàng; tên này chỉ có
-    // nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<KhachHangRow>): TableBuilder<KhachHangRow>; tên này chỉ có nghĩa
-    // trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (NhanVienRow): entity của bảng NhanVien, dữ liệu nhân viên và chức vụ; tên này
-    // chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<NhanVienRow>): TableBuilder<NhanVienRow>; tên này chỉ có nghĩa
-    // trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (LichSuDangNhapRow): entity của bảng LichSuDangNhap, nhật ký đăng nhập/đăng
-    // xuất; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<LichSuDangNhapRow>): TableBuilder<LichSuDangNhapRow>; tên này chỉ
-    // có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (DanhMucRow): entity của bảng DanhMuc, danh mục sản phẩm; tên này chỉ có nghĩa
-    // trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (ThuongHieuRow): entity của bảng ThuongHieu, thương hiệu; tên này chỉ có nghĩa
-    // trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (SanPhamRow): entity của bảng SanPham, thông tin sản phẩm gốc; tên này chỉ có
-    // nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<SanPhamRow>): TableBuilder<SanPhamRow>; tên này chỉ có nghĩa
-    // trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (KichThuocRow): entity của bảng KichThuoc, danh sách size; tên này chỉ có nghĩa
-    // trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (MauSacRow): entity của bảng MauSac, tên và mã màu; tên này chỉ có nghĩa trong
-    // lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (BienTheSanPhamRow): entity của bảng BienTheSanPham, tổ hợp sản phẩm/size/màu
-    // và SKU; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<BienTheSanPhamRow>): TableBuilder<BienTheSanPhamRow>; tên này chỉ
-    // có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (HinhAnhSanPhamRow): entity của bảng HinhAnhSanPham, ảnh gắn với sản phẩm; tên
-    // này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (KhoRow): entity của bảng Kho, thông tin kho; tên này chỉ có nghĩa trong lambda
-    // tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (TonKhoRow): entity của bảng TonKho, tồn của từng biến thể tại từng kho; tên
-    // này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<TonKhoRow>): TableBuilder<TonKhoRow>; tên này chỉ có nghĩa trong
-    // lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (NhaCungCapRow): entity của bảng NhaCungCap, thông tin đối tác cung cấp hàng;
-    // tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (PhieuNhapRow): entity của bảng PhieuNhap, đầu phiếu nhập kho; tên này chỉ có
-    // nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<PhieuNhapRow>): TableBuilder<PhieuNhapRow>; tên này chỉ có nghĩa
-    // trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (ChiTietPhieuNhapRow): entity của bảng ChiTietPhieuNhap, số lượng và giá nhập
-    // từng biến thể; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<ChiTietPhieuNhapRow>): TableBuilder<ChiTietPhieuNhapRow>; tên này
-    // chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (GioHangRow): entity của bảng GioHang, đầu giỏ theo khách; tên này chỉ có nghĩa
-    // trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (ChiTietGioHangRow): entity của bảng ChiTietGioHang, các dòng biến thể trong
-    // giỏ; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<ChiTietGioHangRow>): TableBuilder<ChiTietGioHangRow>; tên này chỉ
-    // có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (YeuThichRow): entity của bảng YeuThich, liên kết khách với sản phẩm yêu thích;
-    // tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (KhuyenMaiRow): entity của bảng KhuyenMai, cấu hình ưu đãi; tên này chỉ có
-    // nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<KhuyenMaiRow>): TableBuilder<KhuyenMaiRow>; tên này chỉ có nghĩa
-    // trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (ChiTietKhuyenMaiRow): entity của bảng ChiTietKhuyenMai, liên kết ưu đãi với
-    // sản phẩm; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (DonHangRow): entity của bảng DonHang, đầu đơn hàng SQL; tên này chỉ có nghĩa
-    // trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<DonHangRow>): TableBuilder<DonHangRow>; tên này chỉ có nghĩa
-    // trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (ChiTietDonHangRow): entity của bảng ChiTietDonHang, các dòng hàng đã mua; tên
-    // này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<ChiTietDonHangRow>): TableBuilder<ChiTietDonHangRow>; tên này chỉ
-    // có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (ThanhToanRow): entity của bảng ThanhToan, thông tin phương thức/trạng thái
-    // thanh toán gốc; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<ThanhToanRow>): TableBuilder<ThanhToanRow>; tên này chỉ có nghĩa
-    // trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (LichSuTrangThaiDonHangRow): entity của bảng LichSuTrangThaiDonHang, các mốc
-    // đổi trạng thái; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<LichSuTrangThaiDonHangRow>):
-    // TableBuilder<LichSuTrangThaiDonHangRow>; tên này chỉ có nghĩa trong lambda tương ứng, không
-    // phải biến toàn cục.
-    // BIẾN LAMBDA x (PhieuTraHangRow): entity của bảng PhieuTraHang, đầu phiếu trả; tên này chỉ có
-    // nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<PhieuTraHangRow>): TableBuilder<PhieuTraHangRow>; tên này chỉ có
-    // nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (ChiTietTraHangRow): entity của bảng ChiTietTraHang, các dòng trả và số tiền
-    // hoàn; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<ChiTietTraHangRow>): TableBuilder<ChiTietTraHangRow>; tên này chỉ
-    // có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA x (DanhGiaRow): entity của bảng DanhGia, nội dung/sao/trạng thái đánh giá; tên
-    // này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // BIẾN LAMBDA t (TableBuilder<DanhGiaRow>): TableBuilder<DanhGiaRow>; tên này chỉ có nghĩa
-    // trong lambda tương ứng, không phải biến toàn cục.
+    // MapNative: Ánh xạ các bảng SQL gốc.
     void MapNative(ModelBuilder b)
     {
         b.Entity<KhachHangRow>().ToTable("KhachHang");

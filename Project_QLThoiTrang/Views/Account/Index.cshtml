@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Tài khoản đã đăng nhập xem hồ sơ của chính mình; lấy id từ claim, không lấy id
-    người khác từ form. DỮ LIỆU MODEL: ProfileInput. ĐIỂM XỬ LÝ: Controllers/AccountController.cs;
-    tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
-*@
-
 @model ProfileInput
 @{
     ViewData["Title"] = "Tài khoản của tôi";
@@ -14,33 +8,16 @@
             <p class="eyebrow">KHÔNG GIAN CỦA BẠN</p>
             <h1>Xin chào, @Model.Name</h1>
         </div>
-        @*
-            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Account/Logout.
-            asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
-            ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo
-            token chống CSRF khi áp dụng. CHỨC NĂNG: Nhận POST của tài khoản đã đăng nhập: ghi thời
-            điểm đăng xuất, xóa Session và cookie rồi quay về trang chủ.Các thuộc tính data-* nối
-            form với sự kiện JavaScript trong wwwroot/js.
-        *@
+
         <form asp-action="Logout" method="post" data-confirm="Bạn có chắc muốn đăng xuất không?">
             <button class="button-secondary">Đăng xuất</button>
         </form>
     </div>
     <div class="checkout-grid">
-        @*
-            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Account/Index.
-            asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
-            ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo
-            token chống CSRF khi áp dụng. CHỨC NĂNG: Sửa tên/điện thoại/địa chỉ của chính tài khoản
-            sau khi ModelState hợp lệ; Write kiểm tra dữ liệu rồi cấp lại cookie để tên hiển thị
-            được cập nhật.
-        *@
+
         <form asp-action="Index" method="post" class="panel form-stack">
             <h2>Thông tin cá nhân</h2>
-            @*
-                THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc
-                controller thêm; sửa ô bị lỗi rồi gửi lại form.
-            *@
+
             <div asp-validation-summary="All" class="validation"></div>
             <label>
                 Họ tên
@@ -124,11 +101,7 @@
                     </span>
                     <i class="bi bi-chevron-right quick-arrow" aria-hidden="true"></i>
                 </a>
-                @*
-                    ĐIỀU KIỆN HIỂN THỊ: phần bên dưới chỉ xuất hiện khi trạng thái đăng nhập/vai trò
-                    thỏa biểu thức if. Quyền thực hiện thao tác vẫn phải được controller/service
-                    kiểm tra.
-                *@
+
                 @if (User.IsInRole("Admin"))
                 {
                     <a href="/Admin" class="quick-link quick-link-admin">
@@ -153,14 +126,7 @@
                     <i class="bi bi-chevron-right quick-arrow" aria-hidden="true"></i>
                 </a>
             </nav>
-            @*
-                FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Account/Logout.
-                asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
-                ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo
-                token chống CSRF khi áp dụng. CHỨC NĂNG: Nhận POST của tài khoản đã đăng nhập: ghi
-                thời điểm đăng xuất, xóa Session và cookie rồi quay về trang chủ.Các thuộc tính
-                data-* nối form với sự kiện JavaScript trong wwwroot/js.
-            *@
+
             <form
                 asp-controller="Account"
                 asp-action="Logout"

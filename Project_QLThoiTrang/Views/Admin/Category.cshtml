@@ -1,26 +1,11 @@
-@*
-    VAI TRÒ VIEW: Mở form thêm danh mục với tên ban đầu rỗng. DỮ LIỆU MODEL: string. ĐIỂM XỬ LÝ:
-    Controllers/AdminController.cs và AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload
-    GET/POST.
-*@
-
 @model string
 @{
     ViewData["Title"] = "Thêm danh mục sản phẩm";
 }
 <div class="admin-form-page">
-    @*
-        FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Admin/Category.
-        Controller nhận dữ liệu và kiểm tra ModelState/quyền; service kiểm tra nghiệp vụ trước khi
-        lưu. TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG: Thêm danh mục sau khi
-        trim, yêu cầu tên 2–50 ký tự và không trùng không phân biệt hoa/thường; hợp lệ thì thêm vào
-        d.Categories trong Write.
-    *@
+
     <form asp-action="Category" method="post" class="panel form-stack">
-        @*
-            THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc
-            controller thêm; sửa ô bị lỗi rồi gửi lại form.
-        *@
+
         <div asp-validation-summary="All" class="validation"></div>
         <label>
             Tên danh mục

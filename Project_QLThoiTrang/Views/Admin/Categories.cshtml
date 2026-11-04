@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Mở danh sách danh mục và dữ liệu liên quan để kiểm tra danh mục đang được sản phẩm
-    sử dụng. DỮ LIỆU MODEL: StoreData. ĐIỂM XỬ LÝ: Controllers/AdminController.cs và
-    AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
-*@
-
 @model StoreData
 @{
     ViewData["Title"] = "Danh mục sản phẩm";
@@ -17,10 +11,7 @@
     "Chưa có sản phẩm"))
     };
 }
-@*
-    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminListToolbar.cshtml. Thanh tìm kiếm/lọc danh sách quản
-    trị dùng lại qua partial; thuộc tính data-* kết nối với bộ xử lý lọc trong wwwroot/js/site.js.
-*@
+
 <partial name="_AdminListToolbar"/>
 <div class="panel table-scroll">
     <table class="data-table">
@@ -44,16 +35,7 @@
                     <td>@Model.Products.Count(p => p.Category == category)</td>
                     <td class="table-actions-cell">
                         <div class="table-actions">
-                            @*
-                                FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới
-                                /Admin/DeleteCategory. Controller nhận dữ liệu và kiểm tra
-                                ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu.
-                                TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG: Xóa
-                                danh mục bằng POST; nếu có bất kỳ sản phẩm nào đang thuộc danh mục
-                                thì báo lỗi và giữ lại, ngược lại Remove khỏi d.Categories để
-                                PersistNative đồng bộ.Các thuộc tính data-* nối form với sự kiện
-                                JavaScript trong wwwroot/js.
-                            *@
+
                             <form
                                 asp-action="DeleteCategory"
                                 method="post"

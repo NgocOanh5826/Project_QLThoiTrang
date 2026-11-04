@@ -1,20 +1,8 @@
-@*
-    VAI TRÒ VIEW: Danh sách sản phẩm; lọc theo từ khóa tên/màu, danh mục, thương hiệu và trạng thái;
-    chuẩn bị các lựa chọn bộ lọc trong ViewBag. DỮ LIỆU MODEL: List<Product>. ĐIỂM XỬ LÝ:
-    Controllers/AdminController.cs và AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload
-    GET/POST.
-*@
-
 @model List<Product>
 @{
     ViewData["Title"] = "Quản lý sản phẩm";
 }
-@*
-    FORM GET: gửi các ô input/select/textarea theo thuộc tính name tới /Admin/Products. Các giá trị
-    được gửi trong query string để đọc/lọc dữ liệu. CHỨC NĂNG: Danh sách sản phẩm; lọc theo từ khóa
-    tên/màu, danh mục, thương hiệu và trạng thái; chuẩn bị các lựa chọn bộ lọc trong ViewBag.Các
-    thuộc tính data-* nối form với sự kiện JavaScript trong wwwroot/js.
-*@
+
 <form method="get" class="filter-bar admin-list-toolbar" data-admin-server-filter>
     <label class="admin-list-search">
         Tìm sản phẩm

@@ -1,12 +1,15 @@
 # QOANH quản lý cửa hàng thời trang
 
+**Quên/đổi mật khẩu:** OTP qua Resend email API, xác minh mã và đăng xuất sau đổi mật khẩu; đã bỏ SMS.
+Xem [cấu hình email API và vị trí code](delivery/PASSWORD_RECOVERY.md).
+
 **Đọc và tìm code:** [Hướng dẫn chức năng, điều kiện và vị trí thêm/sửa/xóa](HUONG_DAN_CODE.md). Source đã có comment tiếng Việt tại controller, service, model, form và JavaScript; tài liệu có chỉ mục hàm kèm đường dẫn/số dòng.
 
 **Đánh giá ảnh/video:** thêm chọn 1–5 sao và đính kèm ảnh/video. Database cũ cần sao lưu rồi chạy `delivery/Upgrade-features.sql` (đã bao gồm 08) trước khi chạy bản mới; cài mới `Deploy.sql` tự gọi đủ. Hiện có 38 bảng. Media lưu trong SQL và đi theo backup database. Giới hạn tệp, cài đặt và testcase: [REVIEW_MEDIA.md](delivery/REVIEW_MEDIA.md).
 
 **Lưu ý kết nối khi nâng cấp:** `appsettings.Development.json`, user-secrets và biến môi trường có thể ghi đè connection string trong `appsettings.json`. Trên máy hiện tại, Development dùng `.\MSSQLSERVER01` với database `QL_CuaHangThoiTrang`; mặc định của bản triển khai vẫn là `.\SQLEXPRESS`. Script `delivery/Upgrade-features.sql` sao lưu, xác minh backup và gọi nâng cấp 07 trong transaction, kiểm tra số bản ghi cũ không đổi. Chọn đúng instance đang có hiệu lực khi chạy script. Nếu schema chưa sẵn sàng, bản mới trả trang bảo trì HTTP 503 và tự kiểm tra lại sau 10 giây thay vì truy vấn các cột còn thiếu.
 
-**Bản mở rộng mới:** chat hỗ trợ, khôi phục mật khẩu qua SMTP/OTP, chuyển khoản bằng QR đã cung cấp, PDF, giá vốn/lợi nhuận/công nợ và adapter GHN. **Database đang dùng phải chạy `delivery/07-customer-finance-features.sql` và `delivery/08-review-media.sql` trước khi mở bản mới (hoặc dùng wrapper `Upgrade-features.sql`).** Xem [hướng dẫn và giới hạn](delivery/FEATURES.md). SMTP/GHN chưa có thông tin kết nối thật và mặc định chưa hoạt động; chuyển khoản chỉ xác nhận sau đối soát thủ công.
+**Bản mở rộng mới:** chat hỗ trợ, khôi phục mật khẩu qua email API/OTP, chuyển khoản bằng QR đã cung cấp, PDF, giá vốn/lợi nhuận/công nợ và adapter GHN. **Database đang dùng phải chạy `delivery/07-customer-finance-features.sql` và `delivery/08-review-media.sql` trước khi mở bản mới (hoặc dùng wrapper `Upgrade-features.sql`).** Xem [hướng dẫn và giới hạn](delivery/FEATURES.md). SMTP/GHN chưa có thông tin kết nối thật và mặc định chưa hoạt động; chuyển khoản chỉ xác nhận sau đối soát thủ công.
 
 Giao diện quản trị đã được cập nhật: menu/tab đang chọn được làm sáng; dùng nút **Thêm** hoặc **Chỉnh sửa** để mở form riêng. Trang danh sách có tìm kiếm trong bảng, lọc trạng thái ở các nhóm hỗ trợ và nút xóa bộ lọc. Chi tiết đường dẫn và kết quả kiểm thử trong `delivery/ADMIN_UI.md`. Sau khi cập nhật mã, khởi động lại web và nhấn Ctrl+F5 để tải CSS/JavaScript mới.
 

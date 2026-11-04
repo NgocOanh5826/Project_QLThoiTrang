@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Mở danh sách nhân viên hoặc chuyển sang StaffMember nếu có id cần sửa; chỉ Admin
-    được qua bộ lọc quyền action này. ĐIỂM XỬ LÝ: Controllers/AdminController.cs và
-    AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
-*@
-
 @{
     ViewData["FilterStatus"] = true;
     ViewData["Title"] = "Nhân viên và phân quyền";
@@ -19,10 +13,7 @@
     "Inventory", "Kho"), ("Sales", "Bán hàng"), ("Support", "Hỗ trợ"))
     };
 }
-@*
-    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminListToolbar.cshtml. Thanh tìm kiếm/lọc danh sách quản
-    trị dùng lại qua partial; thuộc tính data-* kết nối với bộ xử lý lọc trong wwwroot/js/site.js.
-*@
+
 <partial name="_AdminListToolbar"/>
 <div class="panel table-scroll">
     <table class="data-table">

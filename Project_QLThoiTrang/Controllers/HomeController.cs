@@ -5,40 +5,14 @@ using Project_QLThoiTrang.Services;
 
 namespace Project_QLThoiTrang.Controllers;
 
-// THAM SỐ KHỞI TẠO store (StoreService): StoreService lấy dữ liệu nghiệp vụ và kiểm tra/lưu SQL;
-// được DI cung cấp, không phải dữ liệu form; do DI hoặc nơi gọi constructor truyền vào.
 public class HomeController(StoreService store) : Controller
 {
-    // HÀM Index: Trang chủ nhận danh sách sản phẩm Active từ StoreService để hiển thị các khu vực
-    // giới thiệu hàng hóa.
-    // ĐẦU VÀO: không có tham số trực tiếp; đọc trạng thái/service trong phạm vi lớp nếu thân hàm sử
-    // dụng.
-    // TRẢ VỀ (IActionResult): phản hồi HTTP của MVC: View/JSON/File/chuyển hướng hoặc mã lỗi theo
-    // các nhánh return; caller là pipeline HTTP của ASP.NET Core.
-    // BIẾN LAMBDA d (StoreData): ảnh dữ liệu nghiệp vụ gồm sản phẩm, khách, đơn, kho và cấu hình;
-    // không phải một bảng SQL riêng; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến
-    // toàn cục.
-    // BIẾN LAMBDA p (Product): sản phẩm gồm thông tin bán, giá mặc định, trạng thái và các biến
-    // thể; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến toàn cục.
-    // ĐIỂM VÀO: GET /Home/Index. Tham số hàm: ().
-    // GIAO DIỆN: Project_QLThoiTrang/Views/Home/Index.cshtml.
+    // Index: Hiển thị trang chủ cửa hàng.
     public IActionResult Index() => View(store.Read(d => d.Products.Where(p => p.Active).ToList()));
 
-    // HÀM Info: Tra nội dung trang thông tin theo id trong bảng pages; id không được hỗ trợ trả
-    // 404, có thì ghép thông tin cửa hàng cho view.
-    // THAM SỐ id (string): khóa trang thông tin như about/contact/returns/privacy; chỉ khóa có
-    // trong pages được hiển thị. Mặc định khi không truyền: "about".
-    // TRẢ VỀ (IActionResult): phản hồi HTTP của MVC: View/JSON/File/chuyển hướng hoặc mã lỗi theo
-    // các nhánh return; caller là pipeline HTTP của ASP.NET Core.
-    // BIẾN LAMBDA d (StoreData): ảnh dữ liệu nghiệp vụ gồm sản phẩm, khách, đơn, kho và cấu hình;
-    // không phải một bảng SQL riêng; tên này chỉ có nghĩa trong lambda tương ứng, không phải biến
-    // toàn cục.
-    // ĐIỂM VÀO: GET /Home/Info. Tham số hàm: (string id = "about").
-    // GIAO DIỆN: Project_QLThoiTrang/Views/Home/Info.cshtml.
+    // Info: Hiển thị trang thông tin theo mục được chọn.
     public IActionResult Info(string id = "about")
     {
-        // BIẾN pages (Dictionary<string, (string Title, string Text)>): bảng tra khóa trang thông
-        // tin → cặp tiêu đề/nội dung được phép hiển thị.
         var pages = new Dictionary<string, (string Title, string Text)>
         {
             ["about"] = (
@@ -98,10 +72,7 @@ public class HomeController(StoreService store) : Controller
                 )
             ),
         };
-        // KHÔNG CÓ DỮ LIỆU HOẶC KHÔNG ĐƯỢC XEM: trả HTTP 404 và dừng, không tiếp tục dùng đối tượng
-        // null.
-        // BIẾN OUT info ((string Title, string Text)): cặp Title/Text của trang thông tin tìm được
-        // trong pages.
+
         if (!pages.TryGetValue(id, out var info))
             return NotFound();
         ViewData["Title"] = info.Title;
@@ -109,20 +80,10 @@ public class HomeController(StoreService store) : Controller
         return View(store.Read(d => d.Settings));
     }
 
-    // HÀM Privacy: Chuyển URL tương thích sang Info với id privacy.
-    // ĐẦU VÀO: không có tham số trực tiếp; đọc trạng thái/service trong phạm vi lớp nếu thân hàm sử
-    // dụng.
-    // TRẢ VỀ (IActionResult): phản hồi HTTP của MVC: View/JSON/File/chuyển hướng hoặc mã lỗi theo
-    // các nhánh return; caller là pipeline HTTP của ASP.NET Core.
-    // ĐIỂM VÀO: GET /Home/Privacy. Tham số hàm: ().
+    // Privacy: Hiển thị chính sách quyền riêng tư.
     public IActionResult Privacy() => RedirectToAction(nameof(Info), new { id = "privacy" });
 
-    // HÀM Error: Dựng trang lỗi với mã request để hỗ trợ tra log; không cache nội dung lỗi.
-    // ĐẦU VÀO: không có tham số trực tiếp; đọc trạng thái/service trong phạm vi lớp nếu thân hàm sử
-    // dụng.
-    // TRẢ VỀ (IActionResult): phản hồi HTTP của MVC: View/JSON/File/chuyển hướng hoặc mã lỗi theo
-    // các nhánh return; caller là pipeline HTTP của ASP.NET Core.
-    // ĐIỂM VÀO: GET /Home/Error. Tham số hàm: ().
+    // Error: Hiển thị trang báo lỗi.
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error() =>
         View(

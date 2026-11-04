@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Mở kiểm kê tồn tổng theo sản phẩm, kèm 200 biến động kho gần nhất. DỮ LIỆU MODEL:
-    List<Product>. ĐIỂM XỬ LÝ: Controllers/AdminController.cs và AdminExtensions.cs; tra
-    HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
-*@
-
 @model List<Product>
 @{
     ViewData["CreateUrl"] = "/Admin/Receive";
@@ -18,10 +12,7 @@
     ("normal", "Còn hàng (>5)"))
     };
 }
-@*
-    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminListToolbar.cshtml. Thanh tìm kiếm/lọc danh sách quản
-    trị dùng lại qua partial; thuộc tính data-* kết nối với bộ xử lý lọc trong wwwroot/js/site.js.
-*@
+
 <partial name="_AdminListToolbar"/>
 <div class="panel table-scroll">
     <table class="data-table">

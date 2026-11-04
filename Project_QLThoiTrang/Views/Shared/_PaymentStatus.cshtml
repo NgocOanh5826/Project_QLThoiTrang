@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Hiển thị trạng thái tiền đã thu/hoàn và hướng dẫn liên quan; Admin/Payment mới là
-    điểm nhận thao tác ghi nhận thu tiền. DỮ LIỆU MODEL: Order. Partial/layout được trang cha gọi;
-    không tự tạo URL/action riêng.
-*@
-
 @model Order
 <section class="panel form-stack">
     <h2>Thanh toán · @(Model.Payment == "Chuyển khoản" ? "Chuyển khoản" : "COD")</h2>
@@ -12,11 +6,7 @@
         Đã nhận: @Model.PaidAmount.ToString("N0") đ · Đã hoàn: @Model.RefundedAmount.ToString("N0")
         đ
     </p>
-    @*
-        THÀNH PHẦN DÙNG CHUNG: Views/Shared/_BankInstructions.cshtml. Hướng dẫn chuyển khoản bằng
-        ảnh QR và nội dung đã chụp trên đơn; hiển thị hướng dẫn không đồng nghĩa đã ghi nhận thanh
-        toán.
-    *@
+
     <partial name="_BankInstructions" model="Model"/>
     @if ((User.IsInRole("Admin") || User.IsInRole("Sales")) && Model.PaidAmount < Model.Total && ((
         Model.Payment == "Chuyển khoản" && Model.Status == "Chờ xác nhận") || new[]
@@ -28,13 +18,7 @@
         "Hoàn thành"
     }.Contains(Model.Status)))
     {
-        @*
-            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Admin/Payment.
-            Controller nhận dữ liệu và kiểm tra ModelState/quyền; service kiểm tra nghiệp vụ trước
-            khi lưu. TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG: Ghi nhận khoản
-            tiền đã thu cho đơn; RecordPayment kiểm tra đúng số còn thu, trạng thái đơn và mã biên
-            nhận chưa trùng.Các thuộc tính data-* nối form với sự kiện JavaScript trong wwwroot/js.
-        *@
+
         <form
             asp-controller="Admin"
             asp-action="Payment"

@@ -1,57 +1,49 @@
-@*
-    VAI TRÒ VIEW: Mở form nhập email, OTP và mật khẩu mới. DỮ LIỆU MODEL: ResetInput. ĐIỂM XỬ LÝ:
-    Controllers/RecoveryController.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
-*@
-
 @model ResetInput
 @{
     ViewData["Title"] = "Đặt lại mật khẩu";
 }
-<section class="page-section narrow">
-    <h1>Đặt lại mật khẩu</h1>
-    @*
-        FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Recovery/Reset. asp-for
-        liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra ModelState/quyền;
-        service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo token chống CSRF khi áp
-        dụng. CHỨC NĂNG: Kiểm tra mẫu và hoàn tất khôi phục; OTP không hợp lệ/hết hạn/hết số lần thử
-        thì trả lại form, thành công chuyển sang đăng nhập.
-    *@
-    <form method="post" class="panel form-stack">
-        @*
-            THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc
-            controller thêm; sửa ô bị lỗi rồi gửi lại form.
-        *@
-        <div asp-validation-summary="All" class="validation"></div>
-        <label>
-            Email
-            <input asp-for="Email" type="email" autocomplete="email" required/>
-        </label>
-        <label>
-            Mã OTP
-            <input
-                asp-for="Code"
-                inputmode="numeric"
-                autocomplete="one-time-code"
-                pattern="[0-9]{6}"
-                maxlength="6"
-                required
-            />
-        </label>
-        <label>
-            Mật khẩu mới
-            <input
-                asp-for="Password"
-                type="password"
-                autocomplete="new-password"
-                minlength="8"
-                required
-            />
-        </label>
-        <label>
-            Nhập lại mật khẩu
-            <input asp-for="ConfirmPassword" type="password" autocomplete="new-password" required/>
-        </label>
-        <button class="btn-black">Đặt lại mật khẩu</button>
-        <a href="/Recovery/Forgot">Gửi mã mới</a>
-    </form>
+<link rel="stylesheet" href="~/css/password-recovery.css" asp-append-version="true" />
+<section class="page-section recovery-page">
+    <a href="/Account/Login" class="recovery-back">← Quay lại đăng nhập</a>
+    <div class="panel recovery-card">
+        <p class="eyebrow">BƯỚC 2 · XÁC MINH TÀI KHOẢN</p>
+        <h1>Đặt lại mật khẩu</h1>
+        <p class="muted">Nhập đúng email đã yêu cầu mã OTP.</p>
+
+        <form asp-action="Reset" method="post" class="form-stack"
+              data-recovery-form data-password-validation>
+            <div asp-validation-summary="ModelOnly" class="validation" role="alert"></div>
+            <input name="Channel" value="email" type="hidden" />
+            <span asp-validation-for="Channel" class="field-error"></span>
+            <label asp-for="Contact">Email đã đăng ký</label>
+            <input asp-for="Contact" type="email" inputmode="email" autocomplete="email"
+                   maxlength="150" data-recovery-contact required />
+            <span asp-validation-for="Contact" class="field-error"></span>
+            <label asp-for="Code">Mã OTP</label>
+            <input asp-for="Code" type="text" inputmode="numeric" autocomplete="one-time-code"
+                   minlength="6" maxlength="6" pattern="[0-9]{6}" placeholder="6 chữ số"
+                   data-otp-code required />
+            <span asp-validation-for="Code" class="field-error"></span>
+            <p class="muted small">Mã có hạn 10 phút và tối đa 5 lần thử.</p>
+            <label asp-for="Password">Mật khẩu mới</label>
+            <div class="auth-input-wrap">
+                <i class="bi bi-lock" aria-hidden="true"></i>
+                <input asp-for="Password" type="password" autocomplete="new-password"
+                       minlength="8" maxlength="100" required aria-describedby="password-help" />
+                <button type="button" class="password-toggle" data-password-toggle="Password"
+                        aria-label="Hiện mật khẩu" aria-pressed="false">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                </button>
+            </div>
+            <span asp-validation-for="Password" class="field-error"></span>
+            <p id="password-help" class="muted small">8–100 ký tự, có ít nhất một chữ cái và một chữ số.</p>
+            <label asp-for="ConfirmPassword">Nhập lại mật khẩu mới</label>
+            <input asp-for="ConfirmPassword" type="password" autocomplete="new-password"
+                   minlength="8" maxlength="100" required />
+            <span asp-validation-for="ConfirmPassword" class="field-error"></span>
+            <button type="submit" class="btn-black">Đặt lại mật khẩu</button>
+        </form>
+        <p class="recovery-footer">Chưa nhận được mã? <a href="/Recovery/Forgot">Yêu cầu mã mới</a></p>
+    </div>
 </section>
+<script src="~/js/password-recovery.js" asp-append-version="true"></script>

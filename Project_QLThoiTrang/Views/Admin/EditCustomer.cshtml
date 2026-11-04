@@ -1,25 +1,10 @@
-@*
-    VAI TRÒ VIEW: Mở form sửa hồ sơ tài khoản Role Customer, kèm id/trạng thái; không tìm thấy đúng
-    khách trả 404. DỮ LIỆU MODEL: ProfileInput. ĐIỂM XỬ LÝ: Controllers/AdminController.cs và
-    AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
-*@
-
 @model ProfileInput
 @{
     ViewData["Title"] = "Cập nhật khách hàng";
 }
-@*
-    FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Admin/EditCustomer. asp-for
-    liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra ModelState/quyền;
-    service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo token chống CSRF khi áp dụng.
-    CHỨC NĂNG: Nhận hồ sơ và trạng thái mới, gọi UpdateCustomer với quyền Support/Admin; thành công
-    quay về chi tiết khách, lỗi giữ form.
-*@
+
 <form method="post" class="panel form-stack">
-    @*
-        THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc controller
-        thêm; sửa ô bị lỗi rồi gửi lại form.
-    *@
+
     <div asp-validation-summary="All" class="validation"></div>
     <input name="id" value="@ViewBag.Id" type="hidden"/>
     <label>

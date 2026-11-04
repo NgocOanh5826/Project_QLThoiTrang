@@ -1,23 +1,10 @@
-@*
-    VAI TRÒ VIEW: Mở form thêm khi id = 0, hoặc đọc BienTheSanPham để dựng VariantInput khi sửa;
-    không có bản ghi trả 404. DỮ LIỆU MODEL: VariantInput. ĐIỂM XỬ LÝ:
-    Controllers/AdminController.cs và AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload
-    GET/POST.
-*@
-
 @model VariantInput
 @{
     ViewData["Title"] = Model.Id == 0 ? "Thêm biến thể" : "Chỉnh sửa biến thể";
     var products = (List<Product>)ViewBag.Products;
 }
 <div class="admin-form-page">
-    @*
-        FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Admin/Variant. asp-for
-        liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra ModelState/quyền;
-        service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo token chống CSRF khi áp
-        dụng. CHỨC NĂNG: Nhận form biến thể, kiểm tra ModelState rồi SaveVariant; service kiểm tra
-        SKU/tổ hợp không trùng và cấm sửa định danh của biến thể cũ.
-    *@
+
     <form asp-action="Variant" method="post" class="panel form-stack">
         <input asp-for="Id" type="hidden"/>
         <label>

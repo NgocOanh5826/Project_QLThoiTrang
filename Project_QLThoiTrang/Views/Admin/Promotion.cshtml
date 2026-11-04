@@ -1,26 +1,11 @@
-@*
-    VAI TRÒ VIEW: Mở form thêm khi id trống hoặc form sửa theo id; nạp danh sách sản phẩm áp dụng,
-    không tìm thấy trả 404. DỮ LIỆU MODEL: Promotion. ĐIỂM XỬ LÝ: Controllers/AdminController.cs và
-    AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
-*@
-
 @model Promotion
 @{
     ViewData["Title"] = "Chương trình ưu đãi";
 }
-@*
-    FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Admin/Promotion. asp-for
-    liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra ModelState/quyền;
-    service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo token chống CSRF khi áp dụng.
-    CHỨC NĂNG: Thêm/sửa ưu đãi: kiểm tra ngày, loại PHANTRAM/SOTIEN, giá trị/hạn mức/lượt, sản phẩm
-    áp dụng và mã chưa trùng; chuẩn hóa mã chữ hoa. Id = 0 thêm mới, khác 0 cập nhật dòng tìm được.
-*@
+
 <form method="post" class="panel form-stack">
     <input asp-for="Id" type="hidden"/>
-    @*
-        THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc controller
-        thêm; sửa ô bị lỗi rồi gửi lại form.
-    *@
+
     <div asp-validation-summary="All" class="validation"></div>
     <label>
         Tên

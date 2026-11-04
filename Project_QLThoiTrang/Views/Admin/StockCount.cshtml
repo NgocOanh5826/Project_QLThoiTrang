@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Mở form kiểm kê một biến thể tại kho; bắt buộc biến thể tồn tại và kho đang hoạt
-    động. DỮ LIỆU MODEL: StoreData. ĐIỂM XỬ LÝ: Controllers/AdminController.cs và
-    AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
-*@
-
 @model StoreData
 @{
     ViewData["Title"] = "Kiểm kê tồn kho";
@@ -15,13 +9,7 @@
     .WarehouseId == warehouseId)?.Quantity ?? 0;
 }
 <div class="admin-form-page">
-    @*
-        FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Admin/AdjustVariant.
-        Controller nhận dữ liệu và kiểm tra ModelState/quyền; service kiểm tra nghiệp vụ trước khi
-        lưu. TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG: Nhận kiểm kê biến
-        thể/kho, số tồn expected và lý do; service kiểm tra rồi lưu, sau đó quay lại StockCount đúng
-        biến thể/kho.
-    *@
+
     <form asp-action="AdjustVariant" method="post" class="panel form-stack">
         <h2>@Model.Products.Single(p => p.Id == v.ProductId).Name</h2>
         <p>@w.Name · @v.Sku · @v.Size / @v.Color</p>

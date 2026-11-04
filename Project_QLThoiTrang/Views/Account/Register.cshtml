@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Mở form đăng ký khách hàng; chỉ nhận đường dẫn quay về nội bộ. DỮ LIỆU MODEL:
-    RegisterInput. ĐIỂM XỬ LÝ: Controllers/AccountController.cs; tra HUONG_DAN_CODE.md để tìm đúng
-    overload GET/POST.
-*@
-
 @model RegisterInput
 @{
     ViewData["Title"] = "Tạo tài khoản";
@@ -35,14 +29,7 @@
             QOANH
             <span>EVERYDAY, YOUR WAY</span>
         </a>
-        @*
-            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Account/Register.
-            asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
-            ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo
-            token chống CSRF khi áp dụng. CHỨC NĂNG: Chuẩn hóa tên/email, kiểm tra mẫu rồi Register
-            để thêm khách và băm mật khẩu; tạo cookie và gộp giỏ khi thành công, email trùng trả lại
-            form có lỗi.
-        *@
+
         <form asp-action="Register" method="post" class="auth-form">
             <input asp-for="ReturnUrl" type="hidden"/>
             <span class="auth-step">
@@ -51,10 +38,7 @@
             </span>
             <h2>Tạo tài khoản</h2>
             <p class="auth-intro">Chỉ cần vài thông tin cơ bản để bắt đầu.</p>
-            @*
-                THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc
-                controller thêm; sửa ô bị lỗi rồi gửi lại form.
-            *@
+
             <div asp-validation-summary="ModelOnly" class="auth-validation" role="alert"></div>
             <label asp-for="Name">Họ và tên</label>
             <div class="auth-input-wrap">

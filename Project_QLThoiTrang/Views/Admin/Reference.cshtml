@@ -1,10 +1,3 @@
-@*
-    VAI TRÒ VIEW: Mở form thêm danh mục khi id = 0 hoặc form sửa bản ghi cùng kind; loại sai trả
-    400, id không có trả 404. DỮ LIỆU MODEL: ReferenceInput. ĐIỂM XỬ LÝ:
-    Controllers/AdminController.cs và AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload
-    GET/POST.
-*@
-
 @model ReferenceInput
 @{
     var titles = new Dictionary<string, string>
@@ -34,18 +27,9 @@
     ViewData["ReferenceKind"] = Model.Kind;
 }
 <div class="admin-form-page">
-    @*
-        FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Admin/Reference.
-        asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
-        ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo token
-        chống CSRF khi áp dụng. CHỨC NĂNG: Nhận form thương hiệu/size/màu/kho/NCC, kiểm tra kind và
-        ModelState rồi SaveReference; lỗi giữ dữ liệu nhập và hiển thị lại form.
-    *@
+
     <form asp-action="Reference" method="post" class="panel form-stack">
-        @*
-            THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc
-            controller thêm; sửa ô bị lỗi rồi gửi lại form.
-        *@
+
         <div asp-validation-summary="All" class="validation"></div>
         <input asp-for="Id" type="hidden"/>
         <input asp-for="Kind" type="hidden"/>

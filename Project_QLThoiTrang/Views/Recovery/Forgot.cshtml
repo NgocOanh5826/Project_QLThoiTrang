@@ -1,42 +1,72 @@
-@*
-    VAI TRÒ VIEW: Mở form quên mật khẩu, ViewBag.Ready cho biết SMTP/khóa OTP đã cấu hình hay chưa.
-    DỮ LIỆU MODEL: ForgotInput. ĐIỂM XỬ LÝ: Controllers/RecoveryController.cs; tra HUONG_DAN_CODE.md
-    để tìm đúng overload GET/POST.
-*@
-
-@model ForgotInput
+@model ResetInput
 @{
     ViewData["Title"] = "Quên mật khẩu";
+    bool selectedReady = ViewBag.EmailReady == true;
 }
-<section class="page-section narrow">
-    <h1>Quên mật khẩu</h1>
-    @*
-        FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Recovery/Forgot.
-        asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
-        ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo token
-        chống CSRF khi áp dụng. CHỨC NĂNG: Kiểm tra email rồi yêu cầu gửi OTP qua PasswordRecovery;
-        thông báo chung không xác nhận email có trong hệ thống. Áp dụng policy login để giới hạn yêu
-        cầu.
-    *@
-    <form method="post" class="panel form-stack">
-        @*
-            THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc
-            controller thêm; sửa ô bị lỗi rồi gửi lại form.
-        *@
-        <div asp-validation-summary="All" class="validation"></div>
-        <p>Nhập email tài khoản khách hàng để nhận mã OTP có hiệu lực 10 phút.</p>
-        @if (ViewBag.Ready != true)
-        {
-            <p class="notice">
-                Chức năng gửi email chưa được cửa hàng cấu hình. Vui lòng liên hệ hỗ trợ.
+<link rel="stylesheet" href="~/css/password-recovery.css" asp-append-version="true" />
+<section class="page-section recovery-page">
+    <a href="/Account/Login" class="recovery-back">← Quay lại đăng nhập</a>
+    <div class="panel recovery-card">
+        <p class="eyebrow">BẢO MẬT TÀI KHOẢN</p>
+        <h1>Quên mật khẩu</h1>
+        <p class="muted">Nhập email đã đăng ký để nhận mã OTP và đặt lại mật khẩu.</p>
+
+        <form id="recovery-send-form" asp-action="Forgot" method="post"
+              class="form-stack recovery-send-form" data-recovery-form data-inline-otp
+              data-email-ready="@(ViewBag.EmailReady == true ? "true" : "false")"
+              data-recovery-wait="@ViewBag.ResendSeconds">
+            <input name="Channel" value="email" type="hidden" />
+            <label asp-for="Contact">Email đã đăng ký</label>
+            <input asp-for="Contact" type="email" inputmode="email" autocomplete="email"
+                   placeholder="ban@example.com" maxlength="150" data-recovery-contact
+                   required aria-describedby="recovery-contact-help" />
+            <span asp-validation-for="Channel" class="field-error"></span>
+            <span asp-validation-for="Contact" class="field-error"></span>
+            <p id="recovery-contact-help" class="muted small">
+                Mã gồm 6 chữ số, có hiệu lực 10 phút. Yêu cầu mã mới sẽ làm mã cũ mất hiệu lực.
             </p>
-        }
-        <label>
-            Email
-            <input asp-for="Email" type="email" autocomplete="email" required/>
-        </label>
-        <button class="btn-black" disabled="@(ViewBag.Ready != true)">Gửi mã OTP</button>
-        <a href="/Recovery/Reset">Tôi đã có mã OTP</a>
-        <a href="/Account/Login">Quay lại đăng nhập</a>
-    </form>
+            <p class="notice" data-recovery-unavailable hidden="@selectedReady" role="status">
+                Chức năng gửi email chưa sẵn sàng. Vui lòng liên hệ hỗ trợ.
+            </p>
+            <p class="notice" data-recovery-status hidden role="status" aria-live="polite"></p>
+        </form>
+
+        <form asp-action="Reset" method="post" class="form-stack recovery-reset-form"
+              data-inline-reset data-password-validation>
+            <input name="inline" value="true" type="hidden" />
+            <input name="Channel" value="email" type="hidden" />
+            <input name="Contact" value="@Model.Contact" type="hidden" data-recovery-reset-contact />
+            <div asp-validation-summary="ModelOnly" class="validation" role="alert"></div>
+            <label asp-for="Code">Mã xác nhận OTP</label>
+            <div class="recovery-otp-row">
+                <input asp-for="Code" type="text" inputmode="numeric" autocomplete="one-time-code"
+                       minlength="6" maxlength="6" pattern="[0-9]{6}" placeholder="Nhập 6 chữ số"
+                       required data-otp-code aria-describedby="otp-code-help" />
+                <button type="submit" form="recovery-send-form" class="btn-black recovery-send-code"
+                        data-recovery-submit disabled="@(!selectedReady)">
+                    Gửi mã OTP
+                </button>
+            </div>
+            <span asp-validation-for="Code" class="field-error"></span>
+            <p id="otp-code-help" class="muted small">Kiểm tra hộp thư đến hoặc thư rác rồi nhập mã tại đây.</p>
+            <label asp-for="Password">Mật khẩu mới</label>
+            <div class="auth-input-wrap">
+                <i class="bi bi-lock" aria-hidden="true"></i>
+                <input asp-for="Password" type="password" autocomplete="new-password"
+                       minlength="8" maxlength="100" required aria-describedby="password-help" />
+                <button type="button" class="password-toggle" data-password-toggle="Password"
+                        aria-label="Hiện mật khẩu" aria-pressed="false">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                </button>
+            </div>
+            <span asp-validation-for="Password" class="field-error"></span>
+            <p id="password-help" class="muted small">8–100 ký tự, có ít nhất một chữ cái và một chữ số.</p>
+            <label asp-for="ConfirmPassword">Nhập lại mật khẩu mới</label>
+            <input asp-for="ConfirmPassword" type="password" autocomplete="new-password"
+                   minlength="8" maxlength="100" required />
+            <span asp-validation-for="ConfirmPassword" class="field-error"></span>
+            <button type="submit" class="btn-black">Xác nhận và đổi mật khẩu</button>
+        </form>
+    </div>
 </section>
+<script src="~/js/password-recovery.js" asp-append-version="true"></script>

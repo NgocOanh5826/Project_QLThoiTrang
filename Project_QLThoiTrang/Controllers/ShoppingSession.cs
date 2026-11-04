@@ -1,8 +1,3 @@
-// VAI TRÒ FILE: Bộ lọc trước/sau action của ShopController: đồng bộ giỏ/yêu thích và chặn nhân viên
-// thực hiện luồng
-// mua hàng. Đây là cùng lớp partial với ShopController.cs.
-// TRA CỨU: HUONG_DAN_CODE.md ở thư mục gốc có đường dẫn và bảng chức năng.
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Project_QLThoiTrang.Models;
@@ -12,13 +7,7 @@ namespace Project_QLThoiTrang.Controllers;
 
 public partial class ShopController
 {
-    // HÀM OnActionExecuting: Trước action mua hàng: chặn nhân viên vào
-    // Cart/Add/UpdateCart/Checkout/Success; nếu là Customer thì nạp giỏ và yêu thích từ SQL vào
-    // Session.
-    // THAM SỐ context (ActionExecutingContext): ngữ cảnh yêu cầu hoặc bộ lọc MVC đang chạy, chứa
-    // route, tham số, User và/hoặc phản hồi theo kiểu cụ thể.
-    // TRẢ VỀ (void): không trả dữ liệu; hoàn tất tác động được mô tả ở nhiệm vụ hàm. Ngoại lệ báo
-    // lỗi cho caller.
+    // OnActionExecuting: Nạp giỏ khách và kiểm tra quyền mua hàng.
     public override void OnActionExecuting(ActionExecutingContext context)
     {
         if (
@@ -40,13 +29,7 @@ public partial class ShopController
         }
     }
 
-    // HÀM OnActionExecuted: Sau Add/UpdateCart/Favorite không có ngoại lệ chưa xử lý, đồng bộ
-    // giỏ/yêu thích Session xuống SQL cho Customer. Tách khỏi action để ba thao tác dùng chung cơ
-    // chế lưu.
-    // THAM SỐ context (ActionExecutedContext): ngữ cảnh yêu cầu hoặc bộ lọc MVC đang chạy, chứa
-    // route, tham số, User và/hoặc phản hồi theo kiểu cụ thể.
-    // TRẢ VỀ (void): không trả dữ liệu; hoàn tất tác động được mô tả ở nhiệm vụ hàm. Ngoại lệ báo
-    // lỗi cho caller.
+    // OnActionExecuted: Lưu giỏ và yêu thích sau khi khách cập nhật.
     public override void OnActionExecuted(ActionExecutedContext context)
     {
         if (

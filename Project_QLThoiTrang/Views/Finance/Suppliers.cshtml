@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Ghép dữ liệu phiếu nhập, nhà cung cấp, số phải trả và các chứng từ chi để hiển thị
-    công nợ. DỮ LIỆU MODEL: List<SupplierPayment>. ĐIỂM XỬ LÝ: Controllers/FinanceController.cs; tra
-    HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
-*@
-
 @model List<SupplierPayment>
 @{
     ViewData["Title"] = "Công nợ nhà cung cấp";
@@ -43,10 +37,7 @@
         new AdminListFilter("month", "Tháng nhập")
     };
 }
-@*
-    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminListToolbar.cshtml. Thanh tìm kiếm/lọc danh sách quản
-    trị dùng lại qua partial; thuộc tính data-* kết nối với bộ xử lý lọc trong wwwroot/js/site.js.
-*@
+
 <partial name="_AdminListToolbar"/>
 <div class="panel table-scroll">
     <table class="data-table">

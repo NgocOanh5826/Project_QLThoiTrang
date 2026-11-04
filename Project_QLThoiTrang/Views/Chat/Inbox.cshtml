@@ -1,10 +1,3 @@
-@*
-    VAI TRÒ VIEW: Hộp thư hỗ trợ của Admin/Support, liệt kê hội thoại, khách và số tin chưa đọc;
-    chọn một dòng để mở Chat/Index?customerId=... DỮ LIỆU MODEL: List<(int Id,string Name,DateTime
-    Updated,int Unread)>. ĐIỂM XỬ LÝ: Controllers/ChatController.cs; tra HUONG_DAN_CODE.md để tìm
-    đúng overload GET/POST.
-*@
-
 @model List<(int Id,string Name,DateTime Updated,int Unread)>
 @{
     Layout = "_AdminLayout";
@@ -18,10 +11,7 @@
         new AdminListFilter("month", "Tháng cập nhật")
     };
 }
-@*
-    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminListToolbar.cshtml. Thanh tìm kiếm/lọc danh sách quản
-    trị dùng lại qua partial; thuộc tính data-* kết nối với bộ xử lý lọc trong wwwroot/js/site.js.
-*@
+
 <partial name="_AdminListToolbar"/>
 <div class="panel table-scroll">
     <table class="data-table">

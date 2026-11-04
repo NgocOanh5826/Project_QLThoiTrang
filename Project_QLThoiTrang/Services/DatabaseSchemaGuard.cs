@@ -1,38 +1,18 @@
-// VAI TRÒ FILE: Kiểm tra schema cần thiết và middleware trả 503 khi database chưa sẵn sàng; không
-// tự tạo bảng hay
-// chạy nâng cấp khi mở website.
-// TRA CỨU: HUONG_DAN_CODE.md ở thư mục gốc có đường dẫn và bảng chức năng.
-
 using Microsoft.EntityFrameworkCore;
 using Project_QLThoiTrang.Data;
 
 namespace Project_QLThoiTrang.Services;
 
-// THAM SỐ KHỞI TẠO factory (IDbContextFactory<StoreDbContext>): factory tạo DbContext riêng mỗi lần
-// đọc/ghi, tránh giữ một context dùng chung giữa request; do DI hoặc nơi gọi constructor truyền
-// vào.
-// THAM SỐ KHỞI TẠO logger (ILogger<DatabaseSchemaStatus>): bộ ghi log của lớp, ghi trạng thái/lỗi
-// theo các lệnh Log bên dưới; do DI hoặc nơi gọi constructor truyền vào.
 public sealed class DatabaseSchemaStatus(
     IDbContextFactory<StoreDbContext> factory,
     ILogger<DatabaseSchemaStatus> logger
 )
 {
-    // BIẾN CỦA LỚP gate (object): đối tượng khóa lock bảo vệ cache kiểm tra schema, tránh nhiều
-    // request cùng mở kết nối kiểm tra.
     readonly object gate = new();
-    // BIẾN CỦA LỚP nextCheck (DateTime): thời điểm UTC sớm nhất được kiểm tra schema lại; trước mốc
-    // này dùng kết quả cache ready.
     DateTime nextCheck = DateTime.MinValue;
-    // BIẾN CỦA LỚP ready (bool): kết quả kiểm tra schema gần nhất, được dùng lại trong cửa sổ cache
-    // 10 giây.
     bool ready;
 
-    // HÀM IsReady: Kiểm tra kết nối và các cột/bảng cần thiết của SQL; khóa gate ngăn kiểm tra đồng
-    // thời, cache kết quả trong 10 giây. Chỉ kiểm tra trạng thái, không tự nâng cấp schema.
-    // ĐẦU VÀO: không có tham số trực tiếp; đọc trạng thái/service trong phạm vi lớp nếu thân hàm sử
-    // dụng.
-    // TRẢ VỀ (bool): cờ đúng/sai; ý nghĩa được xác định bởi biểu thức return bên dưới.
+    // IsReady: Kiểm tra kết nối và schema database cần thiết.
     public bool IsReady()
     {
         lock (gate)
@@ -41,15 +21,9 @@ public sealed class DatabaseSchemaStatus(
                 return ready;
             try
             {
-                // BIẾN db (StoreDbContext): DbContext riêng cho lần đọc/ghi này; using bảo đảm giải
-                // phóng kết nối khi kết thúc phạm vi.
                 using var db = factory.CreateDbContext();
-                // BIẾN connection (DbConnection): kết nối ADO.NET của DbContext dùng kiểm tra
-                // schema bằng một câu SQL nhỏ.
                 var connection = db.Database.GetDbConnection();
                 connection.Open();
-                // BIẾN command (DbCommand): lệnh SQL kiểm tra bảng/cột bắt buộc, có timeout riêng
-                // để không treo yêu cầu quá lâu.
                 using var command = connection.CreateCommand();
                 command.CommandTimeout = 5;
                 command.CommandText = (
@@ -76,8 +50,6 @@ public sealed class DatabaseSchemaStatus(
                         )
                     );
             }
-            // BIẾN LỖI ex (Exception): ngoại lệ bắt từ khối try; Message chứa thông báo, còn loại
-            // lỗi dùng quyết định cách báo/ghi log ở catch.
             catch (Exception ex)
                 when (ex is System.Data.Common.DbException or InvalidOperationException)
             {
@@ -97,31 +69,15 @@ public sealed class DatabaseSchemaStatus(
     }
 }
 
-// THAM SỐ KHỞI TẠO next (RequestDelegate): delegate gọi middleware tiếp theo trong pipeline khi
-// điều kiện cho phép; do DI hoặc nơi gọi constructor truyền vào.
 public sealed class DatabaseSchemaGuard(RequestDelegate next)
 {
-    // HÀM InvokeAsync: Middleware cho tài nguyên tĩnh đi tiếp; yêu cầu động chỉ chạy tiếp khi
-    // database sẵn sàng. Nếu thiếu kết nối/schema thì trả HTTP 503 với Retry-After 10 giây và hướng
-    // dẫn riêng cho Development.
-    // THAM SỐ context (HttpContext): ngữ cảnh yêu cầu hoặc bộ lọc MVC đang chạy, chứa route, tham
-    // số, User và/hoặc phản hồi theo kiểu cụ thể.
-    // THAM SỐ status (DatabaseSchemaStatus): trạng thái đích muốn cập nhật; phải nằm trong tập
-    // chuyển trạng thái được phép của luồng tương ứng.
-    // THAM SỐ environment (IWebHostEnvironment): thông tin môi trường chạy; IsDevelopment quyết
-    // định có hiện hướng dẫn lỗi kỹ thuật hay không.
-    // TRẢ VỀ (Task): không trả dữ liệu; hoàn tất tác động được mô tả ở nhiệm vụ hàm sau các bước
-    // await.
-    // BIẾN LAMBDA prefix (string): chuỗi ký tự; tên này chỉ có nghĩa trong lambda tương ứng, không
-    // phải biến toàn cục.
+    // InvokeAsync: Chặn yêu cầu động khi database chưa sẵn sàng.
     public async Task InvokeAsync(
         HttpContext context,
         DatabaseSchemaStatus status,
         IWebHostEnvironment environment
     )
     {
-        // BIẾN path (PathString): đường dẫn URL đang được yêu cầu, dùng cho phép tài nguyên tĩnh đi
-        // tiếp qua guard schema.
         var path = context.Request.Path;
         if (
             new[] { "/css", "/js", "/images", "/lib", "/data", "/favicon.ico" }.Any(prefix =>
@@ -137,8 +93,6 @@ public sealed class DatabaseSchemaGuard(RequestDelegate next)
         context.Response.ContentType = "text/html; charset=utf-8";
         context.Response.Headers.CacheControl = "no-store";
         context.Response.Headers.RetryAfter = "10";
-        // BIẾN details (string): đoạn HTML thông báo database chưa sẵn sàng; Development có hướng
-        // dẫn chi tiết, môi trường khác dùng thông báo chung.
         string details = environment.IsDevelopment()
             ? (
                 "<p>Database chưa sẵn sàng hoặc chưa có schema mới. Kiểm "

@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Hiển thị danh sách phiếu trả hàng mới nhất trước. DỮ LIỆU MODEL:
-    List<ReturnRecord>. ĐIỂM XỬ LÝ: Controllers/AdminController.cs và AdminExtensions.cs; tra
-    HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
-*@
-
 @model List<ReturnRecord>
 @{
     ViewData["Title"] = "Trả hàng và hoàn tiền";
@@ -16,10 +10,7 @@
         new AdminListFilter("month", "Tháng yêu cầu")
     };
 }
-@*
-    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminListToolbar.cshtml. Thanh tìm kiếm/lọc danh sách quản
-    trị dùng lại qua partial; thuộc tính data-* kết nối với bộ xử lý lọc trong wwwroot/js/site.js.
-*@
+
 <partial name="_AdminListToolbar"/>
 <div class="panel table-scroll">
     <table class="data-table">

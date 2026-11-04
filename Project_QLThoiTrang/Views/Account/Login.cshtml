@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Mở form đăng nhập; chỉ giữ returnUrl nội bộ để tránh chuyển hướng ra trang bên
-    ngoài. DỮ LIỆU MODEL: LoginInput. ĐIỂM XỬ LÝ: Controllers/AccountController.cs; tra
-    HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
-*@
-
 @model LoginInput
 @{
     ViewData["Title"] = "Đăng nhập";
@@ -33,14 +27,7 @@
             QOANH
             <span>EVERYDAY, YOUR WAY</span>
         </a>
-        @*
-            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Account/Login.
-            asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
-            ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo
-            token chống CSRF khi áp dụng. CHỨC NĂNG: Kiểm tra email/mẫu nhập và xác thực mật khẩu
-            bằng StoreService.Authenticate; thành công tạo cookie, gộp giỏ và chuyển tới returnUrl
-            hoặc trang theo vai trò. Policy login giới hạn số lần yêu cầu.
-        *@
+
         <form asp-action="Login" method="post" class="auth-form">
             <input asp-for="ReturnUrl" type="hidden"/>
             <span class="auth-step">
@@ -49,10 +36,7 @@
             </span>
             <h2>Đăng nhập</h2>
             <p class="auth-intro">Nhập thông tin để tiếp tục.</p>
-            @*
-                THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc
-                controller thêm; sửa ô bị lỗi rồi gửi lại form.
-            *@
+
             <div asp-validation-summary="ModelOnly" class="auth-validation" role="alert"></div>
             <label asp-for="Email">Địa chỉ email</label>
             <div class="auth-input-wrap">

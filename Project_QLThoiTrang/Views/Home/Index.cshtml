@@ -1,9 +1,3 @@
-@*
-    VAI TRÒ VIEW: Trang chủ nhận danh sách sản phẩm Active từ StoreService để hiển thị các khu vực
-    giới thiệu hàng hóa. DỮ LIỆU MODEL: List<Product>. ĐIỂM XỬ LÝ: Controllers/HomeController.cs;
-    tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
-*@
-
 @model List<Product>
 @{
     ViewData["Title"] = "Trang chủ";
@@ -66,11 +60,7 @@
     <div class="product-grid">
         @foreach (var product in Model.Take(4))
         {
-            @*
-                THÀNH PHẦN DÙNG CHUNG: Views/Shared/_ProductCard.cshtml. Thẻ sản phẩm trong danh
-                sách: liên kết mở Shop/Detail, hiển thị ảnh/giá và gửi yêu thích. Model là sản phẩm
-                đã được controller lọc.
-            *@
+
             <partial name="_ProductCard" model="product"/>
         }
     </div>
@@ -95,11 +85,7 @@
     <div class="product-grid">
         @foreach (var product in Model.Where(p => p.IsNew).Take(4))
         {
-            @*
-                THÀNH PHẦN DÙNG CHUNG: Views/Shared/_ProductCard.cshtml. Thẻ sản phẩm trong danh
-                sách: liên kết mở Shop/Detail, hiển thị ảnh/giá và gửi yêu thích. Model là sản phẩm
-                đã được controller lọc.
-            *@
+
             <partial name="_ProductCard" model="product"/>
         }
     </div>

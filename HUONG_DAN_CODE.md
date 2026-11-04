@@ -118,9 +118,12 @@ Cả hai dùng transaction Serializable và khóa ứng dụng `QOANH.Store.Writ
 
 ## 6. Tài khoản, OTP, chat, PDF và GHN
 
+**Cập nhật quên/đổi mật khẩu:** chỉ gửi qua email API Resend. OTP ở `Services/PasswordRecovery.cs`, API ở `Services/ResendMailSender.cs`, mẫu nhập ở `Models/PasswordRecoveryModels.cs`. Hướng dẫn cấu hình và điều kiện trong [PASSWORD_RECOVERY.md](delivery/PASSWORD_RECOVERY.md).
+
+
 - **Đăng ký/đăng nhập:** `AccountController` → `StoreService.Register/Authenticate` → `SignIn` tạo cookie/claims. Id khách dương, nhân viên âm. `Program.cs` đối chiếu trạng thái/quyền/security stamp để loại cookie cũ khi tài khoản bị đổi.
 - **Đổi mật khẩu:** `Account.Password` → `ChangePassword`, xác minh mật khẩu hiện tại, băm mật khẩu mới.
-- **Quên mật khẩu:** `Recovery.Forgot` → `PasswordRecovery.Request` → `IssueReset` → SMTP → `ResetDelivered`. OTP 6 số, 10 phút, tối đa 5 lần thử; yêu cầu phát mã có giới hạn 1 phút/5 lần giờ. `Reset` → `ResetPassword` kiểm tra HMAC, stamp và trạng thái mã rồi băm mật khẩu mới. Thông báo không tiết lộ email có tồn tại.
+- **Quên mật khẩu:** `Recovery.Forgot` → `PasswordRecovery.Request` → cấp OTP → Resend API → đánh dấu đã gửi. `Recovery.Reset` → kiểm tra HMAC gắn challenge/email, hạn 10 phút, tối đa 5 lần thử → băm mật khẩu mới → đăng xuất. Chỉ dùng email khách đã đăng ký, không cần sửa schema OTP.
 - **Chat:** `Views/Chat/Index.cshtml` → `chat.js` → `Chat.Messages/Send/Read` → `CustomerFeatures`. Khách chỉ hội thoại của mình; Support/Admin hỗ trợ khách. Một clientToken dùng lại trả tin cũ nếu cùng người/nội dung; service giới hạn tốc độ.
 - **PDF:** `DocumentsController` kiểm tra chủ chứng từ/quyền → `PdfDocuments.Create` sinh byte → trả `File`. In PDF không đổi trạng thái đơn hoặc xác nhận thu tiền.
 - **GHN:** `Shipping.Create` → `ShippingService.Create` → `ClaimShipment` lưu request hash → gọi API → `ShipmentResult`. Có mã rồi thì đồng bộ; timeout/lỗi chưa rõ được ghi `Unknown` và cần đối soát. `Sync` cập nhật vận đơn, không tự đổi trạng thái bán hàng trong `ChangeOrderStatus`.
@@ -148,174 +151,177 @@ Bảng bên dưới được lập sau khi thêm comment. Số dòng có thể t
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| GET `Login(string? returnUrl)` | [26](Project_QLThoiTrang/Controllers/AccountController.cs#L26) | Mở form đăng nhập; chỉ giữ returnUrl nội bộ để tránh chuyển hướng ra trang bên ngoài. |
-| POST `Login(LoginInput input)` | [36](Project_QLThoiTrang/Controllers/AccountController.cs#L36) | Kiểm tra email/mẫu nhập và xác thực mật khẩu bằng StoreService.Authenticate; thành công tạo cookie, gộp giỏ và chuyển tới returnUrl hoặc trang theo vai trò. |
-| GET `Register(string? returnUrl)` | [71](Project_QLThoiTrang/Controllers/AccountController.cs#L71) | Mở form đăng ký khách hàng; chỉ nhận đường dẫn quay về nội bộ. |
-| POST `Register(RegisterInput input)` | [80](Project_QLThoiTrang/Controllers/AccountController.cs#L80) | Chuẩn hóa tên/email, kiểm tra mẫu rồi Register để thêm khách và băm mật khẩu; tạo cookie và gộp giỏ khi thành công, email trùng trả lại form có lỗi. |
-| Nội bộ `SignIn(Customer c, bool rememberMe = false, bool mergeShopping = false)` | [108](Project_QLThoiTrang/Controllers/AccountController.cs#L108) | Helper tạo cookie với claim id/tên/email/quyền, lịch sử và security_stamp từ hash mật khẩu. |
-| POST `Logout()` | [159](Project_QLThoiTrang/Controllers/AccountController.cs#L159) | Nhận POST của tài khoản đã đăng nhập: ghi thời điểm đăng xuất, xóa Session và cookie rồi quay về trang chủ. |
-| GET `Index()` | [174](Project_QLThoiTrang/Controllers/AccountController.cs#L174) | Tài khoản đã đăng nhập xem hồ sơ của chính mình; lấy id từ claim, không lấy id người khác từ form. |
-| POST `Index(ProfileInput input)` | [195](Project_QLThoiTrang/Controllers/AccountController.cs#L195) | Sửa tên/điện thoại/địa chỉ của chính tài khoản sau khi ModelState hợp lệ; Write kiểm tra dữ liệu rồi cấp lại cookie để tên hiển thị được cập nhật. |
-| GET `Orders()` | [230](Project_QLThoiTrang/Controllers/AccountController.cs#L230) | Chỉ lấy các đơn có CustomerId bằng id trong cookie hiện tại; sắp xếp mới nhất trước. |
-| GET `Order(string id)` | [246](Project_QLThoiTrang/Controllers/AccountController.cs#L246) | Mở đơn và yêu cầu trả hàng thuộc đúng tài khoản đang đăng nhập; không được xem đơn chỉ bằng cách đoán mã của khách khác. |
-| POST `Cancel(string id)` | [263](Project_QLThoiTrang/Controllers/AccountController.cs#L263) | Gửi yêu cầu hủy đơn của khách tới ChangeOrderStatus với customer = true; service chỉ chấp nhận đơn của mình còn Chờ xác nhận. |
-| POST `Return(string id, string reason, int lineId = 0, int quantity = 0)` | [285](Project_QLThoiTrang/Controllers/AccountController.cs#L285) | Gửi yêu cầu trả toàn bộ phần còn lại hoặc một dòng với số lượng cụ thể; RequestReturn kiểm tra chủ đơn, trạng thái và lượng còn được trả. |
-| GET `Password()` | [304](Project_QLThoiTrang/Controllers/AccountController.cs#L304) | Mở form đổi mật khẩu cho tài khoản đã đăng nhập. |
-| POST `Password(PasswordInput input)` | [313](Project_QLThoiTrang/Controllers/AccountController.cs#L313) | Kiểm tra mẫu và gọi ChangePassword để xác minh mật khẩu cũ, băm mật khẩu mới; cookie cũ sẽ bị kiểm tra lại qua security_stamp. |
-| GET `Denied()` | [337](Project_QLThoiTrang/Controllers/AccountController.cs#L337) | Hiển thị trang báo tài khoản không có quyền truy cập. |
+| GET `Login(string? returnUrl)` | [17](Project_QLThoiTrang/Controllers/AccountController.cs#L17) | Hiển thị form đăng nhập. |
+| POST `Login(LoginInput input)` | [21](Project_QLThoiTrang/Controllers/AccountController.cs#L21) | Xác thực tài khoản và tạo phiên đăng nhập. |
+| GET `Register(string? returnUrl)` | [52](Project_QLThoiTrang/Controllers/AccountController.cs#L52) | Hiển thị form đăng ký tài khoản. |
+| POST `Register(RegisterInput input)` | [56](Project_QLThoiTrang/Controllers/AccountController.cs#L56) | Tạo tài khoản khách hàng và đăng nhập. |
+| Nội bộ `SignIn(Customer c, bool rememberMe = false, bool mergeShopping = false)` | [79](Project_QLThoiTrang/Controllers/AccountController.cs#L79) | Tạo cookie và thông tin xác thực tài khoản. |
+| POST `Logout()` | [126](Project_QLThoiTrang/Controllers/AccountController.cs#L126) | Kết thúc phiên và đăng xuất tài khoản. |
+| GET `Index()` | [137](Project_QLThoiTrang/Controllers/AccountController.cs#L137) | Hiển thị thông tin tài khoản. |
+| POST `Index(ProfileInput input)` | [153](Project_QLThoiTrang/Controllers/AccountController.cs#L153) | Cập nhật hồ sơ khách hàng. |
+| GET `Orders()` | [182](Project_QLThoiTrang/Controllers/AccountController.cs#L182) | Hiển thị lịch sử đơn của khách hàng. |
+| GET `Order(string id)` | [193](Project_QLThoiTrang/Controllers/AccountController.cs#L193) | Hiển thị chi tiết đơn thuộc khách hàng. |
+| POST `Cancel(string id)` | [206](Project_QLThoiTrang/Controllers/AccountController.cs#L206) | Hủy đơn đang chờ xác nhận của khách hàng. |
+| POST `Return(string id, string reason, int lineId = 0, int quantity = 0)` | [223](Project_QLThoiTrang/Controllers/AccountController.cs#L223) | Gửi yêu cầu trả hàng. |
+| GET `Password()` | [240](Project_QLThoiTrang/Controllers/AccountController.cs#L240) | Hiển thị form đổi mật khẩu. |
+| POST `Password(PasswordInput input)` | [244](Project_QLThoiTrang/Controllers/AccountController.cs#L244) | Đổi mật khẩu và đăng xuất tài khoản. |
+| GET `Denied()` | [268](Project_QLThoiTrang/Controllers/AccountController.cs#L268) | Hiển thị thông báo không đủ quyền truy cập. |
 
 **[AdminController.cs](Project_QLThoiTrang/Controllers/AdminController.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| GET `Index()` | [25](Project_QLThoiTrang/Controllers/AdminController.cs#L25) | Trang tổng quan quản trị; lấy StoreData để view tổng hợp sản phẩm, đơn, khách và tồn. |
-| GET `Products(string? q, string? category, int? brandId, string? state)` | [34](Project_QLThoiTrang/Controllers/AdminController.cs#L34) | Danh sách sản phẩm; lọc theo từ khóa tên/màu, danh mục, thương hiệu và trạng thái; chuẩn bị các lựa chọn bộ lọc trong ViewBag. |
-| GET `Product(int? id)` | [69](Project_QLThoiTrang/Controllers/AdminController.cs#L69) | Mở form thêm khi không có id, hoặc tìm sản phẩm để sửa khi có id; chuẩn bị thương hiệu/danh mục, không tìm thấy trả 404. |
-| POST `Product(Product input)` | [87](Project_QLThoiTrang/Controllers/AdminController.cs#L87) | Nhận form thêm/sửa sản phẩm. |
-| GET `DeleteProduct(int id)` | [146](Project_QLThoiTrang/Controllers/AdminController.cs#L146) | Mở trang xác nhận ẩn sản phẩm theo id; chưa thay đổi dữ liệu ở yêu cầu GET. |
-| POST `DeleteProductConfirmed(int id)` | [157](Project_QLThoiTrang/Controllers/AdminController.cs#L157) | Xử lý nút xác nhận bằng POST /Admin/DeleteProduct: đặt Active = false trong Write. |
-| GET `Categories()` | [179](Project_QLThoiTrang/Controllers/AdminController.cs#L179) | Mở danh sách danh mục và dữ liệu liên quan để kiểm tra danh mục đang được sản phẩm sử dụng. |
-| GET `Category()` | [184](Project_QLThoiTrang/Controllers/AdminController.cs#L184) | Mở form thêm danh mục với tên ban đầu rỗng. |
-| POST `AddCategory(string name)` | [191](Project_QLThoiTrang/Controllers/AdminController.cs#L191) | Action tương thích chuyển yêu cầu POST thêm danh mục sang Category(name); dùng chung kiểm tra và cách lưu. |
-| POST `Category(string name)` | [200](Project_QLThoiTrang/Controllers/AdminController.cs#L200) | Thêm danh mục sau khi trim, yêu cầu tên 2–50 ký tự và không trùng không phân biệt hoa/thường; hợp lệ thì thêm vào d.Categories trong Write. |
-| POST `DeleteCategory(string name)` | [234](Project_QLThoiTrang/Controllers/AdminController.cs#L234) | Xóa danh mục bằng POST; nếu có bất kỳ sản phẩm nào đang thuộc danh mục thì báo lỗi và giữ lại, ngược lại Remove khỏi d.Categories để PersistNative đồng bộ. |
-| GET `Orders(string? status, string? q, string? payment, string? period)` | [258](Project_QLThoiTrang/Controllers/AdminController.cs#L258) | Lọc danh sách đơn theo trạng thái, từ khóa mã/tên/điện thoại, phương thức thanh toán và khoảng ngày nhanh; trả đơn mới nhất trước. |
-| GET `Order(string id)` | [294](Project_QLThoiTrang/Controllers/AdminController.cs#L294) | Mở chi tiết đơn theo mã công khai, không có thì trả 404; dữ liệu hiển thị không được sửa ngay tại GET. |
-| POST `OrderStatus(string id, string status)` | [303](Project_QLThoiTrang/Controllers/AdminController.cs#L303) | Nhận trạng thái mới, chuyển điều kiện chuyển bước/thu tiền/hoàn tồn sang StoreService.ChangeOrderStatus; báo kết quả bằng TempData rồi quay lại chi tiết đơn. |
-| GET `Customers(string? q, string? state, string? hasOrders)` | [325](Project_QLThoiTrang/Controllers/AdminController.cs#L325) | Danh sách tài khoản Role Customer; lọc từ khóa, trạng thái và có/chưa có đơn, không đưa nhân viên vào danh sách này. |
-| GET `Customer(int id)` | [350](Project_QLThoiTrang/Controllers/AdminController.cs#L350) | Hiển thị thông tin một tài khoản và danh sách đơn của tài khoản đó; id không tồn tại trả 404. |
-| GET `Inventory()` | [364](Project_QLThoiTrang/Controllers/AdminController.cs#L364) | Mở kiểm kê tồn tổng theo sản phẩm, kèm 200 biến động kho gần nhất. |
-| POST `Inventory(int id, int quantity, int expected, string reason)` | [378](Project_QLThoiTrang/Controllers/AdminController.cs#L378) | Nhận số tồn thực tế và tồn expected lúc mở form; AdjustStock kiểm tra quyền, chống ghi đè và ghi nhật ký thay đổi. |
-| GET `Receive(string tab = "single")` | [400](Project_QLThoiTrang/Controllers/AdminController.cs#L400) | Mở form nhập kho một hoặc nhiều dòng theo tab; chỉ cho chọn kho/NCC đang hoạt động qua ReceiveOptions. |
-| POST `Receive(ReceiveInput input)` | [413](Project_QLThoiTrang/Controllers/AdminController.cs#L413) | Nhận phiếu nhập một dòng; kiểm tra DataAnnotations rồi gọi Receive/ReceiveBatch. |
-| POST `Payment(string id, decimal amount, string reference)` | [440](Project_QLThoiTrang/Controllers/AdminController.cs#L440) | Ghi nhận khoản tiền đã thu cho đơn; RecordPayment kiểm tra đúng số còn thu, trạng thái đơn và mã biên nhận chưa trùng. |
-| GET `Returns()` | [459](Project_QLThoiTrang/Controllers/AdminController.cs#L459) | Hiển thị danh sách phiếu trả hàng mới nhất trước. |
-| POST `ResolveReturn(int id, bool approve, string resolution, string reference)` | [469](Project_QLThoiTrang/Controllers/AdminController.cs#L469) | Nhận nút duyệt/từ chối, ghi chú và chứng từ hoàn tiền; ResolveReturn ở service kiểm tra phiếu Pending, hoàn tồn và ghi tiền hoàn khi được duyệt. |
-| GET `Promotions()` | [488](Project_QLThoiTrang/Controllers/AdminController.cs#L488) | Mở danh sách chương trình ưu đãi. |
-| GET `Promotion(int? id)` | [496](Project_QLThoiTrang/Controllers/AdminController.cs#L496) | Mở form thêm khi id trống hoặc form sửa theo id; nạp danh sách sản phẩm áp dụng, không tìm thấy trả 404. |
-| POST `Promotion(Promotion input)` | [512](Project_QLThoiTrang/Controllers/AdminController.cs#L512) | Thêm/sửa ưu đãi: kiểm tra ngày, loại PHANTRAM/SOTIEN, giá trị/hạn mức/lượt, sản phẩm áp dụng và mã chưa trùng; chuẩn hóa mã chữ hoa. |
-| GET `Reports(DateTime? from, DateTime? to, string? period)` | [578](Project_QLThoiTrang/Controllers/AdminController.cs#L578) | Chọn khoảng ngày báo cáo từ bộ lọc nhanh hoặc from/to; ngày bắt đầu sau ngày kết thúc thì trả danh sách rỗng kèm lỗi. |
-| GET `Settings()` | [609](Project_QLThoiTrang/Controllers/AdminController.cs#L609) | Mở thông tin cửa hàng hiện tại để chỉnh sửa. |
-| POST `Settings(StoreSettings input)` | [617](Project_QLThoiTrang/Controllers/AdminController.cs#L617) | Kiểm tra mẫu tên/email/điện thoại/địa chỉ rồi thay d.Settings trong Write; thông báo và tải lại trang sau lưu. |
-| GET `Export()` | [638](Project_QLThoiTrang/Controllers/AdminController.cs#L638) | Xuất toàn bộ đơn thành CSV UTF-8 có BOM với mã đơn, ngày, trạng thái và tổng tiền. |
+| GET `Index()` | [15](Project_QLThoiTrang/Controllers/AdminController.cs#L15) | Hiển thị Dashboard quản trị. |
+| GET `Products(string? q, string? category, int? brandId, string? state)` | [18](Project_QLThoiTrang/Controllers/AdminController.cs#L18) | Tìm kiếm và lọc danh sách sản phẩm. |
+| GET `Product(int? id)` | [48](Project_QLThoiTrang/Controllers/AdminController.cs#L48) | Hiển thị form thêm hoặc sửa sản phẩm. |
+| POST `Product(Product input)` | [60](Project_QLThoiTrang/Controllers/AdminController.cs#L60) | Lưu sản phẩm mới hoặc cập nhật sản phẩm. |
+| GET `DeleteProduct(int id)` | [102](Project_QLThoiTrang/Controllers/AdminController.cs#L102) | Hiển thị trang xác nhận xóa sản phẩm. |
+| POST `DeleteProductConfirmed(int id)` | [109](Project_QLThoiTrang/Controllers/AdminController.cs#L109) | Xóa hoặc ngừng bán sản phẩm theo điều kiện sử dụng. |
+| GET `Categories()` | [124](Project_QLThoiTrang/Controllers/AdminController.cs#L124) | Hiển thị danh sách danh mục. |
+| GET `Category()` | [127](Project_QLThoiTrang/Controllers/AdminController.cs#L127) | Hiển thị form thêm danh mục. |
+| POST `AddCategory(string name)` | [130](Project_QLThoiTrang/Controllers/AdminController.cs#L130) | Chuyển yêu cầu thêm danh mục tới hàm xử lý chung. |
+| POST `Category(string name)` | [134](Project_QLThoiTrang/Controllers/AdminController.cs#L134) | Thêm danh mục sản phẩm. |
+| POST `DeleteCategory(string name)` | [164](Project_QLThoiTrang/Controllers/AdminController.cs#L164) | Xóa danh mục chưa được sử dụng. |
+| GET `Orders(string? status, string? q, string? payment, string? period)` | [179](Project_QLThoiTrang/Controllers/AdminController.cs#L179) | Tìm kiếm và lọc danh sách đơn hàng. |
+| GET `Order(string id)` | [210](Project_QLThoiTrang/Controllers/AdminController.cs#L210) | Hiển thị chi tiết đơn hàng cho quản trị. |
+| POST `OrderStatus(string id, string status)` | [217](Project_QLThoiTrang/Controllers/AdminController.cs#L217) | Cập nhật trạng thái đơn hàng. |
+| GET `Customers(string? q, string? state, string? hasOrders)` | [234](Project_QLThoiTrang/Controllers/AdminController.cs#L234) | Tìm kiếm và lọc danh sách khách hàng. |
+| GET `Customer(int id)` | [255](Project_QLThoiTrang/Controllers/AdminController.cs#L255) | Hiển thị hồ sơ và các đơn của khách hàng. |
+| GET `Inventory()` | [266](Project_QLThoiTrang/Controllers/AdminController.cs#L266) | Hiển thị tồn kho và biến động gần đây. |
+| POST `Inventory(int id, int quantity, int expected, string reason)` | [275](Project_QLThoiTrang/Controllers/AdminController.cs#L275) | Lưu kết quả kiểm kê tồn kho sản phẩm. |
+| GET `Receive(string tab = "single")` | [292](Project_QLThoiTrang/Controllers/AdminController.cs#L292) | Hiển thị form nhập kho. |
+| POST `Receive(ReceiveInput input)` | [300](Project_QLThoiTrang/Controllers/AdminController.cs#L300) | Lưu phiếu nhập kho một dòng. |
+| POST `Payment(string id, decimal amount, string reference)` | [321](Project_QLThoiTrang/Controllers/AdminController.cs#L321) | Ghi nhận tiền đã thu của đơn hàng. |
+| GET `Returns()` | [338](Project_QLThoiTrang/Controllers/AdminController.cs#L338) | Hiển thị danh sách yêu cầu trả hàng. |
+| POST `ResolveReturn(int id, bool approve, string resolution, string reference)` | [342](Project_QLThoiTrang/Controllers/AdminController.cs#L342) | Duyệt hoặc từ chối yêu cầu trả hàng. |
+| GET `Promotions()` | [359](Project_QLThoiTrang/Controllers/AdminController.cs#L359) | Hiển thị danh sách chương trình khuyến mãi. |
+| GET `Promotion(int? id)` | [362](Project_QLThoiTrang/Controllers/AdminController.cs#L362) | Hiển thị form thêm hoặc sửa khuyến mãi. |
+| POST `Promotion(Promotion input)` | [373](Project_QLThoiTrang/Controllers/AdminController.cs#L373) | Lưu chương trình và điều kiện khuyến mãi. |
+| GET `Reports(DateTime? from, DateTime? to, string? period)` | [424](Project_QLThoiTrang/Controllers/AdminController.cs#L424) | Hiển thị báo cáo bán hàng theo khoảng ngày. |
+| GET `Settings()` | [453](Project_QLThoiTrang/Controllers/AdminController.cs#L453) | Hiển thị cấu hình cửa hàng. |
+| POST `Settings(StoreSettings input)` | [456](Project_QLThoiTrang/Controllers/AdminController.cs#L456) | Lưu cấu hình cửa hàng. |
+| GET `Export()` | [471](Project_QLThoiTrang/Controllers/AdminController.cs#L471) | Xuất toàn bộ đơn hàng ra CSV. |
 
 **[AdminExtensions.cs](Project_QLThoiTrang/Controllers/AdminExtensions.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| Nội bộ `OnActionExecuting(ActionExecutingContext context)` | [19](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L19) | Bộ lọc quyền trước mọi action quản trị: Admin đi tiếp; Catalog quản lý danh mục/sản phẩm, Inventory quản lý kho, Sales quản lý đơn, Support quản lý khách/đánh giá. |
-| GET `References(string kind = "brands", int id = 0)` | [82](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L82) | Mở danh sách danh mục theo kind hoặc chuyển sang form sửa khi id > 0; tính tập id đang được sử dụng để view thể hiện trạng thái liên quan. |
-| GET `Reference(string kind = "brands", int id = 0)` | [127](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L127) | Mở form thêm danh mục khi id = 0 hoặc form sửa bản ghi cùng kind; loại sai trả 400, id không có trả 404. |
-| POST `References(ReferenceInput input)` | [146](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L146) | Action tương thích nhận ReferenceInput rồi chuyển sang Reference(input) để dùng chung xử lý. |
-| POST `Reference(ReferenceInput input)` | [155](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L155) | Nhận form thương hiệu/size/màu/kho/NCC, kiểm tra kind và ModelState rồi SaveReference; lỗi giữ dữ liệu nhập và hiển thị lại form. |
-| Nội bộ `ReceiveOptions()` | [187](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L187) | Chuẩn bị ViewBag.Products/Variants và danh sách kho/NCC hoạt động cho form nhập kho; đây là helper nội bộ, không phải URL công khai. |
-| Nội bộ `VariantOptions()` | [200](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L200) | Chuẩn bị danh sách sản phẩm, kích thước và màu để dùng chung khi mở hoặc trả lại form biến thể bị lỗi. |
-| GET `Variants(int? id = null)` | [213](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L213) | Mở danh sách biến thể; có id thì chuyển sang trang sửa riêng, không có thì nạp các lựa chọn và danh sách biến thể. |
-| GET `Variant(int id = 0)` | [228](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L228) | Mở form thêm khi id = 0, hoặc đọc BienTheSanPham để dựng VariantInput khi sửa; không có bản ghi trả 404. |
-| POST `Variants(VariantInput input)` | [252](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L252) | Action tương thích chuyển VariantInput sang Variant(input). |
-| POST `Variant(VariantInput input)` | [261](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L261) | Nhận form biến thể, kiểm tra ModelState rồi SaveVariant; service kiểm tra SKU/tổ hợp không trùng và cấm sửa định danh của biến thể cũ. |
-| GET `VariantStock()` | [284](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L284) | Mở bảng tồn chi tiết theo biến thể và kho từ StoreData. |
-| POST `AdjustVariant( int variantId, int warehouseId, int quantity, int expected, string reason )` | [293](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L293) | Nhận kiểm kê biến thể/kho, số tồn expected và lý do; service kiểm tra rồi lưu, sau đó quay lại StockCount đúng biến thể/kho. |
-| GET `Receipts()` | [320](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L320) | Mở danh sách phiếu nhập từ SQL, bổ sung bảng tra tên kho/NCC/nhân viên trong ViewBag. |
-| GET `Receipt(int id)` | [339](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L339) | Mở một phiếu nhập và các dòng ChiTietPhieuNhap; không có đầu phiếu trả 404. |
-| POST `ReceiveMany( List<ReceiveInput> lines, string reference, int warehouseId, int supplierId )` | [361](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L361) | Gán chung mã phiếu/kho/NCC cho các dòng form rồi gọi ReceiveBatch; lỗi kiểm tra dữ liệu được chuyển thành thông báo, quay lại tab nhiều dòng. |
-| GET `Staff(int id = 0)` | [403](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L403) | Mở danh sách nhân viên hoặc chuyển sang StaffMember nếu có id cần sửa; chỉ Admin được qua bộ lọc quyền action này. |
-| GET `StaffMember(int id = 0)` | [417](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L417) | Mở form thêm/sửa nhân viên; đổi id dương của form sang Id âm trong StoreData để tìm đúng nhân viên. |
-| POST `Staff(StaffInput input)` | [439](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L439) | Action tương thích chuyển form nhân viên sang StaffMember(input). |
-| POST `StaffMember(StaffInput input)` | [448](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L448) | Admin lưu nhân viên qua SaveStaff; nếu lỗi thì xóa mật khẩu khỏi input/ModelState trước khi hiển thị lại form để không điền lại giá trị nhạy cảm. |
-| GET `StockCount(int variantId, int warehouseId)` | [474](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L474) | Mở form kiểm kê một biến thể tại kho; bắt buộc biến thể tồn tại và kho đang hoạt động. |
-| GET `ReturnRequest(int id)` | [494](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L494) | Mở chi tiết một phiếu trả hàng, bọc thành danh sách để dùng chung model/view hiển thị. |
-| GET `EditCustomer(int id)` | [505](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L505) | Mở form sửa hồ sơ tài khoản Role Customer, kèm id/trạng thái; không tìm thấy đúng khách trả 404. |
-| POST `EditCustomer(int id, ProfileInput input, bool active)` | [532](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L532) | Nhận hồ sơ và trạng thái mới, gọi UpdateCustomer với quyền Support/Admin; thành công quay về chi tiết khách, lỗi giữ form. |
-| GET `Reviews()` | [558](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L558) | Mở danh sách đánh giá kể cả đánh giá ẩn để Support/Admin kiểm duyệt; nạp tên sản phẩm cho view. |
-| POST `Moderate(int id, bool active)` | [566](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L566) | Nhận nút ẩn/hiện đánh giá và gọi ModerateReview; không xóa đánh giá hay tệp. |
-| GET `LoginHistory()` | [584](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L584) | Admin xem tối đa 300 nhật ký đăng nhập gần nhất trực tiếp từ SQL. |
+| Nội bộ `OnActionExecuting(ActionExecutingContext context)` | [10](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L10) | Kiểm tra quyền truy cập chức năng quản trị. |
+| GET `References(string kind = "brands", int id = 0)` | [68](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L68) | Hiển thị danh sách hoặc form danh mục dùng chung. |
+| GET `Reference(string kind = "brands", int id = 0)` | [108](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L108) | Hiển thị form thêm hoặc sửa danh mục dùng chung. |
+| POST `References(ReferenceInput input)` | [124](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L124) | Lưu danh mục dùng chung và trở về danh sách. |
+| POST `Reference(ReferenceInput input)` | [128](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L128) | Lưu thương hiệu, size, màu, kho hoặc nhà cung cấp. |
+| Nội bộ `ReceiveOptions()` | [156](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L156) | Nạp lựa chọn kho và nhà cung cấp cho phiếu nhập. |
+| Nội bộ `VariantOptions()` | [166](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L166) | Nạp lựa chọn sản phẩm, size và màu cho biến thể. |
+| GET `Variants(int? id = null)` | [174](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L174) | Hiển thị danh sách biến thể sản phẩm. |
+| GET `Variant(int id = 0)` | [184](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L184) | Hiển thị form thêm hoặc sửa biến thể. |
+| POST `Variants(VariantInput input)` | [207](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L207) | Lưu biến thể và trở về danh sách. |
+| POST `Variant(VariantInput input)` | [211](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L211) | Lưu biến thể sản phẩm. |
+| GET `VariantStock()` | [231](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L231) | Hiển thị tồn kho theo biến thể và kho. |
+| POST `AdjustVariant( int variantId, int warehouseId, int quantity, int expected, string reason )` | [234](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L234) | Lưu kết quả kiểm kê biến thể. |
+| GET `Receipts()` | [257](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L257) | Hiển thị danh sách phiếu nhập kho. |
+| GET `Receipt(int id)` | [274](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L274) | Hiển thị chi tiết phiếu nhập kho. |
+| POST `ReceiveMany( List<ReceiveInput> lines, string reference, int warehouseId, int supplierId )` | [289](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L289) | Lưu phiếu nhập kho nhiều dòng. |
+| GET `Staff(int id = 0)` | [326](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L326) | Hiển thị danh sách nhân viên. |
+| GET `StaffMember(int id = 0)` | [335](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L335) | Hiển thị form thêm hoặc sửa nhân viên. |
+| POST `Staff(StaffInput input)` | [356](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L356) | Lưu nhân viên và trở về danh sách. |
+| POST `StaffMember(StaffInput input)` | [360](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L360) | Lưu tài khoản và quyền nhân viên. |
+| GET `StockCount(int variantId, int warehouseId)` | [381](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L381) | Hiển thị form kiểm kê sản phẩm hoặc biến thể. |
+| GET `ReturnRequest(int id)` | [396](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L396) | Hiển thị chi tiết yêu cầu trả hàng. |
+| GET `EditCustomer(int id)` | [403](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L403) | Hiển thị form sửa hồ sơ khách hàng. |
+| POST `EditCustomer(int id, ProfileInput input, bool active)` | [424](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L424) | Lưu hồ sơ và trạng thái khách hàng. |
+| GET `Reviews()` | [446](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L446) | Hiển thị danh sách đánh giá sản phẩm. |
+| POST `Moderate(int id, bool active)` | [453](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L453) | Ẩn hoặc hiện đánh giá sản phẩm. |
+| GET `LoginHistory()` | [469](Project_QLThoiTrang/Controllers/AdminExtensions.cs#L469) | Hiển thị lịch sử đăng nhập. |
 
 **[ChatController.cs](Project_QLThoiTrang/Controllers/ChatController.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| Nội bộ `Conversation(int customerId)` | [20](Project_QLThoiTrang/Controllers/ChatController.cs#L20) | Khách luôn dùng id của chính mình; Admin/Support mới dùng customerId được chọn để mở hội thoại khách cần hỗ trợ. |
-| GET `Index(int customerId = 0)` | [29](Project_QLThoiTrang/Controllers/ChatController.cs#L29) | Nhân viên chưa chọn khách thì mở Inbox; đã chọn khách hoặc tài khoản Customer thì kiểm tra khách còn hoạt động rồi mở trang chat. |
-| GET `Messages(int customerId, long before = 0, long after = 0)` | [47](Project_QLThoiTrang/Controllers/ChatController.cs#L47) | API JSON lấy tin cũ/tin mới theo before/after sau kiểm tra quyền; trả id, nội dung, cờ người gửi và thời gian UTC cho chat.js. |
-| POST `Send(int customerId, string text, Guid clientToken)` | [75](Project_QLThoiTrang/Controllers/ChatController.cs#L75) | API POST gửi tin với clientToken chống gửi trùng; service kiểm tra nội dung/quyền/tốc độ, lỗi nghiệp vụ trả HTTP 400 kèm thông báo. |
-| POST `Read(int customerId, long last)` | [93](Project_QLThoiTrang/Controllers/ChatController.cs#L93) | API POST đánh dấu đã đọc tới mã last trong đúng hội thoại; không đủ quyền trả Forbid. |
+| Nội bộ `Conversation(int customerId)` | [17](Project_QLThoiTrang/Controllers/ChatController.cs#L17) | Xác định khách hàng của cuộc hội thoại. |
+| GET `Index(int customerId = 0)` | [20](Project_QLThoiTrang/Controllers/ChatController.cs#L20) | Hiển thị trang chat hỗ trợ. |
+| GET `Messages(int customerId, long before = 0, long after = 0)` | [33](Project_QLThoiTrang/Controllers/ChatController.cs#L33) | Lấy danh sách tin nhắn hội thoại. |
+| POST `Send(int customerId, string text, Guid clientToken)` | [57](Project_QLThoiTrang/Controllers/ChatController.cs#L57) | Gửi tin nhắn hỗ trợ. |
+| POST `Read(int customerId, long last)` | [72](Project_QLThoiTrang/Controllers/ChatController.cs#L72) | Đánh dấu tin nhắn đã đọc. |
 
 **[DocumentsController.cs](Project_QLThoiTrang/Controllers/DocumentsController.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| GET `Order(string id)` | [20](Project_QLThoiTrang/Controllers/DocumentsController.cs#L20) | Xuất PDF đơn hàng: chỉ Admin/Sales hoặc Customer sở hữu đơn được tải; chứa dòng hàng, giảm giá, vận chuyển, tổng thu và hoàn tiền. |
-| GET `Receipt(int id)` | [76](Project_QLThoiTrang/Controllers/DocumentsController.cs#L76) | Inventory/Admin tải PDF phiếu nhập và tổng các dòng; không tìm thấy phiếu trả 404. |
-| GET `Return(int id)` | [124](Project_QLThoiTrang/Controllers/DocumentsController.cs#L124) | Xuất PDF phiếu trả cho Admin/Sales hoặc chính khách sở hữu, kèm lý do, tình trạng, số lượng và tiền hoàn. |
+| GET `Order(string id)` | [16](Project_QLThoiTrang/Controllers/DocumentsController.cs#L16) | Xuất PDF đơn hàng được phép xem. |
+| GET `Receipt(int id)` | [68](Project_QLThoiTrang/Controllers/DocumentsController.cs#L68) | Xuất PDF phiếu nhập kho. |
+| GET `Return(int id)` | [111](Project_QLThoiTrang/Controllers/DocumentsController.cs#L111) | Xuất PDF phiếu trả hàng. |
 
 **[FinanceController.cs](Project_QLThoiTrang/Controllers/FinanceController.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| GET `Index(DateTime? from, DateTime? to, string? period)` | [22](Project_QLThoiTrang/Controllers/FinanceController.cs#L22) | Mở báo cáo doanh thu/giá vốn/lợi nhuận theo ngày; kiểm tra from <= to rồi gọi Profit. |
-| GET `Suppliers()` | [50](Project_QLThoiTrang/Controllers/FinanceController.cs#L50) | Ghép dữ liệu phiếu nhập, nhà cung cấp, số phải trả và các chứng từ chi để hiển thị công nợ. |
-| GET `Receipt(int id)` | [66](Project_QLThoiTrang/Controllers/FinanceController.cs#L66) | Mở một phiếu nhập, công nợ đã đối soát, các lần chi và tổng chi tiết tính lại; phiếu không tồn tại trả 404. |
-| POST `Reconcile(int receiptId, decimal amount, string note)` | [92](Project_QLThoiTrang/Controllers/FinanceController.cs#L92) | Nhận số phải trả/căn cứ đối soát rồi gọi ReconcileSupplier; không được đổi số phải trả sau khi đã phát sinh chi tiền. |
-| POST `Pay(int receiptId, decimal amount, string reference)` | [118](Project_QLThoiTrang/Controllers/FinanceController.cs#L118) | Nhận chứng từ chi và số tiền; PaySupplier kiểm tra phiếu đã đối soát, chứng từ duy nhất và số tiền không vượt phần còn nợ. |
+| GET `Index(DateTime? from, DateTime? to, string? period)` | [17](Project_QLThoiTrang/Controllers/FinanceController.cs#L17) | Hiển thị báo cáo doanh thu, giá vốn và lợi nhuận. |
+| GET `Suppliers()` | [41](Project_QLThoiTrang/Controllers/FinanceController.cs#L41) | Hiển thị công nợ nhà cung cấp. |
+| GET `Receipt(int id)` | [52](Project_QLThoiTrang/Controllers/FinanceController.cs#L52) | Hiển thị công nợ và chứng từ của phiếu nhập. |
+| POST `Reconcile(int receiptId, decimal amount, string note)` | [73](Project_QLThoiTrang/Controllers/FinanceController.cs#L73) | Lưu kết quả đối soát công nợ phiếu nhập. |
+| POST `Pay(int receiptId, decimal amount, string reference)` | [92](Project_QLThoiTrang/Controllers/FinanceController.cs#L92) | Ghi nhận thanh toán cho nhà cung cấp. |
 
 **[HomeController.cs](Project_QLThoiTrang/Controllers/HomeController.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| GET `Index()` | [15](Project_QLThoiTrang/Controllers/HomeController.cs#L15) | Trang chủ nhận danh sách sản phẩm Active từ StoreService để hiển thị các khu vực giới thiệu hàng hóa. |
-| GET `Info(string id = "about")` | [23](Project_QLThoiTrang/Controllers/HomeController.cs#L23) | Tra nội dung trang thông tin theo id trong bảng pages; id không được hỗ trợ trả 404, có thì ghép thông tin cửa hàng cho view. |
-| GET `Privacy()` | [95](Project_QLThoiTrang/Controllers/HomeController.cs#L95) | Chuyển URL tương thích sang Info với id privacy. |
-| GET `Error()` | [99](Project_QLThoiTrang/Controllers/HomeController.cs#L99) | Dựng trang lỗi với mã request để hỗ trợ tra log; không cache nội dung lỗi. |
+| GET `Index()` | [11](Project_QLThoiTrang/Controllers/HomeController.cs#L11) | Hiển thị trang chủ cửa hàng. |
+| GET `Info(string id = "about")` | [14](Project_QLThoiTrang/Controllers/HomeController.cs#L14) | Hiển thị trang thông tin theo mục được chọn. |
+| GET `Privacy()` | [84](Project_QLThoiTrang/Controllers/HomeController.cs#L84) | Hiển thị chính sách quyền riêng tư. |
+| GET `Error()` | [87](Project_QLThoiTrang/Controllers/HomeController.cs#L87) | Hiển thị trang báo lỗi. |
 
 **[RecoveryController.cs](Project_QLThoiTrang/Controllers/RecoveryController.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| GET `Forgot()` | [13](Project_QLThoiTrang/Controllers/RecoveryController.cs#L13) | Mở form quên mật khẩu, ViewBag.Ready cho biết SMTP/khóa OTP đã cấu hình hay chưa. |
-| POST `Forgot(ForgotInput input, CancellationToken cancellationToken)` | [26](Project_QLThoiTrang/Controllers/RecoveryController.cs#L26) | Kiểm tra email rồi yêu cầu gửi OTP qua PasswordRecovery; thông báo chung không xác nhận email có trong hệ thống. |
-| GET `Reset()` | [46](Project_QLThoiTrang/Controllers/RecoveryController.cs#L46) | Mở form nhập email, OTP và mật khẩu mới. |
-| POST `Reset(ResetInput input)` | [54](Project_QLThoiTrang/Controllers/RecoveryController.cs#L54) | Kiểm tra mẫu và hoàn tất khôi phục; OTP không hợp lệ/hết hạn/hết số lần thử thì trả lại form, thành công chuyển sang đăng nhập. |
+| GET `Forgot()` | [13](Project_QLThoiTrang/Controllers/RecoveryController.cs#L13) | Hiển thị form gửi OTP qua email và đặt lại mật khẩu. |
+| POST `Forgot(ForgotInput input, CancellationToken cancellationToken)` | [26](Project_QLThoiTrang/Controllers/RecoveryController.cs#L26) | Yêu cầu gửi OTP tới email đã đăng ký. |
+| GET `Reset()` | [62](Project_QLThoiTrang/Controllers/RecoveryController.cs#L62) | Hiển thị form xác minh OTP và mật khẩu mới. |
+| POST `Reset(ResetInput input, bool inline = false)` | [72](Project_QLThoiTrang/Controllers/RecoveryController.cs#L72) | Xác minh OTP, đặt mật khẩu mới và đăng xuất. |
+| Nội bộ `SetChannelAvailability()` | [97](Project_QLThoiTrang/Controllers/RecoveryController.cs#L97) | Cập nhật trạng thái gửi email và thời gian chờ gửi lại. |
+| Nội bộ `ResetForm(ResetInput input, bool inline)` | [109](Project_QLThoiTrang/Controllers/RecoveryController.cs#L109) | Hiển thị lại form tương ứng khi xác minh thất bại. |
+| Nội bộ `WantsJson()` | [118](Project_QLThoiTrang/Controllers/RecoveryController.cs#L118) | Kiểm tra yêu cầu có cần phản hồi JSON. |
 
 **[ShippingController.cs](Project_QLThoiTrang/Controllers/ShippingController.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| GET `Index(string id)` | [20](Project_QLThoiTrang/Controllers/ShippingController.cs#L20) | Admin/Sales mở thông tin gửi hàng của đơn, trạng thái cấu hình GHN và vận đơn đã lưu nếu có; id không tồn tại trả 404. |
-| POST `Create(ShipmentInput input, CancellationToken token)` | [40](Project_QLThoiTrang/Controllers/ShippingController.cs#L40) | Nhận tỉnh/phường, khối lượng và kích thước; ShippingService.Create kiểm tra điều kiện rồi gửi GHN. |
-| POST `Sync(string id, CancellationToken token)` | [76](Project_QLThoiTrang/Controllers/ShippingController.cs#L76) | Lấy lại trạng thái vận đơn bằng mã đơn đã gửi qua ShippingService.Sync; cập nhật kết quả trong SQL rồi quay lại trang vận chuyển. |
+| GET `Index(string id)` | [15](Project_QLThoiTrang/Controllers/ShippingController.cs#L15) | Hiển thị thông tin vận chuyển đơn hàng. |
+| POST `Create(ShipmentInput input, CancellationToken token)` | [30](Project_QLThoiTrang/Controllers/ShippingController.cs#L30) | Yêu cầu tạo vận đơn GHN. |
+| POST `Sync(string id, CancellationToken token)` | [59](Project_QLThoiTrang/Controllers/ShippingController.cs#L59) | Đồng bộ trạng thái vận đơn GHN. |
 
 **[ShopController.cs](Project_QLThoiTrang/Controllers/ShopController.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| GET `Index( string? q, string? category, string sort = "new", string? collection = null )` | [26](Project_QLThoiTrang/Controllers/ShopController.cs#L26) | Lọc sản phẩm đang bán theo từ khóa tên/màu, danh mục, bộ sưu tập mới/ưu đãi và thứ tự giá/tên/mã; đóng gói CatalogViewModel cho view. |
-| GET `Detail(int id)` | [73](Project_QLThoiTrang/Controllers/ShopController.cs#L73) | Mở chi tiết sản phẩm đang bán, nạp đánh giá và tối đa 4 sản phẩm liên quan cùng danh mục; sản phẩm không tồn tại hoặc đã ẩn trả 404. |
-| GET `Wishlist()` | [95](Project_QLThoiTrang/Controllers/ShopController.cs#L95) | Hiển thị sản phẩm đang hoạt động trong danh sách yêu thích ở Session; khách đăng nhập được nạp danh sách SQL trước action bởi ShoppingSession. |
-| POST `Favorite(int id, string? returnUrl)` | [108](Project_QLThoiTrang/Controllers/ShopController.cs#L108) | Bật/tắt yêu thích sản phẩm: đã có thì Remove id, chưa có thì Add id; sản phẩm phải còn hoạt động. |
-| GET `Cart()` | [129](Project_QLThoiTrang/Controllers/ShopController.cs#L129) | Dựng giỏ từ Session và giá/biến thể hiện tại trên server bằng SessionStore.Cart; ShoppingSession chặn tài khoản nhân viên mua hàng. |
-| POST `Add(int id, string size = "M", int quantity = 1, int variantId = 0)` | [137](Project_QLThoiTrang/Controllers/ShopController.cs#L137) | Thêm sản phẩm vào giỏ: sản phẩm và biến thể phải hoạt động, lượng 1–20 và tổng cùng biến thể không quá min(20, tồn). |
-| POST `UpdateCart( int id, string? size, int quantity, bool remove = false, int variantId = 0, int newVariantId = 0 )` | [187](Project_QLThoiTrang/Controllers/ShopController.cs#L187) | Sửa màu/size/số lượng hoặc xóa dòng giỏ. |
-| POST `Review(int id, int stars, string text, List<IFormFile>? media)` | [266](Project_QLThoiTrang/Controllers/ShopController.cs#L266) | Nhận đánh giá và tối đa 5 tệp từ khách; giới hạn request, đọc byte vào bộ nhớ rồi chuyển kiểm tra đã mua/số sao/định dạng tệp sang StoreService.Review. |
-| GET `ReviewMedia(Guid id)` | [309](Project_QLThoiTrang/Controllers/ShopController.cs#L309) | Trả ảnh/video theo Guid; chỉ nội dung của đánh giá đang hiển thị hoặc người xem Admin/Support được đọc. |
-| GET `Checkout()` | [335](Project_QLThoiTrang/Controllers/ShopController.cs#L335) | Khách mở thanh toán khi giỏ có hàng; điền hồ sơ, tạo checkout-token và chụp checkout-quote trong Session để phát hiện giỏ/giá đổi khi gửi form. |
-| POST `Checkout(CheckoutInput input)` | [366](Project_QLThoiTrang/Controllers/ShopController.cs#L366) | Kiểm tra giỏ không rỗng, ModelState và checkout-token khớp Session; PlaceOrder đối chiếu báo giá/trừ tồn/lưu đơn. |
-| GET `Success(string id)` | [414](Project_QLThoiTrang/Controllers/ShopController.cs#L414) | Chỉ hiển thị xác nhận đơn thuộc đúng tài khoản đang đăng nhập; mã đơn không khớp chủ trả 404. |
+| GET `Index( string? q, string? category, string sort = "new", string? collection = null )` | [14](Project_QLThoiTrang/Controllers/ShopController.cs#L14) | Lọc và hiển thị sản phẩm đang bán. |
+| GET `Detail(int id)` | [56](Project_QLThoiTrang/Controllers/ShopController.cs#L56) | Hiển thị sản phẩm, đánh giá và sản phẩm liên quan. |
+| GET `Wishlist()` | [72](Project_QLThoiTrang/Controllers/ShopController.cs#L72) | Hiển thị danh sách sản phẩm yêu thích. |
+| POST `Favorite(int id, string? returnUrl)` | [81](Project_QLThoiTrang/Controllers/ShopController.cs#L81) | Thêm hoặc bỏ sản phẩm yêu thích. |
+| GET `Cart()` | [95](Project_QLThoiTrang/Controllers/ShopController.cs#L95) | Hiển thị giỏ hàng và giá hiện tại. |
+| POST `Add(int id, string size = "M", int quantity = 1, int variantId = 0)` | [98](Project_QLThoiTrang/Controllers/ShopController.cs#L98) | Thêm sản phẩm hoặc biến thể vào giỏ hàng. |
+| POST `UpdateCart( int id, string? size, int quantity, bool remove = false, int variantId = 0, int newVariantId = 0 )` | [141](Project_QLThoiTrang/Controllers/ShopController.cs#L141) | Sửa biến thể, số lượng hoặc xóa dòng giỏ hàng. |
+| POST `Review(int id, int stars, string text, List<IFormFile>? media)` | [207](Project_QLThoiTrang/Controllers/ShopController.cs#L207) | Gửi đánh giá sản phẩm kèm ảnh hoặc video. |
+| GET `ReviewMedia(Guid id)` | [246](Project_QLThoiTrang/Controllers/ShopController.cs#L246) | Trả tệp ảnh hoặc video của đánh giá được phép xem. |
+| GET `Checkout()` | [266](Project_QLThoiTrang/Controllers/ShopController.cs#L266) | Hiển thị form đặt hàng và chụp báo giá hiện tại. |
+| POST `Checkout(CheckoutInput input)` | [292](Project_QLThoiTrang/Controllers/ShopController.cs#L292) | Tạo đơn hàng và xóa giỏ sau khi thành công. |
+| GET `Success(string id)` | [332](Project_QLThoiTrang/Controllers/ShopController.cs#L332) | Hiển thị xác nhận đặt hàng của khách. |
 
 **[ShoppingSession.cs](Project_QLThoiTrang/Controllers/ShoppingSession.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| Nội bộ `OnActionExecuting(ActionExecutingContext context)` | [18](Project_QLThoiTrang/Controllers/ShoppingSession.cs#L18) | Trước action mua hàng: chặn nhân viên vào Cart/Add/UpdateCart/Checkout/Success; nếu là Customer thì nạp giỏ và yêu thích từ SQL vào Session. |
-| Nội bộ `OnActionExecuted(ActionExecutedContext context)` | [43](Project_QLThoiTrang/Controllers/ShoppingSession.cs#L43) | Sau Add/UpdateCart/Favorite không có ngoại lệ chưa xử lý, đồng bộ giỏ/yêu thích Session xuống SQL cho Customer. |
+| Nội bộ `OnActionExecuting(ActionExecutingContext context)` | [11](Project_QLThoiTrang/Controllers/ShoppingSession.cs#L11) | Nạp giỏ khách và kiểm tra quyền mua hàng. |
+| Nội bộ `OnActionExecuted(ActionExecutedContext context)` | [33](Project_QLThoiTrang/Controllers/ShoppingSession.cs#L33) | Lưu giỏ và yêu thích sau khi khách cập nhật. |
 
 **[ValuationController.cs](Project_QLThoiTrang/Controllers/ValuationController.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| GET `Index()` | [16](Project_QLThoiTrang/Controllers/ValuationController.cs#L16) | Inventory/Admin xem tồn và giá vốn hiện có theo biến thể; dữ liệu đọc từ InventoryValues và StoreData. |
-| GET `Edit(int id)` | [27](Project_QLThoiTrang/Controllers/ValuationController.cs#L27) | Mở form khai báo giá vốn cho biến thể tồn tại; đưa id vào ViewBag để xác định dòng cần cập nhật. |
-| POST `Edit(int variantId, int expected, decimal cost, string note)` | [44](Project_QLThoiTrang/Controllers/ValuationController.cs#L44) | Nhận giá vốn, tồn expected và lý do; SetInventoryValue kiểm tra chống ghi đè, lưu giá vốn cho giao dịch tiếp theo, lỗi quay lại form cùng biến thể. |
+| GET `Index()` | [12](Project_QLThoiTrang/Controllers/ValuationController.cs#L12) | Hiển thị giá trị tồn kho theo biến thể. |
+| GET `Edit(int id)` | [19](Project_QLThoiTrang/Controllers/ValuationController.cs#L19) | Hiển thị form khai báo giá vốn tồn kho. |
+| POST `Edit(int variantId, int expected, decimal cost, string note)` | [30](Project_QLThoiTrang/Controllers/ValuationController.cs#L30) | Lưu giá vốn tồn kho của biến thể. |
 
 ### Service: điều kiện và lưu nghiệp vụ
 
@@ -323,167 +329,179 @@ Bảng bên dưới được lập sau khi thêm comment. Số dòng có thể t
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `ChatAccess(Data.StoreDbContext db, int actor, int customer)` | [22](Project_QLThoiTrang/Services/CustomerFeatures.cs#L22) | Cho phép khách đọc/gửi trong cuộc hội thoại của chính mình; tài khoản khác phải là nhân viên Support/Admin. |
-| `Messages(int customer, int actor, long before = 0, long after = 0)` | [39](Project_QLThoiTrang/Services/CustomerFeatures.cs#L39) | Đọc tối đa 100 tin trong đúng hội thoại sau khi kiểm tra quyền. |
-| `SendMessage(int customer, int actor, string text, Guid clientToken)` | [60](Project_QLThoiTrang/Services/CustomerFeatures.cs#L60) | Thêm tin nhắn 1–2.000 ký tự: kiểm tra quyền, clientToken khác rỗng và giới hạn dưới 20 tin/phút. |
-| `MarkChatRead(int customer, int actor, long last)` | [114](Project_QLThoiTrang/Services/CustomerFeatures.cs#L114) | Cập nhật mốc đã đọc cho khách hoặc nhân viên; ép last vào khoảng 0..mã tin lớn nhất và chỉ tăng mốc đọc để việc tải lại không làm tin đã đọc thành chưa đọc. |
-| `ChatInbox(int actor)` | [137](Project_QLThoiTrang/Services/CustomerFeatures.cs#L137) | Support/Admin lấy tối đa 200 hội thoại mới cập nhật nhất, kèm tên khách và số tin khách gửi sau mốc nhân viên đã đọc. |
-| `IssueReset(string email, string secret)` | [166](Project_QLThoiTrang/Services/CustomerFeatures.cs#L166) | Tạo OTP 6 số cho khách đang hoạt động: tối đa 1 lần/phút và 5 lần/giờ, hết hạn sau 10 phút. |
-| `ResetDelivered(Guid id)` | [203](Project_QLThoiTrang/Services/CustomerFeatures.cs#L203) | Đánh dấu OTP đã gửi email thành công; ResetPassword chỉ chấp nhận mã có Sent = true. |
-| `ResetPassword(ResetInput input, string secret)` | [218](Project_QLThoiTrang/Services/CustomerFeatures.cs#L218) | Đổi mật khẩu bằng OTP: kiểm tra mẫu và khóa HMAC, khách hoạt động, mã đã gửi/chưa dùng/chưa hết 10 phút/chưa thử đủ 5 lần và stamp chưa đổi. |
-| `PasswordStamp(string hash)` | [263](Project_QLThoiTrang/Services/CustomerFeatures.cs#L263) | Tạo SHA-256 của hash mật khẩu hiện tại; dùng để vô hiệu OTP nếu mật khẩu đã đổi từ lúc phát mã. |
-| `OtpHash(Guid id, string code, string secret)` | [270](Project_QLThoiTrang/Services/CustomerFeatures.cs#L270) | Tạo HMAC-SHA256 từ mã challenge và OTP bằng khóa cấu hình; database chỉ giữ kết quả này, không lưu OTP rõ. |
-| `SendCode(string email, string code, CancellationToken cancellationToken)` | [284](Project_QLThoiTrang/Services/CustomerFeatures.cs#L284) | Gửi OTP qua SMTP TLS tới email được truyền vào; triển khai thật dùng SmtpMailSender, kiểm thử có thể thay bằng IMailSender giả lập. |
-| `SendCode(string email, string code, CancellationToken cancellationToken)` | [292](Project_QLThoiTrang/Services/CustomerFeatures.cs#L292) | Gửi OTP qua SMTP TLS tới email được truyền vào; triển khai thật dùng SmtpMailSender, kiểm thử có thể thay bằng IMailSender giả lập. |
-| `Request(string email, CancellationToken cancellationToken)` | [329](Project_QLThoiTrang/Services/CustomerFeatures.cs#L329) | Chỉ phát/gửi OTP khi SMTP và khóa HMAC đã sẵn sàng. |
-| `Complete(ResetInput input)` | [361](Project_QLThoiTrang/Services/CustomerFeatures.cs#L361) | Chỉ cho hoàn tất đặt lại mật khẩu khi cấu hình khôi phục đã sẵn sàng; sau đó chuyển kiểm tra OTP sang StoreService.ResetPassword. |
+| `ChatAccess(Data.StoreDbContext db, int actor, int customer)` | [11](Project_QLThoiTrang/Services/CustomerFeatures.cs#L11) | Kiểm tra quyền truy cập hội thoại. |
+| `Messages(int customer, int actor, long before = 0, long after = 0)` | [23](Project_QLThoiTrang/Services/CustomerFeatures.cs#L23) | Lấy các tin nhắn theo mốc thời gian. |
+| `SendMessage(int customer, int actor, string text, Guid clientToken)` | [38](Project_QLThoiTrang/Services/CustomerFeatures.cs#L38) | Lưu tin nhắn và ngăn gửi trùng. |
+| `MarkChatRead(int customer, int actor, long last)` | [82](Project_QLThoiTrang/Services/CustomerFeatures.cs#L82) | Đánh dấu tin nhắn hội thoại đã đọc. |
+| `ChatInbox(int actor)` | [101](Project_QLThoiTrang/Services/CustomerFeatures.cs#L101) | Lấy danh sách hội thoại hỗ trợ. |
 
 **[DatabaseSchemaGuard.cs](Project_QLThoiTrang/Services/DatabaseSchemaGuard.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `IsReady()` | [24](Project_QLThoiTrang/Services/DatabaseSchemaGuard.cs#L24) | Kiểm tra kết nối và các cột/bảng cần thiết của SQL; khóa gate ngăn kiểm tra đồng thời, cache kết quả trong 10 giây. |
-| `InvokeAsync( HttpContext context, DatabaseSchemaStatus status, IWebHostEnvironment environment )` | [86](Project_QLThoiTrang/Services/DatabaseSchemaGuard.cs#L86) | Middleware cho tài nguyên tĩnh đi tiếp; yêu cầu động chỉ chạy tiếp khi database sẵn sàng. |
+| `IsReady()` | [16](Project_QLThoiTrang/Services/DatabaseSchemaGuard.cs#L16) | Kiểm tra kết nối và schema database cần thiết. |
+| `InvokeAsync( HttpContext context, DatabaseSchemaStatus status, IWebHostEnvironment environment )` | [75](Project_QLThoiTrang/Services/DatabaseSchemaGuard.cs#L75) | Chặn yêu cầu động khi database chưa sẵn sàng. |
 
 **[Finance.cs](Project_QLThoiTrang/Services/Finance.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `UpdateCosting( StoreDbContext db, StoreData data, Dictionary<int, int> before, Dictionary<string, string> oldStatuses, HashSet<int> approved, int movementCount )` | [17](Project_QLThoiTrang/Services/Finance.cs#L17) | Chụp giá vốn cho dòng đơn mới, rồi tính giá vốn bình quân di động khi nhập kho/nhận hàng hủy/nhận hàng trả. |
-| `SetInventoryValue( int variantId, int expected, decimal cost, string note, int actor )` | [89](Project_QLThoiTrang/Services/Finance.cs#L89) | Inventory/Admin khai báo giá vốn cho biến thể; cost 0–100 triệu, lý do 5–300 ký tự và tổng tồn phải bằng expected. |
-| `Profit(DateTime from, DateTime to)` | [136](Project_QLThoiTrang/Services/Finance.cs#L136) | Lập dòng doanh thu/giá vốn theo ngày tạo đơn, chỉ xét đơn đã giao/hoàn thành/đã hoàn hàng. |
-| `ReconcileSupplier(int receiptId, decimal amount, string note, int actor)` | [202](Project_QLThoiTrang/Services/Finance.cs#L202) | Sales/Admin đối soát số phải trả của phiếu nhập trước khi chi tiền; yêu cầu phiếu tồn tại, số tiền hợp lệ, có căn cứ đối soát và chưa có SupplierPayment. |
-| `PaySupplier(int receiptId, decimal amount, string reference, int actor)` | [237](Project_QLThoiTrang/Services/Finance.cs#L237) | Sales/Admin thêm chứng từ chi cho phiếu đã đối soát; mã chứng từ chưa dùng, amount > 0 và không vượt công nợ còn lại sau các lần chi trước. |
+| `UpdateCosting( StoreDbContext db, StoreData data, Dictionary<int, int> before, Dictionary<string, string> oldStatuses, HashSet<int> approved, int movementCount )` | [9](Project_QLThoiTrang/Services/Finance.cs#L9) | Tính giá vốn tồn kho và chụp giá vốn dòng đơn. |
+| `SetInventoryValue( int variantId, int expected, decimal cost, string note, int actor )` | [76](Project_QLThoiTrang/Services/Finance.cs#L76) | Lưu giá vốn kiểm kê của biến thể. |
+| `Profit(DateTime from, DateTime to)` | [116](Project_QLThoiTrang/Services/Finance.cs#L116) | Tính doanh thu, giá vốn và lợi nhuận sau trả hàng. |
+| `ReconcileSupplier(int receiptId, decimal amount, string note, int actor)` | [176](Project_QLThoiTrang/Services/Finance.cs#L176) | Đối soát số tiền phải trả của phiếu nhập. |
+| `PaySupplier(int receiptId, decimal amount, string reference, int actor)` | [205](Project_QLThoiTrang/Services/Finance.cs#L205) | Ghi chứng từ thanh toán công nợ nhà cung cấp. |
 
 **[JsonMigration.cs](Project_QLThoiTrang/Services/JsonMigration.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `ImportJson(string path)` | [17](Project_QLThoiTrang/Services/JsonMigration.cs#L17) | Đọc JSON cũ, tính SHA-256 và chuyển dữ liệu qua MergeLegacy để nhập có kiểm soát. |
-| `SeedDemo()` | [29](Project_QLThoiTrang/Services/JsonMigration.cs#L29) | Nạp bộ dữ liệu mẫu qua MergeLegacy; chỉ thực hiện khi người vận hành chủ động dùng --seed-demo. |
-| `MergeLegacy(StoreData source, string hash)` | [36](Project_QLThoiTrang/Services/JsonMigration.cs#L36) | Ghép dữ liệu cũ/mẫu vào StoreData, kiểm tra dấu vết nhập và ánh xạ mã liên quan trước khi Write lưu SQL; xem các Require bên dưới để biết điều kiện được phép nhập. |
+| `ImportJson(string path)` | [10](Project_QLThoiTrang/Services/JsonMigration.cs#L10) | Nhập dữ liệu JSON cũ vào SQL có kiểm soát. |
+| `SeedDemo()` | [20](Project_QLThoiTrang/Services/JsonMigration.cs#L20) | Lưu bộ dữ liệu mẫu vào database. |
+| `MergeLegacy(StoreData source, string hash)` | [23](Project_QLThoiTrang/Services/JsonMigration.cs#L23) | Ghép dữ liệu cũ và ánh xạ các mã liên quan. |
 
 **[NativeManagement.cs](Project_QLThoiTrang/Services/NativeManagement.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `CurrentAccount(int id)` | [22](Project_QLThoiTrang/Services/NativeManagement.cs#L22) | Đọc tài khoản phục vụ xác thực cookie: id dương tra KhachHang, id âm tra NhanVien với mã -id; trả null nếu không tồn tại. |
-| `NativeRead(Func<StoreDbContext, T> read)` | [58](Project_QLThoiTrang/Services/NativeManagement.cs#L58) | Đọc trực tiếp các DbSet SQL, không qua StoreData; dùng NoTracking và transaction Serializable. |
-| `NativeWrite(Func<StoreDbContext, T> write)` | [75](Project_QLThoiTrang/Services/NativeManagement.cs#L75) | Ghi trực tiếp các entity SQL: mở transaction Serializable và khóa QOANH.Store.Write, chạy callback, SaveChanges rồi Commit. |
-| `NativePermission(StoreDbContext db, int actor, params string[] roles)` | [103](Project_QLThoiTrang/Services/NativeManagement.cs#L103) | Kiểm tra actor là nhân viên (id âm), còn hoạt động và có quyền Admin hoặc một vai trò được truyền vào; không đạt thì chặn trước khi sửa SQL. |
-| `References(string kind)` | [121](Project_QLThoiTrang/Services/NativeManagement.cs#L121) | Đọc danh mục theo kind: brands, sizes, colors, warehouses hoặc suppliers; đổi các bảng tương ứng thành ReferenceInput. |
-| `SaveReference(ReferenceInput input, int actor)` | [185](Project_QLThoiTrang/Services/NativeManagement.cs#L185) | Thêm/sửa thương hiệu, size, màu, kho hoặc nhà cung cấp theo kind. |
-| `SaveVariant(VariantInput input, int actor)` | [306](Project_QLThoiTrang/Services/NativeManagement.cs#L306) | Thêm/sửa biến thể sản phẩm: kiểm tra quyền Catalog, sản phẩm/size/màu tồn tại và SKU/tổ hợp không trùng. |
-| `Staff()` | [370](Project_QLThoiTrang/Services/NativeManagement.cs#L370) | Lấy danh sách tài khoản nhân viên từ StoreData theo quy ước Id âm; dữ liệu này được Load từ bảng NhanVien. |
-| `SaveStaff(StaffInput input, int actor)` | [379](Project_QLThoiTrang/Services/NativeManagement.cs#L379) | Admin thêm/sửa nhân viên và quyền: email không trùng khách hoặc nhân viên khác; không tự khóa/hạ quyền Admin đang dùng, phải còn ít nhất một Admin hoạt động. |
-| `UpdateCustomer(int id, ProfileInput input, bool active, int actor)` | [455](Project_QLThoiTrang/Services/NativeManagement.cs#L455) | Nhân viên Support/Admin sửa tên, điện thoại, địa chỉ và trạng thái của tài khoản có Role Customer; không sửa email, vai trò hay mật khẩu tại đây. |
-| `Reviews(int? product = null, bool includeHidden = false)` | [479](Project_QLThoiTrang/Services/NativeManagement.cs#L479) | Đọc đánh giá kèm tên khách và danh sách mã ảnh/video. |
-| `Review( int customerId, int productId, int stars, string text, IReadOnlyList<ReviewUpload>? uploads = null )` | [524](Project_QLThoiTrang/Services/NativeManagement.cs#L524) | Thêm đánh giá sau mua: khách đang hoạt động, 1–5 sao, nội dung 5–1.000 ký tự, đã mua sản phẩm trong đơn đã giao/hoàn thành và chưa từng đánh giá sản phẩm đó. |
-| `ModerateReview(int id, bool active, int actor)` | [592](Project_QLThoiTrang/Services/NativeManagement.cs#L592) | Support/Admin ẩn hoặc hiện đánh giá bằng TrangThai = active; không xóa bản ghi hay tệp đính kèm. |
-| `LogLogin(Customer c, bool success, string? ip, string? device)` | [608](Project_QLThoiTrang/Services/NativeManagement.cs#L608) | Thêm nhật ký đăng nhập gồm khách/nhân viên, thời gian, IP và thiết bị đã cắt theo giới hạn cột. |
-| `EndLogin(long id, int actor)` | [633](Project_QLThoiTrang/Services/NativeManagement.cs#L633) | Ghi thời điểm đăng xuất cho bản ghi lịch sử thuộc đúng actor; không cập nhật nhật ký của tài khoản khác. |
-| `ChangePassword(int actor, PasswordInput input)` | [650](Project_QLThoiTrang/Services/NativeManagement.cs#L650) | Kiểm tra mẫu đổi mật khẩu, xác minh mật khẩu hiện tại của tài khoản đang hoạt động, rồi băm mật khẩu mới trong Write. |
-| `HashLegacyPasswords()` | [675](Project_QLThoiTrang/Services/NativeManagement.cs#L675) | Lệnh quản trị chuyển mật khẩu cũ trong KhachHang/NhanVien sang Identity hash; bỏ qua bản ghi đã đúng định dạng. |
+| `CurrentAccount(int id)` | [14](Project_QLThoiTrang/Services/NativeManagement.cs#L14) | Lấy tài khoản khách hoặc nhân viên theo mã đăng nhập. |
+| `NativeRead(Func<StoreDbContext, T> read)` | [47](Project_QLThoiTrang/Services/NativeManagement.cs#L47) | Đọc trực tiếp entity SQL trong transaction. |
+| `NativeWrite(Func<StoreDbContext, T> write)` | [59](Project_QLThoiTrang/Services/NativeManagement.cs#L59) | Lưu trực tiếp entity SQL trong transaction. |
+| `NativePermission(StoreDbContext db, int actor, params string[] roles)` | [80](Project_QLThoiTrang/Services/NativeManagement.cs#L80) | Kiểm tra quyền và trạng thái nhân viên. |
+| `References(string kind)` | [92](Project_QLThoiTrang/Services/NativeManagement.cs#L92) | Lấy danh mục thương hiệu, size, màu, kho hoặc nhà cung cấp. |
+| `SaveReference(ReferenceInput input, int actor)` | [150](Project_QLThoiTrang/Services/NativeManagement.cs#L150) | Thêm hoặc sửa danh mục dùng chung. |
+| `SaveVariant(VariantInput input, int actor)` | [254](Project_QLThoiTrang/Services/NativeManagement.cs#L254) | Thêm hoặc sửa biến thể sản phẩm. |
+| `Staff()` | [306](Project_QLThoiTrang/Services/NativeManagement.cs#L306) | Lấy danh sách tài khoản nhân viên. |
+| `SaveStaff(StaffInput input, int actor)` | [309](Project_QLThoiTrang/Services/NativeManagement.cs#L309) | Lưu tài khoản, mật khẩu và quyền nhân viên. |
+| `UpdateCustomer(int id, ProfileInput input, bool active, int actor)` | [369](Project_QLThoiTrang/Services/NativeManagement.cs#L369) | Cập nhật hồ sơ và trạng thái khách hàng. |
+| `Reviews(int? product = null, bool includeHidden = false)` | [389](Project_QLThoiTrang/Services/NativeManagement.cs#L389) | Lấy đánh giá sản phẩm kèm thông tin media. |
+| `Review( int customerId, int productId, int stars, string text, IReadOnlyList<ReviewUpload>? uploads = null )` | [428](Project_QLThoiTrang/Services/NativeManagement.cs#L428) | Lưu đánh giá của khách đã mua sản phẩm. |
+| `ModerateReview(int id, bool active, int actor)` | [486](Project_QLThoiTrang/Services/NativeManagement.cs#L486) | Ẩn hoặc hiện đánh giá sản phẩm. |
+| `LogLogin(Customer c, bool success, string? ip, string? device)` | [498](Project_QLThoiTrang/Services/NativeManagement.cs#L498) | Ghi lịch sử đăng nhập thành công hoặc thất bại. |
+| `EndLogin(long id, int actor)` | [517](Project_QLThoiTrang/Services/NativeManagement.cs#L517) | Ghi thời điểm đăng xuất của tài khoản. |
+| `ChangePassword(int actor, PasswordInput input)` | [529](Project_QLThoiTrang/Services/NativeManagement.cs#L529) | Xác minh mật khẩu cũ và lưu mật khẩu mới đã băm. |
+| `HashLegacyPasswords()` | [558](Project_QLThoiTrang/Services/NativeManagement.cs#L558) | Chuyển mật khẩu cũ sang hash ASP.NET Identity. |
 
 **[NativeStoreAdapter.cs](Project_QLThoiTrang/Services/NativeStoreAdapter.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `StaffRole(string title)` | [19](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L19) | Đổi chức vụ SQL sang vai trò ứng dụng theo switch bên dưới; các nhánh tương thích xử lý cả tên chức vụ tiếng Việt của dữ liệu cũ. |
-| `PublicId(DonHangRow o)` | [38](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L38) | Lấy QPublicId của đơn; nếu dữ liệu cũ chưa có mã công khai thì tạo mã hiển thị QH-SQL-{MaDonHang} để vẫn truy cập được đơn. |
-| `Load(StoreDbContext db)` | [45](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L45) | Bộ chuyển đổi SQL → StoreData: đọc các bảng gốc, ghép sản phẩm/biến thể/tồn/đơn/thanh toán/trả hàng và cấu hình cho controller/view hiện có. |
-| `SafeImage(string? image, int id)` | [309](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L309) | Chỉ dùng 5 ảnh sản phẩm có sẵn trong thư viện; đường dẫn ngoài danh sách được thay bằng ảnh mặc định tính theo id. |
-| `Row(StoreDbContext db, Func<T, bool> match, Func<T> create)` | [319](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L319) | Tìm entity đã nạp trong DbSet.Local theo match; chưa có thì gọi create và đánh dấu thêm mới. |
-| `Flush(StoreDbContext db)` | [334](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L334) | Lưu một nhóm entity theo thứ tự bảng; khi cần thêm mã tường minh vào cột IDENTITY thì bật/tắt IDENTITY_INSERT quanh SaveChanges. |
-| `PrepareStock(StoreData d)` | [373](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L373) | Đồng bộ tồn tổng, biến thể và tồn từng kho; tạo dữ liệu biến thể/tồn còn thiếu và phân bổ chênh lệch theo các nhánh bên dưới. |
-| `PersistNative(StoreDbContext db, StoreData d)` | [449](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L449) | Bộ chuyển đổi StoreData → các bảng SQL gốc: cập nhật/thêm danh mục, tài khoản, sản phẩm, biến thể, tồn, phiếu nhập, ưu đãi, đơn, thanh toán, trả hàng và nhật ký. |
+| `StaffRole(string title)` | [12](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L12) | Ánh xạ chức vụ nhân viên sang quyền ứng dụng. |
+| `PublicId(DonHangRow o)` | [28](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L28) | Lấy mã công khai của đơn hàng. |
+| `Load(StoreDbContext db)` | [31](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L31) | Chuyển dữ liệu SQL sang mô hình cửa hàng. |
+| `SafeImage(string? image, int id)` | [292](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L292) | Chọn ảnh sản phẩm hợp lệ hoặc ảnh mặc định. |
+| `Row(StoreDbContext db, Func<T, bool> match, Func<T> create)` | [299](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L299) | Tìm entity đã nạp hoặc tạo entity mới. |
+| `Flush(StoreDbContext db)` | [311](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L311) | Đồng bộ các bản ghi entity với dữ liệu cần lưu. |
+| `PrepareStock(StoreData d)` | [341](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L341) | Chuẩn bị dữ liệu tồn kho trước khi lưu. |
+| `PersistNative(StoreDbContext db, StoreData d)` | [409](Project_QLThoiTrang/Services/NativeStoreAdapter.cs#L409) | Đồng bộ thay đổi cửa hàng vào các bảng SQL. |
+
+**[PasswordRecovery.cs](Project_QLThoiTrang/Services/PasswordRecovery.cs)**
+
+| Hàm / phương thức | Vị trí | Chức năng |
+| --- | --- | --- |
+| `FindRecoveryCustomer(StoreDbContext db, string email)` | [13](Project_QLThoiTrang/Services/PasswordRecovery.cs#L13) | Tìm khách đang hoạt động theo email. |
+| `IssueReset( string contact, string secret, string channel = "email" )` | [17](Project_QLThoiTrang/Services/PasswordRecovery.cs#L17) | Tạo OTP có thời hạn và vô hiệu mã cũ. |
+| `ResetDelivered(Guid id)` | [61](Project_QLThoiTrang/Services/PasswordRecovery.cs#L61) | Đánh dấu OTP đã được dịch vụ gửi chấp nhận. |
+| `ResetPassword(ResetInput input, string secret)` | [69](Project_QLThoiTrang/Services/PasswordRecovery.cs#L69) | Kiểm tra OTP và lưu mật khẩu mới. |
+| `PasswordStamp(string hash)` | [114](Project_QLThoiTrang/Services/PasswordRecovery.cs#L114) | Tạo dấu xác minh từ hash mật khẩu hiện tại. |
+| `OtpHash( Guid id, string code, string secret, string channel, string destination )` | [118](Project_QLThoiTrang/Services/PasswordRecovery.cs#L118) | Ký HMAC gắn OTP với yêu cầu và email nhận. |
+| `SendCode(string email, string code, CancellationToken cancellationToken)` | [136](Project_QLThoiTrang/Services/PasswordRecovery.cs#L136) | Gửi mã OTP qua email. |
+| `Request(string email, CancellationToken cancellationToken)` | [152](Project_QLThoiTrang/Services/PasswordRecovery.cs#L152) | Cấp OTP và yêu cầu gửi qua email API. |
+| `Request(ForgotInput input, CancellationToken cancellationToken)` | [156](Project_QLThoiTrang/Services/PasswordRecovery.cs#L156) | Cấp OTP và yêu cầu gửi qua email API. |
+| `Complete(ResetInput input)` | [197](Project_QLThoiTrang/Services/PasswordRecovery.cs#L197) | Xác minh OTP và hoàn tất đặt lại mật khẩu. |
 
 **[PasswordStorage.cs](Project_QLThoiTrang/Services/PasswordStorage.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `IsIdentityHash(string? value)` | [17](Project_QLThoiTrang/Services/PasswordStorage.cs#L17) | Kiểm tra chuỗi Base64 có cấu trúc hash ASP.NET Identity hợp lệ theo phiên bản và độ dài; không xác minh mật khẩu người dùng ở bước này. |
+| `IsIdentityHash(string? value)` | [8](Project_QLThoiTrang/Services/PasswordStorage.cs#L8) | Kiểm tra cấu trúc hash mật khẩu ASP.NET Identity. |
 
 **[PdfDocuments.cs](Project_QLThoiTrang/Services/PdfDocuments.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `ResolveTypeface(string familyName, bool bold, bool italic)` | [17](Project_QLThoiTrang/Services/PdfDocuments.cs#L17) | Chọn Arial thường hoặc đậm cho PDF theo yêu cầu bold; mã font được GetFont dùng để đọc tệp thực tế. |
-| `GetFont(string faceName)` | [23](Project_QLThoiTrang/Services/PdfDocuments.cs#L23) | Đọc arial.ttf hoặc arialbd.ttf từ thư mục font đã cấu hình để PDF hỗ trợ tiếng Việt. |
-| `Create( string title, string code, IEnumerable<string> info, string[] headers, List<string[]> rows, IEnumerable<string> totals )` | [35](Project_QLThoiTrang/Services/PdfDocuments.cs#L35) | Tạo PDF từ tiêu đề, thông tin, bảng và tổng tiền; các hàm nội bộ đo chiều rộng, xuống dòng và sang trang khi thiếu chỗ. |
+| `ResolveTypeface(string familyName, bool bold, bool italic)` | [10](Project_QLThoiTrang/Services/PdfDocuments.cs#L10) | Chọn font chữ thường hoặc đậm cho PDF. |
+| `GetFont(string faceName)` | [14](Project_QLThoiTrang/Services/PdfDocuments.cs#L14) | Đọc dữ liệu font dùng để xuất PDF. |
+| `Create( string title, string code, IEnumerable<string> info, string[] headers, List<string[]> rows, IEnumerable<string> totals )` | [23](Project_QLThoiTrang/Services/PdfDocuments.cs#L23) | Tạo nội dung PDF với bảng, tổng tiền và phân trang. |
 
 **[PersistentShopping.cs](Project_QLThoiTrang/Services/PersistentShopping.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `UserCart(int customerId)` | [16](Project_QLThoiTrang/Services/PersistentShopping.cs#L16) | Đọc giỏ lâu dài của khách từ GioHang/ChiTietGioHang, join biến thể, size và màu thành CartItem. |
-| `UserWishlist(int customerId)` | [38](Project_QLThoiTrang/Services/PersistentShopping.cs#L38) | Đọc danh sách MaSP yêu thích thuộc khách từ bảng YeuThich. |
-| `SaveShopping(int customerId, List<CartItem> items, List<int> wishlist)` | [47](Project_QLThoiTrang/Services/PersistentShopping.cs#L47) | Đồng bộ giỏ và yêu thích của khách đang hoạt động trong một NativeWrite: tạo đầu giỏ nếu thiếu, xóa chi tiết cũ rồi thêm danh sách đã gom theo VariantId; thay danh sách yêu thích bằng các mã không trùng. |
-| `MergeGuestShopping(int customerId, List<CartItem> guest, List<int> wishes)` | [132](Project_QLThoiTrang/Services/PersistentShopping.cs#L132) | Sau đăng nhập, ghép giỏ khách vãng lai vào giỏ SQL: bỏ sản phẩm/biến thể không còn bán, cộng lượng cùng biến thể tối đa 20, hợp nhất yêu thích rồi SaveShopping. |
+| `UserCart(int customerId)` | [9](Project_QLThoiTrang/Services/PersistentShopping.cs#L9) | Lấy giỏ hàng đã lưu của khách. |
+| `UserWishlist(int customerId)` | [30](Project_QLThoiTrang/Services/PersistentShopping.cs#L30) | Lấy danh sách sản phẩm yêu thích của khách. |
+| `SaveShopping(int customerId, List<CartItem> items, List<int> wishlist)` | [34](Project_QLThoiTrang/Services/PersistentShopping.cs#L34) | Lưu giỏ hàng và danh sách yêu thích của khách. |
+| `MergeGuestShopping(int customerId, List<CartItem> guest, List<int> wishes)` | [98](Project_QLThoiTrang/Services/PersistentShopping.cs#L98) | Gộp giỏ và yêu thích vãng lai vào tài khoản. |
+
+**[ResendMailSender.cs](Project_QLThoiTrang/Services/ResendMailSender.cs)**
+
+| Hàm / phương thức | Vị trí | Chức năng |
+| --- | --- | --- |
+| `SendCode(string email, string code, CancellationToken cancellationToken)` | [11](Project_QLThoiTrang/Services/ResendMailSender.cs#L11) | Gửi OTP qua Resend API và kiểm tra mã thư trả về. |
 
 **[ReviewUploads.cs](Project_QLThoiTrang/Services/ReviewUploads.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `Validate(IReadOnlyList<ReviewUpload>? uploads)` | [20](Project_QLThoiTrang/Services/ReviewUploads.cs#L20) | Kiểm tra tối đa 5 tệp/tổng 30 MB; nhận ảnh JPG/PNG/GIF/WebP tối đa 5 MB và video MP4/WebM tối đa 20 MB, nhiều nhất 1 video. |
+| `Validate(IReadOnlyList<ReviewUpload>? uploads)` | [12](Project_QLThoiTrang/Services/ReviewUploads.cs#L12) | Kiểm tra số lượng, dung lượng và định dạng tệp đánh giá. |
 
 **[SessionStore.cs](Project_QLThoiTrang/Services/SessionStore.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `Get(ISession session, string key)` | [16](Project_QLThoiTrang/Services/SessionStore.cs#L16) | Đọc JSON từ Session theo key và giải tuần tự thành T; chưa có giá trị thì trả new T để giỏ/yêu thích có thể khởi tạo rỗng. |
-| `Set(ISession session, string key, T value)` | [24](Project_QLThoiTrang/Services/SessionStore.cs#L24) | Tuần tự dữ liệu thành JSON rồi lưu Session theo key; khách đăng nhập còn được đồng bộ giỏ/yêu thích xuống SQL bởi ShoppingSession. |
-| `Cart(ISession session, StoreService store)` | [31](Project_QLThoiTrang/Services/SessionStore.cs#L31) | Ghép các dòng Session với sản phẩm/biến thể hiện có, lấy giá server và loại dòng không tìm thấy sản phẩm/biến thể để dựng CartViewModel hiển thị. |
+| `Get(ISession session, string key)` | [9](Project_QLThoiTrang/Services/SessionStore.cs#L9) | Đọc và giải mã dữ liệu JSON từ Session. |
+| `Set(ISession session, string key, T value)` | [14](Project_QLThoiTrang/Services/SessionStore.cs#L14) | Mã hóa dữ liệu JSON và lưu vào Session. |
+| `Cart(ISession session, StoreService store)` | [18](Project_QLThoiTrang/Services/SessionStore.cs#L18) | Dựng giỏ hàng với thông tin và giá hiện tại. |
 
 **[Shipping.cs](Project_QLThoiTrang/Services/Shipping.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `ClaimShipment( string id, string requestHash, decimal expectedOutstanding, int actor )` | [22](Project_QLThoiTrang/Services/Shipping.cs#L22) | Khóa/lưu yêu cầu tạo vận đơn trước khi gọi mạng: kiểm tra quyền, trạng thái đơn, số còn thu và thanh toán chuyển khoản. |
-| `ShipmentResult(int orderId, string? code, string status, string error, int actor)` | [96](Project_QLThoiTrang/Services/Shipping.cs#L96) | Lưu mã, trạng thái, thông báo lỗi và thời điểm cập nhật vận đơn trong SQL; giữ mã cũ nếu lần này không có mã mới. |
-| `Options()` | [116](Project_QLThoiTrang/Services/Shipping.cs#L116) | Đọc cấu hình Ghn, bắt buộc đủ token/shop và chỉ chấp nhận URL gateway GHN trong danh sách cố định. |
-| `Send( HttpMethod method, string route, object? body, CancellationToken token )` | [136](Project_QLThoiTrang/Services/Shipping.cs#L136) | Gửi HTTP tới GHN với Token/ShopId; 4xx thành GhnRejectedException, lỗi/kết quả không rõ thành InvalidOperationException. |
-| `Create(ShipmentInput input, int actor, CancellationToken token)` | [173](Project_QLThoiTrang/Services/Shipping.cs#L173) | Kiểm tra quyền Sales/Admin, địa chỉ/kích thước và số COD nguyên không quá 50 triệu. |
-| `Sync(string id, int actor, CancellationToken token)` | [276](Project_QLThoiTrang/Services/Shipping.cs#L276) | Lấy vận đơn GHN theo ClientCode đã lưu, kiểm tra GHN trả đúng mã đơn rồi cập nhật mã vận đơn/trạng thái; không tự đổi trạng thái giao hàng của đơn trong StoreData. |
+| `ClaimShipment( string id, string requestHash, decimal expectedOutstanding, int actor )` | [13](Project_QLThoiTrang/Services/Shipping.cs#L13) | Lưu và khóa yêu cầu tạo vận đơn để tránh gửi trùng. |
+| `ShipmentResult(int orderId, string? code, string status, string error, int actor)` | [75](Project_QLThoiTrang/Services/Shipping.cs#L75) | Lưu kết quả và trạng thái vận đơn. |
+| `Options()` | [93](Project_QLThoiTrang/Services/Shipping.cs#L93) | Đọc và kiểm tra cấu hình GHN. |
+| `Send( HttpMethod method, string route, object? body, CancellationToken token )` | [110](Project_QLThoiTrang/Services/Shipping.cs#L110) | Gửi yêu cầu API GHN và kiểm tra phản hồi. |
+| `Create(ShipmentInput input, int actor, CancellationToken token)` | [142](Project_QLThoiTrang/Services/Shipping.cs#L142) | Tạo vận đơn GHN và lưu kết quả. |
+| `Sync(string id, int actor, CancellationToken token)` | [242](Project_QLThoiTrang/Services/Shipping.cs#L242) | Đồng bộ vận đơn GHN theo mã đơn đã lưu. |
 
 **[StoreOperations.cs](Project_QLThoiTrang/Services/StoreOperations.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `FindOrder(StoreData d, string id)` | [16](Project_QLThoiTrang/Services/StoreOperations.cs#L16) | Tìm đơn theo mã hiển thị trong StoreData; nếu không có thì ném lỗi nghiệp vụ thay vì tiếp tục dùng giá trị null. |
-| `Permission(StoreData d, int actor, params string[] roles)` | [24](Project_QLThoiTrang/Services/StoreOperations.cs#L24) | Kiểm tra tài khoản actor còn hoạt động và có quyền Admin hoặc một vai trò cho phép. |
-| `Text(string? text, int min, int max, string field)` | [36](Project_QLThoiTrang/Services/StoreOperations.cs#L36) | Trim chuỗi đầu vào rồi bắt buộc độ dài nằm trong min..max; field được ghép vào thông báo lỗi để biết ô nhập nào chưa hợp lệ. |
-| `GetVariant(StoreData d, CartItem c)` | [47](Project_QLThoiTrang/Services/StoreOperations.cs#L47) | Đối chiếu dòng giỏ với sản phẩm đang bán và biến thể đang hoạt động; ưu tiên VariantId, dữ liệu cũ có thể tra theo size. |
-| `StockRow(StoreData d, int variant, int warehouse)` | [69](Project_QLThoiTrang/Services/StoreOperations.cs#L69) | Tìm tồn của một biến thể tại một kho; nếu chưa có thì tạo dòng WarehouseStock với số lượng mặc định. |
-| `Restore(StoreData d, OrderLine l, int quantity)` | [83](Project_QLThoiTrang/Services/StoreOperations.cs#L83) | Hoàn số lượng về biến thể/kho của dòng đơn và tăng tồn tổng sản phẩm; dùng khi hủy đơn hoặc duyệt nhận hàng trả. |
-| `PlaceOrder( int customerId, CheckoutInput input, List<CartItem> cart, List<OrderLine>? quote = null )` | [99](Project_QLThoiTrang/Services/StoreOperations.cs#L99) | Đặt hàng trong một Write: kiểm tra checkout token và trả lại đơn cũ nếu gửi lại cùng token → xác thực khách/giỏ/phương thức → đối chiếu báo giá → trừ tồn kho đang hoạt động → tính phí/ưu đãi → thêm đơn. |
-| `ChangeOrderStatus(string id, string status, int actor, bool customer = false)` | [308](Project_QLThoiTrang/Services/StoreOperations.cs#L308) | Chuyển trạng thái đơn theo danh sách allowed bên dưới. |
-| `Receive(ReceiveInput input, int actor)` | [389](Project_QLThoiTrang/Services/StoreOperations.cs#L389) | Lối nhập kho một dòng: đóng gói ReceiveInput thành danh sách rồi dùng ReceiveBatch để áp dụng cùng quy tắc và transaction. |
-| `ReceiveBatch(List<ReceiveInput> inputs, int actor)` | [398](Project_QLThoiTrang/Services/StoreOperations.cs#L398) | Thêm phiếu nhập 1–100 dòng trong một Write: cần nhân viên Inventory/Admin, mã phiếu chưa dùng, cùng kho/NCC, biến thể không trùng. |
-| `AdjustStock(int id, int quantity, int expected, string reason, int actor)` | [504](Project_QLThoiTrang/Services/StoreOperations.cs#L504) | Sửa tồn tổng bằng kiểm kê: quyền Inventory/Admin, lý do 5–300 ký tự, quantity 0–100.000 và tồn hiện tại phải bằng expected. |
-| `AdjustVariantStock( int variantId, int warehouseId, int quantity, int expected, string reason, int actor )` | [549](Project_QLThoiTrang/Services/StoreOperations.cs#L549) | Kiểm kê một biến thể tại một kho hoạt động. |
-| `RecordPayment(string id, decimal amount, string reference, int actor)` | [610](Project_QLThoiTrang/Services/StoreOperations.cs#L610) | Sales/Admin ghi nhận tiền đã thu: đơn ở trạng thái cho phép, không đang gửi GHN, amount phải đúng toàn bộ phần còn phải thu và mã biên nhận chưa dùng. |
-| `Returned(StoreData d, string orderId, int lineId)` | [674](Project_QLThoiTrang/Services/StoreOperations.cs#L674) | Tính tổng số lượng đã trả của một dòng đơn, chỉ cộng phiếu có trạng thái Approved; phiếu Pending/Rejected không làm giảm số lượng còn được trả. |
-| `RequestReturn( string id, string reason, int customerId, int lineId = 0, int quantity = 0 )` | [688](Project_QLThoiTrang/Services/StoreOperations.cs#L688) | Khách tạo yêu cầu trả cho đơn của mình đã giao/hoàn thành và chưa có phiếu Pending. |
-| `ResolveReturn( int returnId, bool approve, string resolution, string reference, int actor )` | [772](Project_QLThoiTrang/Services/StoreOperations.cs#L772) | Sales/Admin duyệt hoặc từ chối phiếu Pending. |
+| `FindOrder(StoreData d, string id)` | [9](Project_QLThoiTrang/Services/StoreOperations.cs#L9) | Tìm đơn hàng theo mã công khai. |
+| `Permission(StoreData d, int actor, params string[] roles)` | [14](Project_QLThoiTrang/Services/StoreOperations.cs#L14) | Kiểm tra quyền thực hiện thao tác nghiệp vụ. |
+| `Text(string? text, int min, int max, string field)` | [23](Project_QLThoiTrang/Services/StoreOperations.cs#L23) | Chuẩn hóa và kiểm tra độ dài nội dung nhập. |
+| `GetVariant(StoreData d, CartItem c)` | [31](Project_QLThoiTrang/Services/StoreOperations.cs#L31) | Tìm và kiểm tra biến thể còn được bán. |
+| `StockRow(StoreData d, int variant, int warehouse)` | [49](Project_QLThoiTrang/Services/StoreOperations.cs#L49) | Tìm hoặc tạo dòng tồn biến thể tại kho. |
+| `Restore(StoreData d, OrderLine l, int quantity)` | [60](Project_QLThoiTrang/Services/StoreOperations.cs#L60) | Hoàn số lượng hàng về kho xuất ban đầu. |
+| `PlaceOrder( int customerId, CheckoutInput input, List<CartItem> cart, List<OrderLine>? quote = null )` | [70](Project_QLThoiTrang/Services/StoreOperations.cs#L70) | Tạo đơn, áp ưu đãi và trừ tồn kho trong transaction. |
+| `ChangeOrderStatus(string id, string status, int actor, bool customer = false)` | [249](Project_QLThoiTrang/Services/StoreOperations.cs#L249) | Chuyển trạng thái đơn và hoàn kho khi hủy hợp lệ. |
+| `Receive(ReceiveInput input, int actor)` | [311](Project_QLThoiTrang/Services/StoreOperations.cs#L311) | Lập phiếu nhập kho một dòng. |
+| `ReceiveBatch(List<ReceiveInput> inputs, int actor)` | [314](Project_QLThoiTrang/Services/StoreOperations.cs#L314) | Lưu phiếu nhập nhiều dòng và cập nhật tồn kho. |
+| `AdjustStock(int id, int quantity, int expected, string reason, int actor)` | [406](Project_QLThoiTrang/Services/StoreOperations.cs#L406) | Điều chỉnh tồn sản phẩm theo kết quả kiểm kê. |
+| `AdjustVariantStock( int variantId, int warehouseId, int quantity, int expected, string reason, int actor )` | [444](Project_QLThoiTrang/Services/StoreOperations.cs#L444) | Điều chỉnh tồn biến thể tại kho. |
+| `RecordPayment(string id, decimal amount, string reference, int actor)` | [496](Project_QLThoiTrang/Services/StoreOperations.cs#L496) | Ghi nhận đủ tiền đã thu và ngăn trùng chứng từ. |
+| `Returned(StoreData d, string orderId, int lineId)` | [551](Project_QLThoiTrang/Services/StoreOperations.cs#L551) | Tính số lượng đã được trả của dòng đơn. |
+| `RequestReturn( string id, string reason, int customerId, int lineId = 0, int quantity = 0 )` | [559](Project_QLThoiTrang/Services/StoreOperations.cs#L559) | Tạo yêu cầu trả hàng của khách. |
+| `ResolveReturn( int returnId, bool approve, string resolution, string reference, int actor )` | [630](Project_QLThoiTrang/Services/StoreOperations.cs#L630) | Xử lý trả hàng, hoàn kho và ghi nhận hoàn tiền. |
 
 **[StoreSeed.cs](Project_QLThoiTrang/Services/StoreSeed.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `Seed()` | [14](Project_QLThoiTrang/Services/StoreSeed.cs#L14) | Tạo đối tượng dữ liệu mẫu trong bộ nhớ cho SeedDemo; việc lưu database thuộc MergeLegacy/Write. |
+| `Seed()` | [8](Project_QLThoiTrang/Services/StoreSeed.cs#L8) | Tạo bộ dữ liệu mẫu trong bộ nhớ. |
 
 **[StoreService.cs](Project_QLThoiTrang/Services/StoreService.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `Read(Func<StoreData, T> read)` | [31](Project_QLThoiTrang/Services/StoreService.cs#L31) | Đọc một ảnh dữ liệu StoreData từ SQL trong transaction Serializable; NoTracking dùng cho truy vấn chỉ đọc. |
-| `Write( Func<StoreData, T> write, int? actorId = null, string reason = "Điều chỉnh dữ liệu" )` | [53](Project_QLThoiTrang/Services/StoreService.cs#L53) | Cổng ghi nghiệp vụ dùng chung: mở transaction → lấy khóa ứng dụng độc quyền → Load dữ liệu → chạy callback thêm/sửa/xóa → chuẩn hóa tồn → Validate → tính giá vốn → PersistNative → SaveChanges → Commit. |
-| `Next(IEnumerable<int> ids)` | [123](Project_QLThoiTrang/Services/StoreService.cs#L123) | Sinh mã nghiệp vụ bằng mã lớn nhất hiện có cộng 1; tập rỗng cho kết quả 1. |
-| `Require(bool condition, string message)` | [127](Project_QLThoiTrang/Services/StoreService.cs#L127) | Chốt kiểm tra nghiệp vụ: condition phải đúng để chạy tiếp; nếu sai thì ném InvalidOperationException với message để tầng gọi hiển thị hoặc xử lý lỗi. |
-| `Validate(StoreData d)` | [139](Project_QLThoiTrang/Services/StoreService.cs#L139) | Kiểm tra toàn bộ StoreData trước khi ghi: tồn 0–100.000, email/mã ưu đãi/danh mục không trùng, số điện thoại không trùng trong từng nhóm khách/nhân viên, vai trò hợp lệ, mật khẩu là Identity hash và số tiền/số lượng đơn hợp lệ. |
-| `Authenticate( string email, string password, string? ip = null, string? device = null )` | [235](Project_QLThoiTrang/Services/StoreService.cs#L235) | Tìm tài khoản đang hoạt động theo email, kiểm tra định dạng hash và mật khẩu bằng Identity; sai thì ghi nhận thất bại khi đã tìm thấy tài khoản. |
-| `Register(RegisterInput input)` | [281](Project_QLThoiTrang/Services/StoreService.cs#L281) | Thêm khách hàng mới: kiểm tra DataAnnotations và email chưa dùng, chuẩn hóa tên/email, băm mật khẩu rồi thêm vào d.Customers trong Write. |
+| `Read(Func<StoreData, T> read)` | [20](Project_QLThoiTrang/Services/StoreService.cs#L20) | Đọc dữ liệu cửa hàng từ SQL. |
+| `Write( Func<StoreData, T> write, int? actorId = null, string reason = "Điều chỉnh dữ liệu" )` | [32](Project_QLThoiTrang/Services/StoreService.cs#L32) | Kiểm tra và lưu thay đổi cửa hàng trong transaction. |
+| `Next(IEnumerable<int> ids)` | [95](Project_QLThoiTrang/Services/StoreService.cs#L95) | Tạo mã tiếp theo cho dữ liệu nghiệp vụ. |
+| `Require(bool condition, string message)` | [98](Project_QLThoiTrang/Services/StoreService.cs#L98) | Báo lỗi khi điều kiện nghiệp vụ không đạt. |
+| `Validate(StoreData d)` | [105](Project_QLThoiTrang/Services/StoreService.cs#L105) | Kiểm tra tính hợp lệ của dữ liệu. |
+| `Authenticate( string email, string password, string? ip = null, string? device = null )` | [185](Project_QLThoiTrang/Services/StoreService.cs#L185) | Xác thực email và mật khẩu tài khoản. |
+| `Register(RegisterInput input)` | [227](Project_QLThoiTrang/Services/StoreService.cs#L227) | Tạo tài khoản khách hàng với mật khẩu đã băm. |
 
 ### Data: mapping SQL
 
@@ -491,25 +509,25 @@ Bảng bên dưới được lập sau khi thêm comment. Số dòng có thể t
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `MapFeatures(ModelBuilder b)` | [26](Project_QLThoiTrang/Data/FeatureMapping.cs#L26) | Ánh xạ chat, OTP, giá vốn, công nợ và GHN sang bảng QOANH_*; cấu hình khóa ngoại Restrict và chỉ mục duy nhất để chống trùng token/chứng từ/mã vận đơn. |
+| `MapFeatures(ModelBuilder b)` | [18](Project_QLThoiTrang/Data/FeatureMapping.cs#L18) | Ánh xạ các bảng chức năng mở rộng. |
 
 **[ReviewMediaMapping.cs](Project_QLThoiTrang/Data/ReviewMediaMapping.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `MapReviewMedia(ModelBuilder b)` | [18](Project_QLThoiTrang/Data/ReviewMediaMapping.cs#L18) | Ánh xạ ReviewMedia sang QOANH_ReviewMedia, khóa Guid tự cấp, ContentType ASCII tối đa 30 ký tự và khóa ngoại đến DanhGia với Restrict. |
+| `MapReviewMedia(ModelBuilder b)` | [12](Project_QLThoiTrang/Data/ReviewMediaMapping.cs#L12) | Ánh xạ bảng ảnh và video đánh giá. |
 
 **[StoreDbContext.cs](Project_QLThoiTrang/Data/StoreDbContext.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `OnModelCreating(ModelBuilder b)` | [22](Project_QLThoiTrang/Data/StoreDbContext.cs#L22) | Đăng ký mapping bảng gốc và tính năng; đặt khóa/chỉ mục/ràng buộc nhật ký tồn và tiền, hạn chế xóa quan hệ và chuẩn hóa decimal(18,2). |
+| `OnModelCreating(ModelBuilder b)` | [14](Project_QLThoiTrang/Data/StoreDbContext.cs#L14) | Thiết lập ánh xạ entity và ràng buộc SQL. |
 
 **[Mapping.cs](Project_QLThoiTrang/Data/Native/Mapping.cs)**
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `MapNative(ModelBuilder b)` | [46](Project_QLThoiTrang/Data/Native/Mapping.cs#L46) | Ánh xạ các lớp *Row sang bảng/cột SQL gốc và các khóa/chỉ mục/quan hệ; đây là nơi tra tên bảng thật khi cần hiểu dữ liệu được lưu ở đâu. |
+| `MapNative(ModelBuilder b)` | [38](Project_QLThoiTrang/Data/Native/Mapping.cs#L38) | Ánh xạ các bảng SQL gốc. |
 
 ### Models: helper lọc
 
@@ -517,8 +535,15 @@ Bảng bên dưới được lập sau khi thêm comment. Số dòng có thể t
 
 | Hàm / phương thức | Vị trí | Chức năng |
 | --- | --- | --- |
-| `Choice( string key, string label, params (string Value, string Text)[] choices )` | [20](Project_QLThoiTrang/Models/AdminListFilter.cs#L20) | Tạo cấu hình một ô lọc và các cặp giá trị/nhãn hiển thị dùng chung cho thanh công cụ danh sách quản trị. |
-| `Matches(string text, string? query)` | [29](Project_QLThoiTrang/Models/AdminListFilter.cs#L29) | So khớp từ khóa với chuỗi tìm kiếm theo biểu thức bên dưới; từ khóa rỗng cho phép giữ lại bản ghi. |
+| `Choice( string key, string label, params (string Value, string Text)[] choices )` | [12](Project_QLThoiTrang/Models/AdminListFilter.cs#L12) | Tạo bộ lọc với danh sách lựa chọn. |
+| `Matches(string text, string? query)` | [19](Project_QLThoiTrang/Models/AdminListFilter.cs#L19) | Kiểm tra dữ liệu khớp từ khóa tìm kiếm. |
+
+**[PasswordRecoveryModels.cs](Project_QLThoiTrang/Models/PasswordRecoveryModels.cs)**
+
+| Hàm / phương thức | Vị trí | Chức năng |
+| --- | --- | --- |
+| `Validate(ValidationContext validationContext)` | [25](Project_QLThoiTrang/Models/PasswordRecoveryModels.cs#L25) | Kiểm tra email và từ chối kênh nhận mã không hỗ trợ. |
+| `TryNormalize(string? contact, string channel, out string normalized)` | [76](Project_QLThoiTrang/Models/PasswordRecoveryModels.cs#L76) | Kiểm tra và chuẩn hóa email nhận OTP. |
 
 ### Models và entity: mở phần định nghĩa dữ liệu
 
@@ -526,9 +551,10 @@ Bảng bên dưới được lập sau khi thêm comment. Số dòng có thể t
 | --- | --- |
 | [AdminListFilter.cs](Project_QLThoiTrang/Models/AdminListFilter.cs) | `AdminFilterOption`, `AdminListFilter` |
 | [ErrorViewModel.cs](Project_QLThoiTrang/Models/ErrorViewModel.cs) | `ErrorViewModel` |
-| [FeatureModels.cs](Project_QLThoiTrang/Models/FeatureModels.cs) | `ChatThread`, `ChatMessage`, `ResetCode`, `InventoryValue`, `SupplierAccount`, `SupplierPayment`, `Shipment`, `ForgotInput`, `ResetInput`, `ShipmentInput`, `BankTransferOptions`, `SmtpOptions`, `GhnOptions`, `ProfitLine` |
+| [FeatureModels.cs](Project_QLThoiTrang/Models/FeatureModels.cs) | `ChatThread`, `ChatMessage`, `ResetCode`, `InventoryValue`, `SupplierAccount`, `SupplierPayment`, `Shipment`, `ShipmentInput`, `BankTransferOptions`, `GhnOptions`, `ProfitLine` |
 | [ManagementModels.cs](Project_QLThoiTrang/Models/ManagementModels.cs) | `ReferenceInput`, `ReferencePage`, `StaffInput`, `VariantInput`, `ReviewItem`, `PasswordInput` |
 | [Operations.cs](Project_QLThoiTrang/Models/Operations.cs) | `Category`, `StoreConfiguration`, `StockMovement`, `PaymentRecord`, `ReturnRecord`, `ReturnLine`, `Variant`, `WarehouseStock`, `Warehouse`, `OrderHistory`, `ReceiveInput`, `Supplier` |
+| [PasswordRecoveryModels.cs](Project_QLThoiTrang/Models/PasswordRecoveryModels.cs) | `ForgotInput`, `ResetInput`, `EmailApiOptions`, `RecoveryContact` |
 | [Product.cs](Project_QLThoiTrang/Models/Product.cs) | `Product` |
 | [ReviewMedia.cs](Project_QLThoiTrang/Models/ReviewMedia.cs) | `ReviewMedia`, `ReviewMediaInfo`, `ReviewUpload` |
 | [StoreModels.cs](Project_QLThoiTrang/Models/StoreModels.cs) | `Customer`, `Order`, `OrderLine`, `CartItem`, `Promotion`, `StoreSettings`, `StoreData`, `CatalogViewModel`, `CartViewModel`, `CheckoutInput`, `LoginInput`, `RegisterInput`, `ProfileInput` |

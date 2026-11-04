@@ -1,10 +1,3 @@
-@*
-    VAI TRÒ VIEW: Khách mở thanh toán khi giỏ có hàng; điền hồ sơ, tạo checkout-token và chụp
-    checkout-quote trong Session để phát hiện giỏ/giá đổi khi gửi form. DỮ LIỆU MODEL:
-    CheckoutInput. ĐIỂM XỬ LÝ: Controllers/ShopController.cs; tra HUONG_DAN_CODE.md để tìm đúng
-    overload GET/POST.
-*@
-
 @model CheckoutInput
 @inject Project_QLThoiTrang.Services.StoreService Store
 @{
@@ -15,21 +8,11 @@
     <p class="eyebrow">01 GIỎ HÀNG / 02 GIAO HÀNG / 03 HOÀN TẤT</p>
     <h1>Thông tin giao hàng</h1>
     <div class="checkout-grid">
-        @*
-            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Shop/Checkout.
-            asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
-            ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo
-            token chống CSRF khi áp dụng. CHỨC NĂNG: Kiểm tra giỏ không rỗng, ModelState và
-            checkout-token khớp Session; PlaceOrder đối chiếu báo giá/trừ tồn/lưu đơn. Chỉ xóa giỏ
-            sau khi đặt thành công rồi chuyển trang Success.
-        *@
+
         <form asp-action="Checkout" method="post" class="panel form-stack">
             <input asp-for="CheckoutToken" type="hidden"/>
             <h2>Địa chỉ nhận hàng</h2>
-            @*
-                THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc
-                controller thêm; sửa ô bị lỗi rồi gửi lại form.
-            *@
+
             <div asp-validation-summary="All" class="validation"></div>
             <label>
                 Họ và tên
@@ -87,11 +70,7 @@
             <button class="btn-black">Xác nhận đặt hàng</button>
             <a href="/Shop/Cart" class="text-button">Quay lại giỏ hàng</a>
         </form>
-        @*
-            THÀNH PHẦN DÙNG CHUNG: Views/Shared/_CheckoutSummary.cshtml. Tóm tắt giỏ khi thanh toán:
-            dòng hàng, tiền hàng, phí và tổng hiển thị. PlaceOrder vẫn tính và đối chiếu lại số tiền
-            trên server.
-        *@
+
         <partial name="_CheckoutSummary" model="cart"/>
     </div>
 </section>

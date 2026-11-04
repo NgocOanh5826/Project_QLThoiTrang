@@ -1,15 +1,157 @@
+@*
+    VAI TRÒ VIEW: Mở form đăng ký khách hàng; chỉ nhận đường dẫn quay về nội bộ. DỮ LIỆU MODEL:
+    RegisterInput. ĐIỂM XỬ LÝ: Controllers/AccountController.cs; tra HUONG_DAN_CODE.md để tìm đúng
+    overload GET/POST.
+*@
+
 @model RegisterInput
-@{ViewData["Title"]="Tạo tài khoản";}
+@{
+    ViewData["Title"] = "Tạo tài khoản";
+}
 <section class="auth-grid auth-register">
- <aside class="auth-story"><a href="/" class="auth-brand">QOANH <span>EVERYDAY, YOUR WAY</span></a><div class="auth-story-copy"><p class="eyebrow">MỘT KHỞI ĐẦU MỚI</p><h1>Mặc điều<br/>bạn yêu.<br/>Theo cách<br/>của bạn.</h1><p>Lưu sản phẩm yêu thích, hoàn tất đơn hàng và trở lại bất cứ lúc nào.</p></div><a href="/Shop" class="auth-backlink">← Khám phá cửa hàng</a><span class="auth-note">ĐĂNG KÝ MIỄN PHÍ · MẤT CHƯA ĐẾN 1 PHÚT</span></aside>
- <div class="auth-form-wrap"><a href="/" class="auth-mobile-brand">QOANH <span>EVERYDAY, YOUR WAY</span></a><form asp-action="Register" method="post" class="auth-form">
-  <input asp-for="ReturnUrl" type="hidden"/><span class="auth-step">GIA NHẬP QOANH <span>02 / 02</span></span><h2>Tạo tài khoản</h2><p class="auth-intro">Chỉ cần vài thông tin cơ bản để bắt đầu.</p>
-  <div asp-validation-summary="ModelOnly" class="auth-validation" role="alert"></div>
-  <label asp-for="Name">Họ và tên</label><div class="auth-input-wrap"><i class="bi bi-person" aria-hidden="true"></i><input asp-for="Name" autocomplete="name" placeholder="Tên bạn muốn chúng tôi gọi" aria-describedby="Name-error"/></div><span asp-validation-for="Name" id="Name-error" class="field-error" role="alert"></span>
-  <label asp-for="Email">Địa chỉ email</label><div class="auth-input-wrap"><i class="bi bi-envelope" aria-hidden="true"></i><input asp-for="Email" type="email" autocomplete="email" placeholder="ten@email.com" inputmode="email" autocapitalize="none" aria-describedby="Email-error"/></div><span asp-validation-for="Email" id="Email-error" class="field-error" role="alert"></span>
-  <label asp-for="Password">Mật khẩu</label><div class="auth-input-wrap"><i class="bi bi-lock" aria-hidden="true"></i><input asp-for="Password" type="password" autocomplete="new-password" placeholder="Tạo mật khẩu an toàn" aria-describedby="Password-help Password-error"/><button class="password-toggle" type="button" data-password-toggle="Password" aria-label="Hiện mật khẩu" aria-pressed="false"><i class="bi bi-eye" aria-hidden="true"></i></button></div><span id="Password-help" class="field-hint">Tối thiểu 8 ký tự. Dùng mật khẩu riêng cho cửa hàng.</span><span asp-validation-for="Password" id="Password-error" class="field-error" role="alert"></span>
-  <label asp-for="ConfirmPassword">Nhập lại mật khẩu</label><div class="auth-input-wrap"><i class="bi bi-shield-check" aria-hidden="true"></i><input asp-for="ConfirmPassword" type="password" autocomplete="new-password" placeholder="Nhập lại mật khẩu" aria-describedby="ConfirmPassword-error"/><button class="password-toggle" type="button" data-password-toggle="ConfirmPassword" aria-label="Hiện mật khẩu xác nhận" aria-pressed="false"><i class="bi bi-eye" aria-hidden="true"></i></button></div><span asp-validation-for="ConfirmPassword" id="ConfirmPassword-error" class="field-error" role="alert"></span>
-  <p class="auth-privacy"><i class="bi bi-shield-lock" aria-hidden="true"></i><span>Mật khẩu được mã hóa khi lưu. Dữ liệu của bản demo được giữ trên máy chạy website.</span></p>
-  <button type="submit" class="auth-submit">Tạo tài khoản <i class="bi bi-arrow-right" aria-hidden="true"></i></button><p class="auth-switch">Đã có tài khoản? <a asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">Đăng nhập</a></p><p class="auth-demo-note">Bản demo không gửi email xác minh hay thu thập thanh toán.</p>
- </form></div>
+    <aside class="auth-story">
+        <a href="/" class="auth-brand">
+            QOANH
+            <span>EVERYDAY, YOUR WAY</span>
+        </a>
+        <div class="auth-story-copy">
+            <p class="eyebrow">MỘT KHỞI ĐẦU MỚI</p>
+            <h1>
+                Mặc điều
+                <br/>
+                bạn yêu.
+                <br/>
+                Theo cách
+                <br/>
+                của bạn.
+            </h1>
+            <p>Lưu sản phẩm yêu thích, hoàn tất đơn hàng và trở lại bất cứ lúc nào.</p>
+        </div>
+        <a href="/Shop" class="auth-backlink">← Khám phá cửa hàng</a>
+        <span class="auth-note">ĐĂNG KÝ MIỄN PHÍ · MẤT CHƯA ĐẾN 1 PHÚT</span>
+    </aside>
+    <div class="auth-form-wrap">
+        <a href="/" class="auth-mobile-brand">
+            QOANH
+            <span>EVERYDAY, YOUR WAY</span>
+        </a>
+        @*
+            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Account/Register.
+            asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
+            ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo
+            token chống CSRF khi áp dụng. CHỨC NĂNG: Chuẩn hóa tên/email, kiểm tra mẫu rồi Register
+            để thêm khách và băm mật khẩu; tạo cookie và gộp giỏ khi thành công, email trùng trả lại
+            form có lỗi.
+        *@
+        <form asp-action="Register" method="post" class="auth-form">
+            <input asp-for="ReturnUrl" type="hidden"/>
+            <span class="auth-step">
+                GIA NHẬP QOANH
+                <span>02 / 02</span>
+            </span>
+            <h2>Tạo tài khoản</h2>
+            <p class="auth-intro">Chỉ cần vài thông tin cơ bản để bắt đầu.</p>
+            @*
+                THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc
+                controller thêm; sửa ô bị lỗi rồi gửi lại form.
+            *@
+            <div asp-validation-summary="ModelOnly" class="auth-validation" role="alert"></div>
+            <label asp-for="Name">Họ và tên</label>
+            <div class="auth-input-wrap">
+                <i class="bi bi-person" aria-hidden="true"></i>
+                <input
+                    asp-for="Name"
+                    autocomplete="name"
+                    placeholder="Tên bạn muốn chúng tôi gọi"
+                    aria-describedby="Name-error"
+                />
+            </div>
+            <span asp-validation-for="Name" id="Name-error" class="field-error" role="alert"></span>
+            <label asp-for="Email">Địa chỉ email</label>
+            <div class="auth-input-wrap">
+                <i class="bi bi-envelope" aria-hidden="true"></i>
+                <input
+                    asp-for="Email"
+                    type="email"
+                    autocomplete="email"
+                    placeholder="ten@email.com"
+                    inputmode="email"
+                    autocapitalize="none"
+                    aria-describedby="Email-error"
+                />
+            </div>
+            <span asp-validation-for="Email" id="Email-error" class="field-error" role="alert"></span>
+            <label asp-for="Password">Mật khẩu</label>
+            <div class="auth-input-wrap">
+                <i class="bi bi-lock" aria-hidden="true"></i>
+                <input
+                    asp-for="Password"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="Tạo mật khẩu an toàn"
+                    aria-describedby="Password-help Password-error"
+                />
+                <button
+                    class="password-toggle"
+                    type="button"
+                    data-password-toggle="Password"
+                    aria-label="Hiện mật khẩu"
+                    aria-pressed="false"
+                >
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                </button>
+            </div>
+            <span id="Password-help" class="field-hint">
+                Tối thiểu 8 ký tự. Dùng mật khẩu riêng cho cửa hàng.
+            </span>
+            <span
+                asp-validation-for="Password"
+                id="Password-error"
+                class="field-error"
+                role="alert"
+            ></span>
+            <label asp-for="ConfirmPassword">Nhập lại mật khẩu</label>
+            <div class="auth-input-wrap">
+                <i class="bi bi-shield-check" aria-hidden="true"></i>
+                <input
+                    asp-for="ConfirmPassword"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="Nhập lại mật khẩu"
+                    aria-describedby="ConfirmPassword-error"
+                />
+                <button
+                    class="password-toggle"
+                    type="button"
+                    data-password-toggle="ConfirmPassword"
+                    aria-label="Hiện mật khẩu xác nhận"
+                    aria-pressed="false"
+                >
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                </button>
+            </div>
+            <span
+                asp-validation-for="ConfirmPassword"
+                id="ConfirmPassword-error"
+                class="field-error"
+                role="alert"
+            ></span>
+            <p class="auth-privacy">
+                <i class="bi bi-shield-lock" aria-hidden="true"></i>
+                <span>
+                    Mật khẩu được mã hóa khi lưu. Dữ liệu của bản demo được giữ trên máy chạy
+                    website.
+                </span>
+            </p>
+            <button type="submit" class="auth-submit">
+                Tạo tài khoản
+                <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </button>
+            <p class="auth-switch">
+                Đã có tài khoản?
+                <a asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">Đăng nhập</a>
+            </p>
+            <p class="auth-demo-note">Bản demo không gửi email xác minh hay thu thập thanh toán.</p>
+        </form>
+    </div>
 </section>

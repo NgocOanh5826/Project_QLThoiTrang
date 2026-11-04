@@ -1,42 +1,186 @@
+@*
+    VAI TRÒ VIEW: Tài khoản đã đăng nhập xem hồ sơ của chính mình; lấy id từ claim, không lấy id
+    người khác từ form. DỮ LIỆU MODEL: ProfileInput. ĐIỂM XỬ LÝ: Controllers/AccountController.cs;
+    tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
+*@
+
 @model ProfileInput
-@{ViewData["Title"]="Tài khoản của tôi";}
-<section class="page-section"><div class="page-heading"><div><p class="eyebrow">KHÔNG GIAN CỦA BẠN</p><h1>Xin chào, @Model.Name</h1></div><form asp-action="Logout" method="post"><button class="button-secondary">Đăng xuất</button></form></div><div class="checkout-grid"><form asp-action="Index" method="post" class="panel form-stack"><h2>Thông tin cá nhân</h2><div asp-validation-summary="All" class="validation"></div><label>Họ tên<input asp-for="Name"/></label><label>Email<input value="@ViewBag.Email" disabled/></label><label>Số điện thoại<input asp-for="Phone"/></label><div class="address-picker" data-address-picker><input asp-for="Address" type="hidden" data-address-full/><div class="form-grid address-grid"><label>Tỉnh/Thành phố<select data-address-province required><option value="">Chọn tỉnh/thành phố</option></select></label><label>Xã/Phường<select data-address-ward required disabled><option value="">Chọn xã/phường</option></select></label></div><label>Số nhà, tên đường<input type="text" data-address-street placeholder="Ví dụ: 96 Võ Văn Ngân" autocomplete="street-address" required/></label></div><button class="btn-black">Lưu thay đổi</button></form><aside class="panel quick-panel">
-    <div class="quick-heading">
-        <span class="quick-heading-icon" aria-hidden="true"><i class="bi bi-grid"></i></span>
-        <div><h2>Truy cập nhanh</h2><p>Mọi tiện ích, ngay trong tầm tay.</p></div>
+@{
+    ViewData["Title"] = "Tài khoản của tôi";
+}
+<section class="page-section">
+    <div class="page-heading">
+        <div>
+            <p class="eyebrow">KHÔNG GIAN CỦA BẠN</p>
+            <h1>Xin chào, @Model.Name</h1>
+        </div>
+        @*
+            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Account/Logout.
+            asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
+            ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo
+            token chống CSRF khi áp dụng. CHỨC NĂNG: Nhận POST của tài khoản đã đăng nhập: ghi thời
+            điểm đăng xuất, xóa Session và cookie rồi quay về trang chủ.Các thuộc tính data-* nối
+            form với sự kiện JavaScript trong wwwroot/js.
+        *@
+        <form asp-action="Logout" method="post" data-confirm="Bạn có chắc muốn đăng xuất không?">
+            <button class="button-secondary">Đăng xuất</button>
+        </form>
     </div>
-    <nav class="quick-links" aria-label="Truy cập tài khoản">
-        <a href="/Account/Orders" class="quick-link">
-            <span class="quick-link-icon" aria-hidden="true"><i class="bi bi-box-seam"></i></span>
-            <span class="quick-link-copy"><strong>Đơn hàng của tôi</strong><small>Theo dõi và xem lịch sử mua hàng</small></span>
-            <i class="bi bi-chevron-right quick-arrow" aria-hidden="true"></i>
-        </a>
-        <a href="/Shop/Wishlist" class="quick-link">
-            <span class="quick-link-icon" aria-hidden="true"><i class="bi bi-heart"></i></span>
-            <span class="quick-link-copy"><strong>Sản phẩm yêu thích</strong><small>Những món đồ bạn đã lưu lại</small></span>
-            <i class="bi bi-chevron-right quick-arrow" aria-hidden="true"></i>
-        </a>
-        <a href="/Shop/Cart" class="quick-link">
-            <span class="quick-link-icon" aria-hidden="true"><i class="bi bi-bag"></i></span>
-            <span class="quick-link-copy"><strong>Giỏ hàng</strong><small>Xem lại sản phẩm trước khi đặt hàng</small></span>
-            <i class="bi bi-chevron-right quick-arrow" aria-hidden="true"></i>
-        </a>
-        @if(User.IsInRole("Admin"))
-        {
-            <a href="/Admin" class="quick-link quick-link-admin">
-                <span class="quick-link-icon" aria-hidden="true"><i class="bi bi-shop"></i></span>
-                <span class="quick-link-copy"><strong>Quản trị cửa hàng</strong><small>Quản lý hoạt động kinh doanh</small></span>
-                <i class="bi bi-arrow-up-right quick-arrow" aria-hidden="true"></i>
+    <div class="checkout-grid">
+        @*
+            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Account/Index.
+            asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
+            ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo
+            token chống CSRF khi áp dụng. CHỨC NĂNG: Sửa tên/điện thoại/địa chỉ của chính tài khoản
+            sau khi ModelState hợp lệ; Write kiểm tra dữ liệu rồi cấp lại cookie để tên hiển thị
+            được cập nhật.
+        *@
+        <form asp-action="Index" method="post" class="panel form-stack">
+            <h2>Thông tin cá nhân</h2>
+            @*
+                THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc
+                controller thêm; sửa ô bị lỗi rồi gửi lại form.
+            *@
+            <div asp-validation-summary="All" class="validation"></div>
+            <label>
+                Họ tên
+                <input asp-for="Name"/>
+            </label>
+            <label>
+                Email
+                <input value="@ViewBag.Email" disabled/>
+            </label>
+            <label>
+                Số điện thoại
+                <input asp-for="Phone"/>
+            </label>
+            <div class="address-picker" data-address-picker>
+                <input asp-for="Address" type="hidden" data-address-full/>
+                <div class="form-grid address-grid">
+                    <label>
+                        Tỉnh/Thành phố
+                        <select data-address-province required>
+                            <option value="">Chọn tỉnh/thành phố</option>
+                        </select>
+                    </label>
+                    <label>
+                        Xã/Phường
+                        <select data-address-ward required disabled>
+                            <option value="">Chọn xã/phường</option>
+                        </select>
+                    </label>
+                </div>
+                <label>
+                    Số nhà, tên đường
+                    <input
+                        type="text"
+                        data-address-street
+                        placeholder="Ví dụ: 96 Võ Văn Ngân"
+                        autocomplete="street-address"
+                        required
+                    />
+                </label>
+            </div>
+            <button class="btn-black">Lưu thay đổi</button>
+        </form>
+        <aside class="panel quick-panel">
+            <div class="quick-heading">
+                <span class="quick-heading-icon" aria-hidden="true">
+                    <i class="bi bi-grid"></i>
+                </span>
+                <div>
+                    <h2>Truy cập nhanh</h2>
+                    <p>Mọi tiện ích, ngay trong tầm tay.</p>
+                </div>
+            </div>
+            <nav class="quick-links" aria-label="Truy cập tài khoản">
+                <a href="/Account/Orders" class="quick-link">
+                    <span class="quick-link-icon" aria-hidden="true">
+                        <i class="bi bi-box-seam"></i>
+                    </span>
+                    <span class="quick-link-copy">
+                        <strong>Đơn hàng của tôi</strong>
+                        <small>Theo dõi và xem lịch sử mua hàng</small>
+                    </span>
+                    <i class="bi bi-chevron-right quick-arrow" aria-hidden="true"></i>
+                </a>
+                <a href="/Shop/Wishlist" class="quick-link">
+                    <span class="quick-link-icon" aria-hidden="true">
+                        <i class="bi bi-heart"></i>
+                    </span>
+                    <span class="quick-link-copy">
+                        <strong>Sản phẩm yêu thích</strong>
+                        <small>Những món đồ bạn đã lưu lại</small>
+                    </span>
+                    <i class="bi bi-chevron-right quick-arrow" aria-hidden="true"></i>
+                </a>
+                <a href="/Shop/Cart" class="quick-link">
+                    <span class="quick-link-icon" aria-hidden="true">
+                        <i class="bi bi-bag"></i>
+                    </span>
+                    <span class="quick-link-copy">
+                        <strong>Giỏ hàng</strong>
+                        <small>Xem lại sản phẩm trước khi đặt hàng</small>
+                    </span>
+                    <i class="bi bi-chevron-right quick-arrow" aria-hidden="true"></i>
+                </a>
+                @*
+                    ĐIỀU KIỆN HIỂN THỊ: phần bên dưới chỉ xuất hiện khi trạng thái đăng nhập/vai trò
+                    thỏa biểu thức if. Quyền thực hiện thao tác vẫn phải được controller/service
+                    kiểm tra.
+                *@
+                @if (User.IsInRole("Admin"))
+                {
+                    <a href="/Admin" class="quick-link quick-link-admin">
+                        <span class="quick-link-icon" aria-hidden="true">
+                            <i class="bi bi-shop"></i>
+                        </span>
+                        <span class="quick-link-copy">
+                            <strong>Quản trị cửa hàng</strong>
+                            <small>Quản lý hoạt động kinh doanh</small>
+                        </span>
+                        <i class="bi bi-arrow-up-right quick-arrow" aria-hidden="true"></i>
+                    </a>
+                }
+                <a href="/Account/Password" class="quick-link">
+                    <span class="quick-link-icon" aria-hidden="true">
+                        <i class="bi bi-key"></i>
+                    </span>
+                    <span class="quick-link-copy">
+                        <strong>Đổi mật khẩu</strong>
+                        <small>Cập nhật mật khẩu tài khoản</small>
+                    </span>
+                    <i class="bi bi-chevron-right quick-arrow" aria-hidden="true"></i>
+                </a>
+            </nav>
+            @*
+                FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Account/Logout.
+                asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
+                ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo
+                token chống CSRF khi áp dụng. CHỨC NĂNG: Nhận POST của tài khoản đã đăng nhập: ghi
+                thời điểm đăng xuất, xóa Session và cookie rồi quay về trang chủ.Các thuộc tính
+                data-* nối form với sự kiện JavaScript trong wwwroot/js.
+            *@
+            <form
+                asp-controller="Account"
+                asp-action="Logout"
+                method="post"
+                class="account-logout"
+                data-confirm="Bạn có chắc muốn đăng xuất không?"
+            >
+                <button type="submit" class="button-secondary">
+                    <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                    Đăng xuất
+                </button>
+            </form>
+            <a href="/Home/Info/contact" class="quick-support">
+                <i class="bi bi-headset" aria-hidden="true"></i>
+                <span>
+                    Cần hỗ trợ?
+                    <strong>Liên hệ với chúng tôi</strong>
+                </span>
+                <i class="bi bi-arrow-right" aria-hidden="true"></i>
             </a>
-        }
-    </nav>
-    <a href="/Home/Info/contact" class="quick-support">
-        <i class="bi bi-headset" aria-hidden="true"></i>
-        <span>Cần hỗ trợ? <strong>Liên hệ với chúng tôi</strong></span>
-        <i class="bi bi-arrow-right" aria-hidden="true"></i>
-    </a>
-</aside></div></section>
-
-
-
-<a class="button-secondary" href="/Account/Password">Đổi mật khẩu</a>
+        </aside>
+    </div>
+</section>

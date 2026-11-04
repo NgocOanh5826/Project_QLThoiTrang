@@ -1,4 +1,85 @@
+@*
+    VAI TRÒ VIEW: Mở danh sách đánh giá kể cả đánh giá ẩn để Support/Admin kiểm duyệt; nạp tên sản
+    phẩm cho view. DỮ LIỆU MODEL: List<ReviewItem>. ĐIỂM XỬ LÝ: Controllers/AdminController.cs và
+    AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
+*@
+
 @model List<ReviewItem>
-@{ViewData["Title"]="Quản lý đánh giá";}
-@{ViewData["TableFilters"]=new[]{AdminListFilter.Choice("state","Hiển thị",("active","Đang hiển thị"),("inactive","Đã ẩn")),new AdminListFilter("stars","Số sao"),new AdminListFilter("product","Sản phẩm")};}
-<partial name="_AdminListToolbar"/><div class="panel table-scroll"><table class="data-table"><thead><tr><th>Sản phẩm</th><th>Khách</th><th>Sao</th><th>Nội dung</th><th></th></tr></thead><tbody>@foreach(var r in Model){<tr data-filter-state="@(r.Active?"active":"inactive")" data-filter-stars="@r.Stars" data-filter-product="@r.ProductId" data-filter-product-label="@(((Dictionary<int,string>)ViewBag.ProductNames).GetValueOrDefault(r.ProductId))"><td>@r.ProductId</td><td>@r.Customer</td><td>@r.Stars / 5</td><td>@r.Text</td><td class="table-actions-cell"><div class="table-actions"><form asp-action="Moderate" method="post"><input name="id" value="@r.Id" type="hidden"/><input name="active" value="@((!r.Active).ToString().ToLowerInvariant())" type="hidden"/><button class="table-action @(r.Active?"table-action--danger":"")">@(r.Active?"Ẩn":"Hiện")</button></form></div></td></tr>}</tbody></table></div>
+@{
+    ViewData["Title"] = "Quản lý đánh giá";
+}
+@{
+    ViewData["TableFilters"] = new[]
+    {
+        AdminListFilter.Choice("state", "Hiển thị", ("active", "Đang hiển thị"), ("inactive",
+    "Đã ẩn")),
+        new AdminListFilter("stars", "Số sao"),
+        new AdminListFilter("product", "Sản phẩm")
+    };
+}
+@*
+    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminListToolbar.cshtml. Thanh tìm kiếm/lọc danh sách quản
+    trị dùng lại qua partial; thuộc tính data-* kết nối với bộ xử lý lọc trong wwwroot/js/site.js.
+*@
+<partial name="_AdminListToolbar"/>
+<div class="panel table-scroll">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Khách</th>
+                <th>Sao</th>
+                <th>Nội dung</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in Model)
+            {
+                <tr
+                    data-filter-state="@(r.Active ? "active" : "inactive")"
+                    data-filter-stars="@r.Stars"
+                    data-filter-product="@r.ProductId"
+                    data-filter-product-label="@(((Dictionary<int, string>)ViewBag.ProductNames)
+                        .GetValueOrDefault(r.ProductId))"
+                >
+                    <td>@r.ProductId</td>
+                    <td>@r.Customer</td>
+                    <td>@r.Stars / 5</td>
+                    <td>
+                        @r.Text
+                        @*
+                            THÀNH PHẦN DÙNG CHUNG: Views/Shared/_ReviewMedia.cshtml. Hiển thị ảnh
+                            hoặc video từ danh sách media; URL Shop/ReviewMedia trả byte sau kiểm
+                            tra trạng thái đánh giá và quyền xem.
+                        *@
+                        <partial name="_ReviewMedia" model="r.Media"/>
+                    </td>
+                    <td class="table-actions-cell">
+                        <div class="table-actions">
+                            @*
+                                FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới
+                                /Admin/Moderate. Controller nhận dữ liệu và kiểm tra
+                                ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu.
+                                TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG:
+                                Nhận nút ẩn/hiện đánh giá và gọi ModerateReview; không xóa đánh giá
+                                hay tệp.
+                            *@
+                            <form asp-action="Moderate" method="post">
+                                <input name="id" value="@r.Id" type="hidden"/>
+                                <input
+                                    name="active"
+                                    value="@((!r.Active).ToString().ToLowerInvariant())"
+                                    type="hidden"
+                                />
+                                <button
+                                    class="table-action @(r.Active ? "table-action--danger" : "")"
+                                >@(r.Active ? "Ẩn" : "Hiện")</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

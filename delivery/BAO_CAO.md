@@ -1,5 +1,23 @@
 # Báo cáo bàn giao QOANH
 
+**Mobile:** header compact ba hàng, icon không xuống dòng, chat dạng icon, ô tìm kiếm riêng; giỏ hàng/chi tiết/thanh toán/tài khoản co theo màn hình. Build Release 0 lỗi/cảnh báo; 15 kiểm tra HTTP đạt và Chrome headless 16/16 trường hợp ở 320/390/768/1440px không tràn ngang. Đã xem screenshot thực tế của các snapshot HTML; chưa kiểm tra trên điện thoại thật/iOS. Chi tiết: `MOBILE_UI.md`.
+
+**Combobox giỏ hàng:** chuyển màu/kích cỡ sang combobox dùng chung của website (menu tùy chỉnh, bàn phím, đánh dấu mục chọn), căn chiều rộng 145px/100px và cùng chiều cao ô số lượng. Giữ tự lưu và cập nhật danh sách size theo màu. Select gốc vẫn dùng khi JavaScript chưa chạy.
+
+**Giỏ hàng và thanh toán:** ô số lượng nhỏ, tự lưu không có nút Cập nhật; chọn màu/size ở từng dòng, gộp khi trùng phiên bản và kiểm tra tổng với tồn/giới hạn 20. Xác nhận trước khi xóa. Khung thanh toán thêm ảnh/màu/size/số lượng và căn lại tổng tiền. Build Release 0 lỗi/cảnh báo; kiểm tra JavaScript và 10/10 HTTP đạt trên database thử nghiệm. Chi tiết và giới hạn kiểm thử: `CART_UI.md`.
+
+**Nút màu dạng chữ:** theo yêu cầu mới nhất, bỏ chấm màu, giữ nút chữ với tên màu một hàng. Đổi class riêng cho lựa chọn màu trên trang chi tiết để tránh CSS chấm màu thẻ sản phẩm áp chiều rộng 13px, gây tràn chữ. Nút tự rộng theo nội dung; nhiều nút xuống hàng theo khung. Giữ nền đen khi chọn.
+
+**Ô màu trên nút:** thêm chấm màu trong từng nút chọn màu, lấy mã hex từ danh mục màu trong SQL; giữ tên màu một dòng và nền đen của lựa chọn hiện tại. Chỉ nhận mã hex hợp lệ; màu chưa có mã hiển thị ô caro. Không đổi dữ liệu/tồn kho. Build Release 0 lỗi/cảnh báo; kiểm tra JavaScript chọn biến thể và chấm màu đạt; chưa kiểm tra trực quan trên trình duyệt thật.
+
+**Đánh giá ảnh/video:** bỏ gạch ngang size hết hàng; thay combobox số sao bằng 5 sao bấm chọn. Thêm upload/xem trước ảnh và video, giới hạn định dạng/số lượng/dung lượng; lưu cùng đánh giá trong transaction SQL, media đi theo kiểm duyệt và backup database. Thêm script 08; Deploy/Upgrade đã tích hợp. Database Development đã backup/xác minh và nâng cấp lên 38 bảng, giữ nguyên số bản ghi 37 bảng cũ. Chi tiết, giới hạn và testcase: `REVIEW_MEDIA.md`.
+
+**Chi tiết sản phẩm và header:** biểu tượng đăng xuất ở cuối dãy nút, sau giỏ hàng. Màu/kích cỡ tách thành hai nhóm; cập nhật mã biến thể, giá màu đỏ ở khu vực cạnh tên sản phẩm, tồn và giới hạn số lượng theo lựa chọn. Khóa size không có hàng; màu hết hàng khóa mua. Ô số lượng rộng 110px. Nút yêu thích nền đen khi đã lưu, nền sáng khi bỏ; hoạt động với khách vãng lai và khách đăng nhập, giữ trạng thái sau tải lại. Có lựa chọn phiên bản dự phòng khi JavaScript không chạy. Build Release 0 lỗi/cảnh báo; kiểm tra Node `product_picker_checks.mjs` đạt; 5/5 kiểm tra HTTP (`product-detail-results.json`) đạt trên database thử nghiệm và khôi phục trạng thái yêu thích. Chưa kiểm tra trực quan trên trình duyệt thật.
+
+**Điều chỉnh header:** nút Đăng xuất chỉ còn icon, đặt ngay sau nút tim, cùng kích thước/kiểu với các icon bên cạnh; vẫn có nhãn hỗ trợ đọc màn hình, tooltip và xác nhận trước khi đăng xuất. Các nút trong trang tài khoản/quản trị giữ chữ.
+
+**Đăng xuất:** thêm nút có chữ “Đăng xuất” trên header khi đã đăng nhập và trong khung tài khoản. Tất cả nút đăng xuất (kể cả quản trị) hỏi “Bạn có chắc muốn đăng xuất không?” trước khi gửi POST; chọn Hủy giữ phiên hiện tại. Đưa Đổi mật khẩu vào Truy cập nhanh. Build Release 0 lỗi/cảnh báo; 11/11 kiểm tra HTTP trên database thử nghiệm đạt (`logout-results.json`), gồm token chống giả mạo, GET không đăng xuất và POST hợp lệ kết thúc phiên của khách/admin. Đã kiểm tra nhánh Hủy/Xác nhận của JavaScript qua Node; chưa kiểm tra trực quan trên trình duyệt thật.
+
 **Bộ lọc theo từng trang:** thêm combobox danh mục/thương hiệu/trạng thái, kho/nhà cung cấp/nhân viên, mức tồn, thanh toán, vai trò, số sao, công nợ và tháng tùy trang; hỗ trợ kết hợp tìm kiếm và xóa toàn bộ bộ lọc. Hai báo cáo có khoảng ngày nhanh. Bảng khách hàng bổ sung trạng thái; bảng đơn hàng bổ sung phương thức thanh toán để đối chiếu kết quả lọc. Chi tiết và testcase: `PAGE_FILTERS.md`. Build Release đạt 0 lỗi/cảnh báo, kiểm tra JavaScript đạt, 39/39 kiểm tra bố cục/phân quyền đạt; kết quả HTTP riêng ở `page-filter-results.json`. Chưa kiểm tra trực quan trên trình duyệt thật.
 
 **Đồng bộ nút thao tác trong bảng:** áp dụng cùng kiểu nút bo góc, viền nhẹ, chiều cao và khoảng cách trên 16 bảng quản lý; Xóa/Ẩn dùng đỏ nhạt, Sửa/Chi tiết dùng nền sáng. Giữ nguyên đường dẫn, phương thức POST, xác nhận và điều kiện khóa nút. Build Release đạt 0 lỗi/cảnh báo; chưa kiểm tra trực quan thay đổi này trên trình duyệt thật.
@@ -8,7 +26,7 @@
 
 Đã xác minh Development thực tế dùng `.\MSSQLSERVER01`, database `QL_CuaHangThoiTrang`, ban đầu có 30 bảng và thiếu QBankQrImage/QTransferReference/QUnitCost. Đã backup COPY_ONLY/CHECKSUM và VERIFYONLY, nâng cấp 07 có khóa/transaction, đối chiếu số bản ghi của toàn bộ 30 bảng cũ không đổi. Database hiện có 37 bảng. Log và đường dẫn backup: `local-features-upgrade.log`. Kiểm tra chỉ đọc trang chủ/chi tiết sản phẩm trên database này đạt HTTP 200; kiểm tra database không có schema ứng dụng trả trang bảo trì 503 và CSS vẫn hoạt động (`local-schema-fix-results.json`). Build đạt 0 lỗi/cảnh báo. Bổ sung wrapper `Upgrade-features.sql` và kiểm tra schema trước khi xử lý MVC, không tự sửa schema khi web khởi động.
 
-Bản ASP.NET Core MVC .NET 8, EF Core SQL Server, cấu hình mặc định .\SQLEXPRESS và database QL_CuaHangThoiTrang. Tích hợp 27 bảng SQL gốc, 3 bảng mở rộng ban đầu và 7 bảng chức năng mới. Giữ dữ liệu SQL/JSON và giao diện QOANH, bổ sung các màn hình theo yêu cầu. Chi tiết cài đặt mới ở README.md; nâng cấp chức năng mới ở FEATURES.md.
+Bản ASP.NET Core MVC .NET 8, EF Core SQL Server, cấu hình mặc định .\SQLEXPRESS và database QL_CuaHangThoiTrang. Tích hợp 27 bảng SQL gốc, 3 bảng mở rộng ban đầu và 8 bảng chức năng mới. Giữ dữ liệu SQL/JSON và giao diện QOANH, bổ sung các màn hình theo yêu cầu. Chi tiết cài đặt mới ở README.md; nâng cấp chức năng mới ở FEATURES.md.
 
 ## Chức năng đã có
 

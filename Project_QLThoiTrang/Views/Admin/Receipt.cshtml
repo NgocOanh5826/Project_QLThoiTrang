@@ -1,7 +1,50 @@
-@model Project_QLThoiTrang.Data.Native.PhieuNhapRow
-@{ViewData["Title"]="Chi tiết phiếu nhập #"+Model.MaPhieuNhap;}
-<div class="actions toolbar-actions"><a href="/Admin/Receipts" class="button-secondary">Quay lại danh sách</a></div>
-<div class="panel"><h2>@Model.QReference</h2><p>@Model.NgayNhap.ToString("dd/MM/yyyy HH:mm") · Kho @Model.MaKho · Nhà cung cấp @Model.MaNCC · Nhân viên @Model.MaNV</p><p>Tổng nhập: <strong>@Model.TongTien.ToString("N0") đ</strong></p></div>
-<div class="panel table-scroll"><table class="data-table"><thead><tr><th>Biến thể</th><th>Số lượng</th><th>Giá nhập</th><th>Thành tiền</th></tr></thead><tbody>@foreach(var line in (List<Project_QLThoiTrang.Data.Native.ChiTietPhieuNhapRow>)ViewBag.Lines){<tr><td>@line.MaBienThe</td><td>@line.SoLuong</td><td>@line.GiaNhap.ToString("N0") đ</td><td>@((line.SoLuong*line.GiaNhap).ToString("N0")) đ</td></tr>}</tbody></table></div>
+@*
+    VAI TRÒ VIEW: Mở một phiếu nhập và các dòng ChiTietPhieuNhap; không có đầu phiếu trả 404. DỮ
+    LIỆU MODEL: Project_QLThoiTrang.Data.Native.PhieuNhapRow. ĐIỂM XỬ LÝ:
+    Controllers/AdminController.cs và AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload
+    GET/POST.
+*@
 
+@model Project_QLThoiTrang.Data.Native.PhieuNhapRow
+@{
+    ViewData["Title"] = "Chi tiết phiếu nhập #" + Model.MaPhieuNhap;
+}
+<div class="actions toolbar-actions">
+    <a href="/Admin/Receipts" class="button-secondary">Quay lại danh sách</a>
+</div>
+<div class="panel">
+    <h2>@Model.QReference</h2>
+    <p>
+        @Model.NgayNhap.ToString("dd/MM/yyyy HH:mm") · Kho @Model.MaKho · Nhà cung cấp @Model.MaNCC
+        · Nhân viên @Model.MaNV
+    </p>
+    <p>
+        Tổng nhập:
+        <strong>@Model.TongTien.ToString("N0") đ</strong>
+    </p>
+</div>
+<div class="panel table-scroll">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Biến thể</th>
+                <th>Số lượng</th>
+                <th>Giá nhập</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var line in (List<Project_QLThoiTrang.Data.Native.ChiTietPhieuNhapRow>)ViewBag
+                .Lines)
+            {
+                <tr>
+                    <td>@line.MaBienThe</td>
+                    <td>@line.SoLuong</td>
+                    <td>@line.GiaNhap.ToString("N0") đ</td>
+                    <td>@((line.SoLuong * line.GiaNhap).ToString("N0")) đ</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 <a href="/Documents/Receipt/@Model.MaPhieuNhap" class="button-secondary">Tải PDF phiếu nhập</a>

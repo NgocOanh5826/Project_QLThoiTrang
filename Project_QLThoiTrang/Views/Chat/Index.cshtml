@@ -1,3 +1,48 @@
-@{Layout=User.IsInRole("Customer")?"_Layout":"_AdminLayout";ViewData["Title"]="Chat hỗ trợ";}
-<section class="page-section chat-page"><div class="panel form-stack" data-chat data-customer-id="@ViewBag.CustomerId"><h1>Chat hỗ trợ QOANH</h1>@if(!User.IsInRole("Customer")){<a href="/Chat" class="text-link">Quay lại hộp thư</a>}<button type="button" class="button-secondary" data-chat-older>Xem tin trước</button><div class="chat-messages" data-chat-messages aria-label="Lịch sử hội thoại"></div><p class="muted small" data-chat-status role="status">Đang tải tin nhắn…</p><form data-chat-form class="form-stack" method="post" asp-controller="Chat" asp-action="Send">@Html.AntiForgeryToken()<label>Tin nhắn<textarea name="text" maxlength="2000" required rows="3"></textarea></label><button class="btn-black">Gửi tin nhắn</button></form></div></section>
-@section Scripts {<script src="~/js/chat.js" asp-append-version="true"></script>}
+@*
+    VAI TRÒ VIEW: Nhân viên chưa chọn khách thì mở Inbox; đã chọn khách hoặc tài khoản Customer thì
+    kiểm tra khách còn hoạt động rồi mở trang chat. ĐIỂM XỬ LÝ: Controllers/ChatController.cs; tra
+    HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
+*@
+
+@{
+    Layout = User.IsInRole("Customer") ? "_Layout" : "_AdminLayout";
+    ViewData["Title"] = "Chat hỗ trợ";
+}
+<section class="page-section chat-page">
+    <div class="panel form-stack" data-chat data-customer-id="@ViewBag.CustomerId">
+        <h1>Chat hỗ trợ QOANH</h1>
+        @if (!User.IsInRole("Customer"))
+        {
+            <a href="/Chat" class="text-link">Quay lại hộp thư</a>
+        }
+        <button type="button" class="button-secondary" data-chat-older>Xem tin trước</button>
+        <div class="chat-messages" data-chat-messages aria-label="Lịch sử hội thoại"></div>
+        <p class="muted small" data-chat-status role="status">Đang tải tin nhắn…</p>
+        @*
+            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Chat/Send.
+            Controller nhận dữ liệu và kiểm tra ModelState/quyền; service kiểm tra nghiệp vụ trước
+            khi lưu. TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG: API POST gửi
+            tin với clientToken chống gửi trùng; service kiểm tra nội dung/quyền/tốc độ, lỗi nghiệp
+            vụ trả HTTP 400 kèm thông báo.Các thuộc tính data-* nối form với sự kiện JavaScript
+            trong wwwroot/js.
+        *@
+        <form
+            data-chat-form
+            class="form-stack"
+            method="post"
+            asp-controller="Chat"
+            asp-action="Send"
+        >
+            @Html.AntiForgeryToken()
+            <label>
+                Tin nhắn
+                <textarea name="text" maxlength="2000" required rows="3"></textarea>
+            </label>
+            <button class="btn-black">Gửi tin nhắn</button>
+        </form>
+    </div>
+</section>
+@section Scripts
+{
+    <script src="~/js/chat.js" asp-append-version="true"></script>
+}

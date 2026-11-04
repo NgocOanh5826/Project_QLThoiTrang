@@ -1,10 +1,167 @@
-@model Product
-@{
-	ViewData["Title"] = Model.Name;
-}
-<section class="page-section"><p class="breadcrumb"><a href="/">Trang chủ</a> / <a href="/Shop">Sản phẩm</a> / @Model.Name</p><div class="detail-grid"><div class="detail-image"><img src="@Model.Image" alt="@Model.Name" /></div><div class="detail-copy"><p class="eyebrow">@Model.Category · EVERYDAY ESSENTIALS</p><h1>@Model.Name</h1><p class="detail-price">@Model.Price.ToString("N0") đ</p><p class="muted">@Model.Description</p><p>Màu sắc: <strong>@Model.Color</strong></p>@if(User.Identity?.IsAuthenticated==true&&!User.IsInRole("Customer")){<div class="notice">Tài khoản quản trị và nhân viên không được mua hàng. <a href="/Admin">Về trang quản trị</a></div>}else{<form asp-action="Add" method="post" class="form-stack"><input type="hidden" name="id" value="@Model.Id" /><fieldset><legend>Chọn kích cỡ / màu sắc</legend><div class="size-options" style="flex-wrap:wrap">@foreach(var v in Model.Variants.Where(v=>v.Active)){<label><input type="radio" name="variantId" value="@v.Id" checked="@(v.Id==Model.Variants.FirstOrDefault(x=>x.Active&&x.Stock>0)?.Id)" disabled="@(v.Stock==0)"/><span style="padding:8px;max-width:100%">@v.Size · @v.Color · @((v.Price??Model.Price).ToString("N0")) đ (@v.Stock)</span></label>}</div></fieldset><label>Số lượng<input type="number" name="quantity" value="1" min="1" max="@Math.Min(20, Model.AvailableStock)" disabled="@(Model.AvailableStock == 0)" /></label><button class="btn-black full-width" disabled="@(Model.AvailableStock == 0)">@(Model.AvailableStock > 0 ? "Thêm vào giỏ hàng" : "Tạm hết hàng")</button><p class="muted small">Còn @Model.AvailableStock sản phẩm · Tồn theo biến thể và kho</p></form>}<form asp-action="Favorite" method="post"><input type="hidden" name="id" value="@Model.Id" /><input type="hidden" name="returnUrl" value="@Context.Request.Path" /><button class="button-secondary">Thêm / bỏ yêu thích</button></form><details><summary>Chất liệu & chăm sóc</summary><p>Giặt nhẹ với màu tương tự. Phơi nơi thoáng mát, tránh ánh nắng trực tiếp.</p></details><details><summary>Giao hàng & đổi trả</summary><p>Phí giao hàng demo 30.000 đ; miễn phí từ 700.000 đ. <a href="/Home/Info/returns">Xem chính sách đổi trả.</a></p></details></div></div><div class="section-title related-heading"><h2>Có thể bạn cũng thích</h2><a href="/Shop">Xem thêm →</a></div><div class="product-grid">@foreach(var related in (List<Product>)ViewBag.Related){
-<partial name="_ProductCard" model="related" />
-}
-</div></section>
+@*
+    VAI TRÒ VIEW: Mở chi tiết sản phẩm đang bán, nạp đánh giá và tối đa 4 sản phẩm liên quan cùng
+    danh mục; sản phẩm không tồn tại hoặc đã ẩn trả 404. DỮ LIỆU MODEL: Product. ĐIỂM XỬ LÝ:
+    Controllers/ShopController.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
+*@
 
+@model Product
+@using Project_QLThoiTrang.Services
+@{
+    ViewData["Title"] = Model.Name;
+    var variants = Model.Variants.Where(v => v.Active).ToList();
+    var selected = variants.FirstOrDefault(v => v.Stock > 0) ?? variants.FirstOrDefault();
+    var favorite = SessionStore.Get<List<int>>(Context.Session, "wishlist").Contains(Model.Id);
+}
+<section class="page-section">
+    <p class="breadcrumb">
+        <a href="/">Trang chủ</a>
+        /
+        <a href="/Shop">Sản phẩm</a>
+        /
+        @Model.Name
+    </p>
+    <div class="detail-grid">
+        <div class="detail-image">
+            <img src="@Model.Image" alt="@Model.Name" />
+        </div>
+        <div class="detail-copy">
+            <p class="eyebrow">@Model.Category · EVERYDAY ESSENTIALS</p>
+            <div class="detail-heading">
+                <h1>@Model.Name</h1>
+                <p class="detail-price" data-product-price aria-live="polite">@((selected?.Price
+                    ?? Model.Price).ToString("N0")) đ</p>
+            </div>
+            <p class="muted">@Model.Description</p>
+            @*
+                ĐIỀU KIỆN HIỂN THỊ: phần bên dưới chỉ xuất hiện khi trạng thái đăng nhập/vai trò
+                thỏa biểu thức if. Quyền thực hiện thao tác vẫn phải được controller/service kiểm
+                tra.
+            *@
+            @if (User.Identity?.IsAuthenticated == true && !User.IsInRole("Customer"))
+            {
+                <div class="notice">
+                    Tài khoản quản trị và nhân viên không được mua hàng.
+                    <a href="/Admin">Về trang quản trị</a>
+                </div>
+            }
+            else
+            {
+                @*
+                    FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Shop/Add.
+                    Controller nhận dữ liệu và kiểm tra ModelState/quyền; service kiểm tra nghiệp vụ
+                    trước khi lưu. TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG:
+                    Thêm sản phẩm vào giỏ: sản phẩm và biến thể phải hoạt động, lượng 1–20 và tổng
+                    cùng biến thể không quá min(20, tồn). Chưa có dòng thì Add, đã có thì tăng
+                    Quantity, rồi lưu Session.Các thuộc tính data-* nối form với sự kiện JavaScript
+                    trong wwwroot/js.
+                *@
+                <form
+                    asp-action="Add"
+                    method="post"
+                    class="form-stack product-purchase"
+                    data-product-picker
+                >
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <label data-variant-fallback>
+                        Phiên bản
+                        <select name="variantId" data-product-variants data-native-select required>
+                            @foreach (var v in variants)
+                            {
+                                <option
+                                    value="@v.Id"
+                                    selected="@(v.Id == selected?.Id)"
+                                    disabled="@(v.Stock <= 0)"
+                                    data-color="@v.Color"
+                                    data-size="@v.Size"
+                                    data-stock="@v.Stock"
+                                    data-price="@((v.Price ?? Model.Price).ToString(System
+                                        .Globalization.CultureInfo.InvariantCulture))"
+                                >@v.Color · @v.Size</option>
+                            }
+                        </select>
+                    </label>
+                    <fieldset data-color-field hidden>
+                        <legend>Màu sắc</legend>
+                        <div class="size-options product-color-options" data-product-colors></div>
+                    </fieldset>
+                    <fieldset data-size-field hidden>
+                        <legend>Kích cỡ</legend>
+                        <div class="size-options" data-product-sizes></div>
+                    </fieldset>
+                    <label class="product-quantity">
+                        Số lượng
+                        <input
+                            type="number"
+                            name="quantity"
+                            value="1"
+                            min="1"
+                            max="@Math.Min(20, selected?.Stock ?? 0)"
+                            disabled="@(selected == null || selected.Stock <= 0)"
+                            required
+                        />
+                    </label>
+                    <button
+                        type="submit"
+                        class="btn-black full-width"
+                        data-product-add
+                        disabled="@(selected == null || selected.Stock <= 0)"
+                    >@(selected?.Stock > 0 ? "Thêm vào giỏ hàng" : "Tạm hết hàng")</button>
+                    <p class="muted small" data-product-stock aria-live="polite">
+                        Còn @(selected?.Stock ?? 0) sản phẩm ở phiên bản đã chọn
+                    </p>
+                </form>
+            }
+            @*
+                FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Shop/Favorite.
+                Controller nhận dữ liệu và kiểm tra ModelState/quyền; service kiểm tra nghiệp vụ
+                trước khi lưu. TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG:
+                Bật/tắt yêu thích sản phẩm: đã có thì Remove id, chưa có thì Add id; sản phẩm phải
+                còn hoạt động. Chỉ chuyển hướng tới returnUrl nội bộ.
+            *@
+            <form asp-action="Favorite" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                <button
+                    type="submit"
+                    class="button-secondary product-favorite @(favorite ? "is-favorite" : "")"
+                    aria-pressed="@(favorite ? "true" : "false")"
+                >
+                    <i class="bi @(favorite ? "bi-heart-fill" : "bi-heart")" aria-hidden="true"></i>
+                    @(favorite ? "Đã yêu thích" : "Yêu thích")
+                </button>
+            </form>
+            <details>
+                <summary>Chất liệu & chăm sóc</summary>
+                <p>Giặt nhẹ với màu tương tự. Phơi nơi thoáng mát, tránh ánh nắng trực tiếp.</p>
+            </details>
+            <details>
+                <summary>Giao hàng & đổi trả</summary>
+                <p>
+                    Phí giao hàng demo 30.000 đ; miễn phí từ 700.000 đ.
+                    <a href="/Home/Info/returns">Xem chính sách đổi trả.</a>
+                </p>
+            </details>
+        </div>
+    </div>
+    <div class="section-title related-heading">
+        <h2>Có thể bạn cũng thích</h2>
+        <a href="/Shop">Xem thêm →</a>
+    </div>
+    <div class="product-grid">
+        @foreach (var related in (List<Product>)ViewBag.Related)
+        {
+            @*
+                THÀNH PHẦN DÙNG CHUNG: Views/Shared/_ProductCard.cshtml. Thẻ sản phẩm trong danh
+                sách: liên kết mở Shop/Detail, hiển thị ảnh/giá và gửi yêu thích. Model là sản phẩm
+                đã được controller lọc.
+            *@
+            <partial name="_ProductCard" model="related" />
+        }
+    </div>
+</section>
+@*
+    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_Reviews.cshtml. Danh sách đánh giá và form gửi sao/nội
+    dung/tệp. Chỉ hiện form cho Customer; Shop/Review và StoreService.Review vẫn kiểm tra đã mua/đã
+    giao/chưa đánh giá.
+*@
 <partial name="_Reviews" model="Model"/>

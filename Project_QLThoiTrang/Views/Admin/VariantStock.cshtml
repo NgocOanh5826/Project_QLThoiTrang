@@ -1,6 +1,78 @@
+@*
+    VAI TRÒ VIEW: Mở bảng tồn chi tiết theo biến thể và kho từ StoreData. DỮ LIỆU MODEL: StoreData.
+    ĐIỂM XỬ LÝ: Controllers/AdminController.cs và AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm
+    đúng overload GET/POST.
+*@
+
 @model StoreData
-@{ViewData["CreateUrl"]="/Admin/Receive";ViewData["CreateLabel"]="Nhập kho";ViewData["Title"]="Tồn theo biến thể và kho";}
-@{ViewData["TableFilters"]=new[]{new AdminListFilter("warehouse","Kho"),new AdminListFilter("product","Sản phẩm"),new AdminListFilter("size","Kích thước"),new AdminListFilter("color","Màu sắc"),AdminListFilter.Choice("stock","Tồn kho",("empty","Hết hàng"),("low","Sắp hết (1–5)"),("normal","Còn hàng (>5)"))};}
-<partial name="_AdminListToolbar"/><div class="panel table-scroll"><table class="data-table"><thead><tr><th>Kho</th><th>Sản phẩm / SKU</th><th>Size / màu</th><th>Tồn</th><th>Kiểm kê</th></tr></thead><tbody>
-@foreach(var w in Model.Warehouses.Where(w=>w.Active)){@foreach(var v in Model.Variants){var quantity=Model.Stocks.FirstOrDefault(s=>s.WarehouseId==w.Id&&s.VariantId==v.Id)?.Quantity??0;<tr data-filter-warehouse="@w.Id" data-filter-warehouse-label="@w.Name" data-filter-product="@v.ProductId" data-filter-product-label="@Model.Products.Single(p=>p.Id==v.ProductId).Name" data-filter-size="@v.Size" data-filter-color="@v.Color" data-filter-stock="@(quantity==0?"empty":quantity<=5?"low":"normal")"><td>@w.Name</td><td>@Model.Products.Single(p=>p.Id==v.ProductId).Name<br/>@v.Sku</td><td>@v.Size / @v.Color</td><td>@quantity</td><td class="table-actions-cell"><div class="table-actions"><a class="button-secondary compact table-action" href="/Admin/StockCount?variantId=@v.Id&warehouseId=@w.Id">Kiểm kê</a></div></td></tr>}}
-</tbody></table></div>
+@{
+    ViewData["CreateUrl"] = "/Admin/Receive";
+    ViewData["CreateLabel"] = "Nhập kho";
+    ViewData["Title"] = "Tồn theo biến thể và kho";
+}
+@{
+    ViewData["TableFilters"] = new[]
+    {
+        new AdminListFilter("warehouse", "Kho"),
+        new AdminListFilter("product", "Sản phẩm"),
+        new AdminListFilter("size", "Kích thước"),
+        new AdminListFilter("color", "Màu sắc"),
+        AdminListFilter.Choice("stock", "Tồn kho", ("empty", "Hết hàng"), ("low", "Sắp hết (1–5)"),
+    ("normal", "Còn hàng (>5)"))
+    };
+}
+@*
+    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminListToolbar.cshtml. Thanh tìm kiếm/lọc danh sách quản
+    trị dùng lại qua partial; thuộc tính data-* kết nối với bộ xử lý lọc trong wwwroot/js/site.js.
+*@
+<partial name="_AdminListToolbar"/>
+<div class="panel table-scroll">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Kho</th>
+                <th>Sản phẩm / SKU</th>
+                <th>Size / màu</th>
+                <th>Tồn</th>
+                <th>Kiểm kê</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var w in Model.Warehouses.Where(w => w.Active))
+            {
+                @foreach (var v in Model.Variants)
+                {
+                    var quantity = Model.Stocks.FirstOrDefault(s => s.WarehouseId == w.Id && s
+                    .VariantId == v.Id)?.Quantity ?? 0;
+                    <tr
+                        data-filter-warehouse="@w.Id"
+                        data-filter-warehouse-label="@w.Name"
+                        data-filter-product="@v.ProductId"
+                        data-filter-product-label="@Model.Products.Single(p => p.Id == v.ProductId).Name"
+                        data-filter-size="@v.Size"
+                        data-filter-color="@v.Color"
+                        data-filter-stock="@(quantity == 0 ? "empty" : quantity <= 5 ? "low"
+                            : "normal")"
+                    >
+                        <td>@w.Name</td>
+                        <td>
+                            @Model.Products.Single(p => p.Id == v.ProductId).Name
+                            <br/>
+                            @v.Sku
+                        </td>
+                        <td>@v.Size / @v.Color</td>
+                        <td>@quantity</td>
+                        <td class="table-actions-cell">
+                            <div class="table-actions">
+                                <a
+                                    class="button-secondary compact table-action"
+                                    href="/Admin/StockCount?variantId=@v.Id&warehouseId=@w.Id"
+                                >Kiểm kê</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

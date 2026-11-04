@@ -1,4 +1,50 @@
-@{var movements=(List<StockMovement>)ViewBag.Movements;}
-<section class="panel table-scroll"><h2>Lịch sử kho (200 bút toán mới nhất)</h2><table class="data-table"><thead><tr><th>UTC</th><th>Mã SP</th><th>Trước</th><th>Thay đổi</th><th>Sau</th><th>Lý do / chứng từ</th><th>Nhà cung cấp / giá nhập</th><th>Người thực hiện</th></tr></thead><tbody>
-@foreach(var m in movements){<tr><td>@m.Created.ToString("dd/MM/yyyy HH:mm")</td><td>@m.ProductId</td><td>@m.Before</td><td>@m.Delta</td><td>@m.After</td><td>@m.Reason<br/>@m.Reference</td><td>@m.Supplier<br/>@m.UnitCost.ToString("N0") đ</td><td>@m.ActorId</td></tr>}
-</tbody></table></section>
+@*
+    VAI TRÒ VIEW: Bảng nhật ký biến động tồn phục vụ đối chiếu Before/Delta/After; thay tồn tại màn
+    hình nhập kho/kiểm kê, không sửa trực tiếp bảng này. Partial/layout được trang cha gọi; không tự
+    tạo URL/action riêng.
+*@
+
+@{
+    var movements = (List<StockMovement>)ViewBag.Movements;
+}
+<section class="panel table-scroll">
+    <h2>Lịch sử kho (200 bút toán mới nhất)</h2>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>UTC</th>
+                <th>Mã SP</th>
+                <th>Trước</th>
+                <th>Thay đổi</th>
+                <th>Sau</th>
+                <th>Lý do / chứng từ</th>
+                <th>Nhà cung cấp / giá nhập</th>
+                <th>Người thực hiện</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in movements)
+            {
+                <tr>
+                    <td>@m.Created.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@m.ProductId</td>
+                    <td>@m.Before</td>
+                    <td>@m.Delta</td>
+                    <td>@m.After</td>
+                    <td>
+                        @m.Reason
+                        <br/>
+                        @m.Reference
+                    </td>
+                    <td>
+                        @m.Supplier
+                        <br/>
+                        @m.UnitCost.ToString("N0")
+                        đ
+                    </td>
+                    <td>@m.ActorId</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

@@ -1,3 +1,45 @@
+@*
+    VAI TRÒ VIEW: Mở form khai báo giá vốn cho biến thể tồn tại; đưa id vào ViewBag để xác định dòng
+    cần cập nhật. DỮ LIỆU MODEL: StoreData. ĐIỂM XỬ LÝ: Controllers/ValuationController.cs; tra
+    HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
+*@
+
 @model StoreData
-@{ViewData["Title"]="Khai báo giá vốn";int id=ViewBag.VariantId;var v=Model.Variants.Single(v=>v.Id==id);int quantity=Model.Stocks.Where(s=>s.VariantId==id).Sum(s=>s.Quantity);}
-<div class="admin-form-page"><form method="post" class="panel form-stack" data-confirm="Xác nhận giá vốn theo chứng từ? Chỉ áp dụng giao dịch tiếp theo."><h2>@v.Sku · @Model.Products.Single(p=>p.Id==v.ProductId).Name</h2><p>Tồn hiện tại: @quantity</p><input name="variantId" value="@id" type="hidden"/><input name="expected" value="@quantity" type="hidden"/><label>Giá vốn mỗi sản phẩm<input name="cost" type="number" min="0" max="100000000" step="0.01" required/></label><label>Căn cứ / chứng từ<textarea name="note" minlength="5" maxlength="300" required></textarea></label><div class="actions"><button class="btn-black">Ghi giá vốn</button><a href="/Valuation" class="button-secondary">Quay lại</a></div></form></div>
+@{
+    ViewData["Title"] = "Khai báo giá vốn";
+    int id = ViewBag.VariantId;
+    var v = Model.Variants.Single(v => v.Id == id);
+    int quantity = Model.Stocks.Where(s => s.VariantId == id).Sum(s => s.Quantity);
+}
+<div class="admin-form-page">
+    @*
+        FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Valuation/Edit.
+        Controller nhận dữ liệu và kiểm tra ModelState/quyền; service kiểm tra nghiệp vụ trước khi
+        lưu. TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG: Nhận giá vốn, tồn
+        expected và lý do; SetInventoryValue kiểm tra chống ghi đè, lưu giá vốn cho giao dịch tiếp
+        theo, lỗi quay lại form cùng biến thể.Các thuộc tính data-* nối form với sự kiện JavaScript
+        trong wwwroot/js.
+    *@
+    <form
+        method="post"
+        class="panel form-stack"
+        data-confirm="Xác nhận giá vốn theo chứng từ? Chỉ áp dụng giao dịch tiếp theo."
+    >
+        <h2>@v.Sku · @Model.Products.Single(p => p.Id == v.ProductId).Name</h2>
+        <p>Tồn hiện tại: @quantity</p>
+        <input name="variantId" value="@id" type="hidden"/>
+        <input name="expected" value="@quantity" type="hidden"/>
+        <label>
+            Giá vốn mỗi sản phẩm
+            <input name="cost" type="number" min="0" max="100000000" step="0.01" required/>
+        </label>
+        <label>
+            Căn cứ / chứng từ
+            <textarea name="note" minlength="5" maxlength="300" required></textarea>
+        </label>
+        <div class="actions">
+            <button class="btn-black">Ghi giá vốn</button>
+            <a href="/Valuation" class="button-secondary">Quay lại</a>
+        </div>
+    </form>
+</div>

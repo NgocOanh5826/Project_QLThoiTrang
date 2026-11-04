@@ -1,33 +1,145 @@
+@*
+    VAI TRÒ VIEW: Các liên kết quản trị theo vai trò; mỗi href trỏ tới controller/action tương ứng.
+    Thêm mục menu không tự cấp quyền server. Partial/layout được trang cha gọi; không tự tạo
+    URL/action riêng.
+*@
+
 @{
- var current=ViewContext.RouteData.Values["action"]?.ToString();
- var kind=ViewData["ReferenceKind"]?.ToString()??Context.Request.Query["kind"].ToString();
- var selected=current switch{
- "Index"=>"", "Product" or "DeleteProduct"=>"Products", "Category" or "AddCategory"=>"Categories",
- "Variant"=>"Variants", "StaffMember"=>"Staff", "StockCount" or "AdjustVariant" or "VariantStock"=>"Inventory",
- "Reference" or "References"=>"References?kind="+(kind is "suppliers" or "warehouses"?kind:"brands"),
- "Order"=>"Orders", "Customer" or "EditCustomer"=>"Customers", "Promotion"=>"Promotions",
- "ReturnRequest" or "ResolveReturn"=>"Returns", "Receipt" or "Receive" or "ReceiveMany"=>"Receipts", _=>current};
- var controller=ViewContext.RouteData.Values["controller"]?.ToString();
- if(controller=="Finance")selected=current is "Suppliers" or "Receipt" or "Reconcile" or "Pay"?"/Finance/Suppliers":"/Finance";
- if(controller=="Valuation")selected="/Valuation";
- if(controller=="Shipping")selected="Orders";
- if(controller=="Chat")selected="/Chat";
- var groups=new[]{
-  new{Title="Sản phẩm",Roles=new[]{"Catalog"},Items=new[]{("Products","Danh sách sản phẩm"),("Categories","Danh mục"),("Variants","Biến thể"),("References?kind=brands","Thương hiệu / size / màu"),("Promotions","Khuyến mãi")}},
-  new{Title="Kho hàng",Roles=new[]{"Inventory"},Items=new[]{("Inventory","Tồn kho & kiểm kê"),("Receipts","Phiếu nhập kho"),("/Valuation","Giá vốn tồn kho"),("References?kind=suppliers","Nhà cung cấp"),("References?kind=warehouses","Danh sách kho")}},
-  new{Title="Bán hàng",Roles=new[]{"Sales"},Items=new[]{("Orders","Đơn hàng"),("Returns","Trả hàng / hoàn tiền"),("Reports","Doanh thu"),("/Finance","Lợi nhuận & giá vốn"),("/Finance/Suppliers","Công nợ nhà cung cấp")}},
-  new{Title="Khách hàng",Roles=new[]{"Support"},Items=new[]{("Customers","Danh sách khách hàng"),("Reviews","Đánh giá"),("/Chat","Tin nhắn hỗ trợ")}},
-  new{Title="Hệ thống",Roles=Array.Empty<string>(),Items=new[]{("Staff","Nhân viên & phân quyền"),("LoginHistory","Lịch sử đăng nhập"),("Settings","Cài đặt cửa hàng")}}
- };
+    var current = ViewContext.RouteData.Values["action"]?.ToString();
+    var kind = ViewData["ReferenceKind"]?.ToString() ?? Context.Request.Query["kind"].ToString();
+    var selected = current switch
+    {
+        "Index" => "",
+        "Product" or "DeleteProduct" => "Products",
+        "Category" or "AddCategory" => "Categories",
+        "Variant" => "Variants",
+        "StaffMember" => "Staff",
+        "StockCount" or "AdjustVariant" or "VariantStock" => "Inventory",
+        "Reference" or "References" => "References?kind=" + (kind is "suppliers" or "warehouses"
+    ? kind : "brands"),
+        "Order" => "Orders",
+        "Customer" or "EditCustomer" => "Customers",
+        "Promotion" => "Promotions",
+        "ReturnRequest" or "ResolveReturn" => "Returns",
+        "Receipt" or "Receive" or "ReceiveMany" => "Receipts",
+        _ => current
+    };
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    if (controller == "Finance")
+    selected = current is "Suppliers" or "Receipt" or "Reconcile" or "Pay" ? "/Finance/Suppliers"
+    : "/Finance";
+    if (controller == "Valuation")
+    selected = "/Valuation";
+    if (controller == "Shipping")
+    selected = "Orders";
+    if (controller == "Chat")
+    selected = "/Chat";
+    var groups = new[]
+    {
+        new
+        {
+            Title = "Sản phẩm",
+            Roles = new[]
+            {
+                "Catalog"
+            },
+            Items = new[]
+            {
+                ("Products", "Danh sách sản phẩm"),
+                ("Categories", "Danh mục"),
+                ("Variants", "Biến thể"),
+                ("References?kind=brands", "Thương hiệu / size / màu"),
+                ("Promotions", "Khuyến mãi")
+            }
+        },
+        new
+        {
+            Title = "Kho hàng",
+            Roles = new[]
+            {
+                "Inventory"
+            },
+            Items = new[]
+            {
+                ("Inventory", "Tồn kho & kiểm kê"),
+                ("Receipts", "Phiếu nhập kho"),
+                ("/Valuation", "Giá vốn tồn kho"),
+                ("References?kind=suppliers", "Nhà cung cấp"),
+                ("References?kind=warehouses", "Danh sách kho")
+            }
+        },
+        new
+        {
+            Title = "Bán hàng",
+            Roles = new[]
+            {
+                "Sales"
+            },
+            Items = new[]
+            {
+                ("Orders", "Đơn hàng"),
+                ("Returns", "Trả hàng / hoàn tiền"),
+                ("Reports", "Doanh thu"),
+                ("/Finance", "Lợi nhuận & giá vốn"),
+                ("/Finance/Suppliers", "Công nợ nhà cung cấp")
+            }
+        },
+        new
+        {
+            Title = "Khách hàng",
+            Roles = new[]
+            {
+                "Support"
+            },
+            Items = new[]
+            {
+                ("Customers", "Danh sách khách hàng"),
+                ("Reviews", "Đánh giá"),
+                ("/Chat", "Tin nhắn hỗ trợ")
+            }
+        },
+        new
+        {
+            Title = "Hệ thống",
+            Roles = Array.Empty<string>(),
+            Items = new[]
+            {
+                ("Staff", "Nhân viên & phân quyền"),
+                ("LoginHistory", "Lịch sử đăng nhập"),
+                ("Settings", "Cài đặt cửa hàng")
+            }
+        }
+    };
 }
 <nav class="admin-navigation" aria-label="Quản trị">
- <a class="@(selected==""?"active":"")" aria-current="@(selected==""?"page":null)" href="/Admin">Tổng quan</a>
- @foreach(var group in groups){
-  if(!User.IsInRole("Admin")&&!group.Roles.Any(User.IsInRole)){continue;}
-  var hasCurrent=group.Items.Any(item=>selected==item.Item1);
-  <details class="admin-nav-group @(hasCurrent?"has-current":"")" name="admin-menu" open="@hasCurrent">
-   <summary>@group.Title</summary>
-   <div class="admin-nav-items">@foreach(var item in group.Items){<a class="@(selected==item.Item1?"active":"")" aria-current="@(selected==item.Item1?"page":null)" href="@(item.Item1.StartsWith("/")?item.Item1:"/Admin/"+item.Item1)">@item.Item2</a>}</div>
-  </details>
- }
+    <a
+        class="@(selected == "" ? "active" : "")"
+        aria-current="@(selected == "" ? "page" : null)"
+        href="/Admin"
+    >Tổng quan</a>
+    @foreach (var group in groups)
+    {
+        if (!User.IsInRole("Admin") && !group.Roles.Any(User.IsInRole))
+        {
+            continue;
+        }
+        var hasCurrent = group.Items.Any(item => selected == item.Item1);
+        <details
+            class="admin-nav-group @(hasCurrent ? "has-current" : "")"
+            name="admin-menu"
+            open="@hasCurrent"
+        >
+            <summary>@group.Title</summary>
+            <div class="admin-nav-items">
+                @foreach (var item in group.Items)
+                {
+                    <a
+                        class="@(selected == item.Item1 ? "active" : "")"
+                        aria-current="@(selected == item.Item1 ? "page" : null)"
+                        href="@(item.Item1.StartsWith("/") ? item.Item1 : "/Admin/" + item.Item1)"
+                    >@item.Item2</a>
+                }
+            </div>
+        </details>
+    }
 </nav>

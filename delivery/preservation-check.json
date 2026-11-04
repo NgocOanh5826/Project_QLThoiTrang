@@ -8,7 +8,7 @@
   },
   {
     "path": "Project_QLThoiTrang/wwwroot/css/screens.css",
-    "sha256": "4dfcb030d0a711f39006a0e867cfee288e2a05d6f004b6604c373357613711b2",
+    "sha256": "ac767b0884da347c93bf568a99e7087b67221ea9b4750658ba0503689c0af48a",
     "unchangedFromGitHEAD": false,
     "intentionalChange": "User requested administration, recovery, chat and QR payment UI changes",
     "comparison": "CRLF normalized"
@@ -37,13 +37,13 @@
   {
     "path": "Project_QLThoiTrang/wwwroot/js/chat.js",
     "sha256": "ea5bd8277ed5e581c7e82f58f5d6fddfb5b58478262486ae7e03b21f43b338f8",
-    "unchangedFromGitHEAD": false,
-    "intentionalChange": "User requested administration, recovery, chat and QR payment UI changes",
+    "unchangedFromGitHEAD": true,
+    "intentionalChange": null,
     "comparison": "CRLF normalized"
   },
   {
     "path": "Project_QLThoiTrang/wwwroot/js/site.js",
-    "sha256": "4b55dc9bf45fe4800504041d980eaab7c5cf8631aea1b656c02eb23cf65362e4",
+    "sha256": "c5d6bf6fdff9a42aaf872e947a0a17de253c4d9b0b20135100595e9af08c7259",
     "unchangedFromGitHEAD": false,
     "intentionalChange": "User requested administration, recovery, chat and QR payment UI changes",
     "comparison": "CRLF normalized"
@@ -464,8 +464,8 @@
   {
     "path": "Project_QLThoiTrang/wwwroot/images/payments/transfer-qr.png",
     "sha256": "39df0e3973f0fc5ef5a81a6ed360c1adaef4fc09f22e3b5a8fc428040dd77a57",
-    "unchangedFromGitHEAD": false,
-    "intentionalChange": "User requested administration, recovery, chat and QR payment UI changes",
+    "unchangedFromGitHEAD": true,
+    "intentionalChange": null,
     "comparison": "exact bytes"
   },
   {
@@ -527,8 +527,8 @@
   {
     "path": "Project_QLThoiTrang/Views/Account/Login.cshtml",
     "sha256": "8d7c30aedfaac36371c712081f0b5da16d5da9e13bb8e985218dd7b0ce195aed",
-    "unchangedFromGitHEAD": false,
-    "intentionalChange": "User requested administration, recovery, chat and QR payment UI changes",
+    "unchangedFromGitHEAD": true,
+    "intentionalChange": null,
     "comparison": "CRLF normalized"
   }
 ]

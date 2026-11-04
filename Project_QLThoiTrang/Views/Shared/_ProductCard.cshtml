@@ -1,8 +1,58 @@
+@*
+    VAI TRÒ VIEW: Thẻ sản phẩm trong danh sách: liên kết mở Shop/Detail, hiển thị ảnh/giá và gửi yêu
+    thích. Model là sản phẩm đã được controller lọc. DỮ LIỆU MODEL: Product. Partial/layout được
+    trang cha gọi; không tự tạo URL/action riêng.
+*@
+
 @model Product
 @using Project_QLThoiTrang.Services
-@{var saved=SessionStore.Get<List<int>>(Context.Session,"wishlist").Contains(Model.Id);}
-<article class="product-card"><div class="product-image">
- @if(Model.OnSale){<span class="product-label sale">ƯU ĐÃI</span>}else if(Model.IsNew){<span class="product-label">MỚI</span>}
- <form asp-controller="Shop" asp-action="Favorite" method="post"><input type="hidden" name="id" value="@Model.Id"/><input type="hidden" name="returnUrl" value="@(Context.Request.Path+Context.Request.QueryString)"/><button type="submit" class="favorite @(saved?"saved":"")" aria-label="@(saved?"Bỏ yêu thích":"Thêm yêu thích") @Model.Name" aria-pressed="@saved.ToString().ToLowerInvariant()"><i class="bi @(saved?"bi-heart-fill":"bi-heart")" aria-hidden="true"></i></button></form>
- <a asp-controller="Shop" asp-action="Detail" asp-route-id="@Model.Id"><img src="@Model.Image" alt="@Model.Name" loading="lazy"/></a></div>
- <div class="product-info"><p class="product-category">@Model.Category · @Model.Color</p><h3><a asp-controller="Shop" asp-action="Detail" asp-route-id="@Model.Id">@Model.Name</a></h3><p class="product-price">@Model.Price.ToString("N0") đ</p><p class="stock-caption">@(Model.Stock>0?"Có sẵn · S / M / L / XL":"Tạm hết hàng")</p></div></article>
+@{
+    var saved = SessionStore.Get<List<int>>(Context.Session, "wishlist").Contains(Model.Id);
+}
+<article class="product-card">
+    <div class="product-image">
+        @if (Model.OnSale)
+        {
+            <span class="product-label sale">ƯU ĐÃI</span>
+        }
+        else if (Model.IsNew)
+        {
+            <span class="product-label">MỚI</span>
+        }
+        @*
+            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Shop/Favorite.
+            Controller nhận dữ liệu và kiểm tra ModelState/quyền; service kiểm tra nghiệp vụ trước
+            khi lưu. TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG: Bật/tắt yêu
+            thích sản phẩm: đã có thì Remove id, chưa có thì Add id; sản phẩm phải còn hoạt động.
+            Chỉ chuyển hướng tới returnUrl nội bộ.
+        *@
+        <form asp-controller="Shop" asp-action="Favorite" method="post">
+            <input type="hidden" name="id" value="@Model.Id"/>
+            <input
+                type="hidden"
+                name="returnUrl"
+                value="@(Context.Request.Path + Context.Request
+                .QueryString)"
+            />
+            <button
+                type="submit"
+                class="favorite @(saved ? "saved" : "")"
+                aria-label="@(saved ? "Bỏ yêu thích" : "Thêm yêu thích") @Model.Name"
+                aria-pressed="@saved.ToString().ToLowerInvariant()"
+            >
+                <i class="bi @(saved ? "bi-heart-fill" : "bi-heart")" aria-hidden="true"></i>
+            </button>
+        </form>
+        <a asp-controller="Shop" asp-action="Detail" asp-route-id="@Model.Id">
+            <img src="@Model.Image" alt="@Model.Name" loading="lazy"/>
+        </a>
+    </div>
+    <div class="product-info">
+        <p class="product-category">@Model.Category · @Model.Color</p>
+        <h3>
+            <a asp-controller="Shop" asp-action="Detail" asp-route-id="@Model.Id">@Model.Name</a>
+        </h3>
+        <p class="product-price">@Model.Price.ToString("N0") đ</p>
+        <p class="stock-caption">@(Model.Stock > 0 ? "Có sẵn · S / M / L / XL" : "Tạm hết hàng")</p>
+    </div>
+</article>

@@ -1,4 +1,21 @@
+@*
+    VAI TRÒ VIEW: Hiển thị vận đơn hiện có và liên kết quản lý giao hàng; ShippingController nhận
+    lệnh tạo/đồng bộ GHN. DỮ LIỆU MODEL: Order. Partial/layout được trang cha gọi; không tự tạo
+    URL/action riêng.
+*@
+
 @model Order
 @inject Project_QLThoiTrang.Services.StoreService Store
-@{var s=Store.NativeRead(db=>db.Shipments.SingleOrDefault(s=>s.OrderId==Model.DatabaseId));}
-@if(s!=null){<section class="panel"><h2>Vận chuyển GHN</h2><p>Mã vận đơn: @(s.TrackingCode??"Đang đối soát")</p><p>Trạng thái: @s.Status</p><p class="muted small">Cập nhật @s.UpdatedUtc.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</p></section>}
+@{
+    var s = Store.NativeRead(db => db.Shipments.SingleOrDefault(s => s.OrderId == Model
+    .DatabaseId));
+}
+@if (s != null)
+{
+    <section class="panel">
+        <h2>Vận chuyển GHN</h2>
+        <p>Mã vận đơn: @(s.TrackingCode ?? "Đang đối soát")</p>
+        <p>Trạng thái: @s.Status</p>
+        <p class="muted small">Cập nhật @s.UpdatedUtc.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</p>
+    </section>
+}

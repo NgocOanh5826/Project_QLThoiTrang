@@ -1,4 +1,25 @@
+@*
+    VAI TRÒ VIEW: Hiển thị các mốc lịch sử trạng thái đơn được Load từ SQL; thao tác đổi trạng thái
+    xử lý ở Admin/OrderStatus. DỮ LIỆU MODEL: Order. Partial/layout được trang cha gọi; không tự tạo
+    URL/action riêng.
+*@
+
 @model Order
 @inject Project_QLThoiTrang.Services.StoreService Store
-@{var history=Store.Read(d=>d.History.Where(h=>h.OrderId==Model.Id).OrderBy(h=>h.Created).ToList());}
-<section class="panel"><h2>Theo dõi đơn hàng</h2>@foreach(var h in history){<p>@h.Created.ToString("dd/MM/yyyy HH:mm") · <strong>@h.Status</strong> · @h.Note</p>}</section>
+@{
+    var history = Store.Read(d => d.History.Where(h => h.OrderId == Model.Id).OrderBy(h => h
+    .Created).ToList());
+}
+<section class="panel">
+    <h2>Theo dõi đơn hàng</h2>
+    @foreach (var h in history)
+    {
+        <p>
+            @h.Created.ToString("dd/MM/yyyy HH:mm")
+            ·
+            <strong>@h.Status</strong>
+            ·
+            @h.Note
+        </p>
+    }
+</section>

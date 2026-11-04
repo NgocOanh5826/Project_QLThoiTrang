@@ -1,0 +1,46 @@
+[
+  {
+    "id": "guest has no logout button",
+    "status": "PASS"
+  },
+  {
+    "id": "customer confirmation and anti-forgery /",
+    "status": "PASS"
+  },
+  {
+    "id": "customer confirmation and anti-forgery /Account",
+    "status": "PASS"
+  },
+  {
+    "id": "customer GET does not sign out",
+    "status": "PASS"
+  },
+  {
+    "id": "customer POST without token rejected",
+    "status": "PASS"
+  },
+  {
+    "id": "customer confirmed POST signs out",
+    "status": "PASS"
+  },
+  {
+    "id": "admin confirmation and anti-forgery /",
+    "status": "PASS"
+  },
+  {
+    "id": "admin confirmation and anti-forgery /Admin",
+    "status": "PASS"
+  },
+  {
+    "id": "admin GET does not sign out",
+    "status": "PASS"
+  },
+  {
+    "id": "admin POST without token rejected",
+    "status": "PASS"
+  },
+  {
+    "id": "admin confirmed POST signs out",
+    "status": "PASS"
+  }
+]

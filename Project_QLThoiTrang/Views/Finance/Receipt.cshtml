@@ -1,7 +1,124 @@
+@*
+    VAI TRÒ VIEW: Mở một phiếu nhập, công nợ đã đối soát, các lần chi và tổng chi tiết tính lại;
+    phiếu không tồn tại trả 404. DỮ LIỆU MODEL: Project_QLThoiTrang.Data.Native.PhieuNhapRow. ĐIỂM
+    XỬ LÝ: Controllers/FinanceController.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
+*@
+
 @model Project_QLThoiTrang.Data.Native.PhieuNhapRow
-@{ViewData["Title"]="Công nợ phiếu #"+Model.MaPhieuNhap;var a=(SupplierAccount?)ViewBag.Account;var payments=(List<SupplierPayment>)ViewBag.Payments;var paid=payments.Sum(p=>p.Amount);}
-<div class="actions toolbar-actions"><a href="/Finance/Suppliers" class="button-secondary">Quay lại công nợ</a><a href="/Admin/Receipt/@Model.MaPhieuNhap" class="button-secondary">Chi tiết nhập hàng</a></div>
-<div class="panel form-stack"><p>Tổng header gốc: @Model.TongTien.ToString("N0") đ · Tổng chi tiết: @(((decimal)ViewBag.DetailTotal).ToString("N0")) đ</p>@if(Model.TongTien!=(decimal)ViewBag.DetailTotal){<p class="notice error">Dữ liệu lịch sử lệch tổng. Đối chiếu chứng từ trước khi xác nhận số phải trả.</p>}
-@if(payments.Count==0){<form asp-action="Reconcile" method="post" class="form-stack"><input name="receiptId" value="@Model.MaPhieuNhap" type="hidden"/><label>Số phải trả thực tế<input name="amount" type="number" min="0" step="0.01" value="@((a?.Amount??(decimal)ViewBag.DetailTotal).ToString(System.Globalization.CultureInfo.InvariantCulture))" required/></label><label>Căn cứ đối soát<textarea name="note" minlength="5" maxlength="300" required>@a?.Note</textarea></label><button class="button-secondary">Xác nhận số phải trả</button></form>}
-@if(a!=null){<p>Phải trả: @a.Amount.ToString("N0") đ · Đã chi: @paid.ToString("N0") đ · Còn nợ: @((a.Amount-paid).ToString("N0")) đ</p>@if(paid<a.Amount){<form asp-action="Pay" method="post" class="form-stack" data-confirm="Đã thực chi và đối soát chứng từ này?"><input name="receiptId" value="@Model.MaPhieuNhap" type="hidden"/><label>Số tiền đã chi<input name="amount" type="number" min="0.01" step="0.01" max="@((a.Amount-paid).ToString(System.Globalization.CultureInfo.InvariantCulture))" required/></label><label>Chứng từ duy nhất<input name="reference" maxlength="100" required/></label><button class="btn-black">Ghi nhận chi nhà cung cấp</button></form>}}
-</div><div class="panel table-scroll"><table class="data-table"><thead><tr><th>Ngày</th><th>Số tiền</th><th>Chứng từ</th><th>Người ghi</th></tr></thead><tbody>@foreach(var p in payments){<tr><td>@p.CreatedUtc.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td><td>@p.Amount.ToString("N0")</td><td>@p.Reference</td><td>@p.ActorId</td></tr>}</tbody></table></div>
+@{
+    ViewData["Title"] = "Công nợ phiếu #" + Model.MaPhieuNhap;
+    var a = (SupplierAccount? )ViewBag.Account;
+    var payments = (List<SupplierPayment>)ViewBag.Payments;
+    var paid = payments.Sum(p => p.Amount);
+}
+<div class="actions toolbar-actions">
+    <a href="/Finance/Suppliers" class="button-secondary">Quay lại công nợ</a>
+    <a href="/Admin/Receipt/@Model.MaPhieuNhap" class="button-secondary">Chi tiết nhập hàng</a>
+</div>
+<div class="panel form-stack">
+    <p>Tổng header gốc: @Model.TongTien.ToString("N0") đ · Tổng chi tiết: @(((decimal)ViewBag
+        .DetailTotal).ToString("N0")) đ</p>
+    @if (Model.TongTien != (decimal)ViewBag.DetailTotal)
+    {
+        <p class="notice error">
+            Dữ liệu lịch sử lệch tổng. Đối chiếu chứng từ trước khi xác nhận số phải trả.
+        </p>
+    }
+    @if (payments.Count == 0)
+    {
+        @*
+            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Finance/Reconcile.
+            Controller nhận dữ liệu và kiểm tra ModelState/quyền; service kiểm tra nghiệp vụ trước
+            khi lưu. TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG: Nhận số phải
+            trả/căn cứ đối soát rồi gọi ReconcileSupplier; không được đổi số phải trả sau khi đã
+            phát sinh chi tiền.
+        *@
+        <form asp-action="Reconcile" method="post" class="form-stack">
+            <input name="receiptId" value="@Model.MaPhieuNhap" type="hidden"/>
+            <label>
+                Số phải trả thực tế
+                <input
+                    name="amount"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value="@((a?.Amount ?? (decimal)ViewBag.DetailTotal).ToString(System
+                        .Globalization.CultureInfo.InvariantCulture))"
+                    required
+                />
+            </label>
+            <label>
+                Căn cứ đối soát
+                <textarea name="note" minlength="5" maxlength="300" required>@a?.Note</textarea>
+            </label>
+            <button class="button-secondary">Xác nhận số phải trả</button>
+        </form>
+    }
+    @if (a != null)
+    {
+        <p>
+            Phải trả: @a.Amount.ToString("N0") đ ·
+            Đã chi: @paid.ToString("N0") đ ·
+            Còn nợ: @((a.Amount - paid).ToString("N0")) đ
+        </p>
+        @if (paid < a.Amount)
+        {
+            @*
+                FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Finance/Pay.
+                Controller nhận dữ liệu và kiểm tra ModelState/quyền; service kiểm tra nghiệp vụ
+                trước khi lưu. TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG: Nhận
+                chứng từ chi và số tiền; PaySupplier kiểm tra phiếu đã đối soát, chứng từ duy nhất
+                và số tiền không vượt phần còn nợ.Các thuộc tính data-* nối form với sự kiện
+                JavaScript trong wwwroot/js.
+            *@
+            <form
+                asp-action="Pay"
+                method="post"
+                class="form-stack"
+                data-confirm="Đã thực chi và đối soát chứng từ này?"
+            >
+                <input name="receiptId" value="@Model.MaPhieuNhap" type="hidden"/>
+                <label>
+                    Số tiền đã chi
+                    <input
+                        name="amount"
+                        type="number"
+                        min="0.01"
+                        step="0.01"
+                        max="@((a.Amount - paid).ToString(System.Globalization.CultureInfo
+                            .InvariantCulture))"
+                        required
+                    />
+                </label>
+                <label>
+                    Chứng từ duy nhất
+                    <input name="reference" maxlength="100" required/>
+                </label>
+                <button class="btn-black">Ghi nhận chi nhà cung cấp</button>
+            </form>
+        }
+    }
+</div>
+<div class="panel table-scroll">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Ngày</th>
+                <th>Số tiền</th>
+                <th>Chứng từ</th>
+                <th>Người ghi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in payments)
+            {
+                <tr>
+                    <td>@p.CreatedUtc.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@p.Amount.ToString("N0")</td>
+                    <td>@p.Reference</td>
+                    <td>@p.ActorId</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

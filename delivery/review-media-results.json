@@ -1,0 +1,58 @@
+[
+  {
+    "id": "UPLOAD-image-and-video-signatures",
+    "status": "PASS"
+  },
+  {
+    "id": "UPLOAD-spoofed-extension-rejected",
+    "status": "PASS"
+  },
+  {
+    "id": "UPLOAD-html-svg-executable-rejected",
+    "status": "PASS"
+  },
+  {
+    "id": "UPLOAD-image-limit",
+    "status": "PASS"
+  },
+  {
+    "id": "UPLOAD-video-limit",
+    "status": "PASS"
+  },
+  {
+    "id": "UPLOAD-count-and-video-count",
+    "status": "PASS"
+  },
+  {
+    "id": "UPLOAD-total-limit",
+    "status": "PASS"
+  },
+  {
+    "id": "REVIEW-undelivered-rejected",
+    "status": "PASS"
+  },
+  {
+    "id": "REVIEW-invalid-stars-and-content-no-write",
+    "status": "PASS"
+  },
+  {
+    "id": "REVIEW-invalid-file-no-write",
+    "status": "PASS"
+  },
+  {
+    "id": "REVIEW-media-failure-rolls-back-review",
+    "status": "PASS"
+  },
+  {
+    "id": "REVIEW-persist-metadata-and-bytes",
+    "status": "PASS"
+  },
+  {
+    "id": "REVIEW-duplicate-rejected",
+    "status": "PASS"
+  },
+  {
+    "id": "REVIEW-moderation-hides-metadata",
+    "status": "PASS"
+  }
+]

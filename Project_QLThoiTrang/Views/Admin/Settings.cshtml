@@ -1,3 +1,45 @@
+@*
+    VAI TRÒ VIEW: Mở thông tin cửa hàng hiện tại để chỉnh sửa. DỮ LIỆU MODEL: StoreSettings. ĐIỂM XỬ
+    LÝ: Controllers/AdminController.cs và AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng
+    overload GET/POST.
+*@
+
 @model StoreSettings
-@{ViewData["Title"]="Cài đặt cửa hàng";}
-<form asp-action="Settings" method="post" class="panel form-stack"><h2>Thông tin hiển thị</h2><p class="muted">Thông tin này cập nhật header, footer và trang liên hệ.</p><div asp-validation-summary="All" class="validation"></div><div class="form-grid"><label>Tên thương hiệu<input asp-for="Name"/></label><label>Email hỗ trợ<input asp-for="Email" type="email"/></label><label>Số điện thoại<input asp-for="Phone"/></label><label>Địa chỉ<input asp-for="Address"/></label></div><button class="btn-black">Lưu cài đặt</button></form>
+@{
+    ViewData["Title"] = "Cài đặt cửa hàng";
+}
+@*
+    FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Admin/Settings. asp-for
+    liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra ModelState/quyền;
+    service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo token chống CSRF khi áp dụng.
+    CHỨC NĂNG: Kiểm tra mẫu tên/email/điện thoại/địa chỉ rồi thay d.Settings trong Write; thông báo
+    và tải lại trang sau lưu.
+*@
+<form asp-action="Settings" method="post" class="panel form-stack">
+    <h2>Thông tin hiển thị</h2>
+    <p class="muted">Thông tin này cập nhật header, footer và trang liên hệ.</p>
+    @*
+        THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc controller
+        thêm; sửa ô bị lỗi rồi gửi lại form.
+    *@
+    <div asp-validation-summary="All" class="validation"></div>
+    <div class="form-grid">
+        <label>
+            Tên thương hiệu
+            <input asp-for="Name"/>
+        </label>
+        <label>
+            Email hỗ trợ
+            <input asp-for="Email" type="email"/>
+        </label>
+        <label>
+            Số điện thoại
+            <input asp-for="Phone"/>
+        </label>
+        <label>
+            Địa chỉ
+            <input asp-for="Address"/>
+        </label>
+    </div>
+    <button class="btn-black">Lưu cài đặt</button>
+</form>

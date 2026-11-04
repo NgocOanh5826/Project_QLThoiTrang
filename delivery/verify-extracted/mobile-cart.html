@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi"><head><base href="http://127.0.0.1:5188/"><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Gi&#x1ECF; h&#xE0;ng · QOANH</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/><link rel="stylesheet" href="/css/site.css?v=FZqeaFbdR3DbgHtc-XhAX7M7WFG-AzPRa3Lqz85Kjio" /><link rel="stylesheet" href="/css/screens.css?v=yKPN8-yzHUupRrcBp0VLENtH-iHz48WJ75spC4sZ11A" /></head>
+<body class="storefront-body">
+<div b-3unlxie71n class="demo-strip">QOANH - Thời trang mỗi ngày</div>
+<header b-3unlxie71n class="main-header">
+ <div b-3unlxie71n class="header-left"><a b-3unlxie71n href="/" class="logo">QOANH</a><nav b-3unlxie71n class="main-menu" aria-label="Danh mục"><a b-3unlxie71n href="/Shop?category=Nữ">NỮ</a><a b-3unlxie71n href="/Shop?category=Nam">NAM</a><a b-3unlxie71n href="/Shop?category=Trẻ%20em">TRẺ EM</a><a b-3unlxie71n href="/Shop?collection=new">HÀNG MỚI</a><a b-3unlxie71n href="/Shop?collection=sale">ƯU ĐÃI</a></nav></div>
+ <div b-3unlxie71n class="header-right"><a b-3unlxie71n href="/Chat" class="text-link header-support" aria-label="Chat hỗ trợ" title="Chat hỗ trợ"><i b-3unlxie71n class="bi bi-headset" aria-hidden="true"></i><span b-3unlxie71n>Chat hỗ trợ</span></a><form action="/Shop" method="get" class="search-box"><label b-3unlxie71n class="sr-only" for="header-search">Tìm sản phẩm</label><input b-3unlxie71n id="header-search" type="search" name="q" placeholder="Tìm kiếm sản phẩm"/><button b-3unlxie71n type="submit" aria-label="Tìm kiếm" class="search-submit"><i b-3unlxie71n class="bi bi-search" aria-hidden="true"></i></button></form><div b-3unlxie71n class="header-actions"><a b-3unlxie71n href="/Account" class="header-icon" aria-label="Tài khoản"><i b-3unlxie71n class="bi bi-person" aria-hidden="true"></i></a><a b-3unlxie71n href="/Shop/Wishlist" class="header-icon" aria-label="Yêu thích"><i b-3unlxie71n class="bi bi-heart" aria-hidden="true"></i></a><a b-3unlxie71n href="/Shop/Cart" class="header-icon cart-icon" aria-label="Giỏ hàng"><i b-3unlxie71n class="bi bi-bag" aria-hidden="true"></i><span b-3unlxie71n>2</span></a><form method="post" class="header-logout" data-confirm="Bạn có chắc muốn đăng xuất không?" action="/Account/Logout"><button b-3unlxie71n type="submit" class="header-icon" aria-label="Đăng xuất" title="Đăng xuất"><i b-3unlxie71n class="bi bi-box-arrow-right" aria-hidden="true"></i></button><input name="__RequestVerificationToken" type="hidden" value="" /></form></div></div>
+</header>
+<main b-3unlxie71n id="main-content"><section class="page-section cart-page"><p class="eyebrow">01 GIỎ HÀNG / 02 GIAO HÀNG / 03 HOÀN TẤT</p><h1>Giỏ hàng của bạn</h1>
+ <div class="checkout-grid"><div class="panel">
+  <div class="cart-line">
+   <a href="/Shop/Detail/1"><img src="/images/products/aothun01.jpg" alt="&#xC1;o thun Nike Basic"/></a>
+   <div><h3><a href="/Shop/Detail/1">&#xC1;o thun Nike Basic</a></h3><p class="muted">Đơn giá: 350,000 đ</p>
+    <div class="cart-controls">
+     <form method="post" class="cart-edit-controls" data-cart-edit data-variants="[{&quot;id&quot;:1,&quot;color&quot;:&quot;\u0110en&quot;,&quot;size&quot;:&quot;M&quot;,&quot;stock&quot;:28},{&quot;id&quot;:2,&quot;color&quot;:&quot;\u0110en&quot;,&quot;size&quot;:&quot;L&quot;,&quot;stock&quot;:37},{&quot;id&quot;:3,&quot;color&quot;:&quot;Tr\u1EAFng&quot;,&quot;size&quot;:&quot;M&quot;,&quot;stock&quot;:28},{&quot;id&quot;:48,&quot;color&quot;:&quot;Test color&quot;,&quot;size&quot;:&quot;VERIFY-SIZE&quot;,&quot;stock&quot;:0}]" action="/Shop/UpdateCart">
+      <input type="hidden" name="id" value="1"/><input type="hidden" name="variantId" value="1"/>
+      <label>Màu sắc<select data-cart-color><option selected="selected" value="&#x110;en">&#x110;en</option><option value="Tr&#x1EAF;ng">Tr&#x1EAF;ng</option><option value="Test color">Test color</option></select></label>
+      <label>Kích cỡ<select name="newVariantId" data-cart-size><option value="1" selected="selected">M</option><option value="2">L</option></select></label>
+      <label class="cart-quantity">Số lượng<input type="number" name="quantity" value="1" min="1" max="20" required/></label>
+      <noscript><button type="submit" class="button-secondary">Lưu giỏ hàng</button></noscript>
+     <input name="__RequestVerificationToken" type="hidden" value="" /></form>
+     <form method="post" class="cart-remove" data-confirm="Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng không?" action="/Shop/UpdateCart">
+      <input type="hidden" name="id" value="1"/><input type="hidden" name="variantId" value="1"/><input type="hidden" name="quantity" value="1"/>
+      <button name="remove" value="true" type="submit" class="text-button">Xóa</button>
+     <input name="__RequestVerificationToken" type="hidden" value="" /></form>
+    </div>
+   </div>
+   <strong>350,000 đ</strong>
+  </div>
+  <div class="cart-line">
+   <a href="/Shop/Detail/1"><img src="/images/products/aothun01.jpg" alt="&#xC1;o thun Nike Basic"/></a>
+   <div><h3><a href="/Shop/Detail/1">&#xC1;o thun Nike Basic</a></h3><p class="muted">Đơn giá: 350,000 đ</p>
+    <div class="cart-controls">
+     <form method="post" class="cart-edit-controls" data-cart-edit data-variants="[{&quot;id&quot;:1,&quot;color&quot;:&quot;\u0110en&quot;,&quot;size&quot;:&quot;M&quot;,&quot;stock&quot;:28},{&quot;id&quot;:2,&quot;color&quot;:&quot;\u0110en&quot;,&quot;size&quot;:&quot;L&quot;,&quot;stock&quot;:37},{&quot;id&quot;:3,&quot;color&quot;:&quot;Tr\u1EAFng&quot;,&quot;size&quot;:&quot;M&quot;,&quot;stock&quot;:28},{&quot;id&quot;:48,&quot;color&quot;:&quot;Test color&quot;,&quot;size&quot;:&quot;VERIFY-SIZE&quot;,&quot;stock&quot;:0}]" action="/Shop/UpdateCart">
+      <input type="hidden" name="id" value="1"/><input type="hidden" name="variantId" value="2"/>
+      <label>Màu sắc<select data-cart-color><option selected="selected" value="&#x110;en">&#x110;en</option><option value="Tr&#x1EAF;ng">Tr&#x1EAF;ng</option><option value="Test color">Test color</option></select></label>
+      <label>Kích cỡ<select name="newVariantId" data-cart-size><option value="1">M</option><option value="2" selected="selected">L</option></select></label>
+      <label class="cart-quantity">Số lượng<input type="number" name="quantity" value="1" min="1" max="20" required/></label>
+      <noscript><button type="submit" class="button-secondary">Lưu giỏ hàng</button></noscript>
+     <input name="__RequestVerificationToken" type="hidden" value="" /></form>
+     <form method="post" class="cart-remove" data-confirm="Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng không?" action="/Shop/UpdateCart">
+      <input type="hidden" name="id" value="1"/><input type="hidden" name="variantId" value="2"/><input type="hidden" name="quantity" value="1"/>
+      <button name="remove" value="true" type="submit" class="text-button">Xóa</button>
+     <input name="__RequestVerificationToken" type="hidden" value="" /></form>
+    </div>
+   </div>
+   <strong>350,000 đ</strong>
+  </div>
+ <p class="muted small" data-cart-save-status aria-live="polite">Thay đổi màu, kích cỡ hoặc số lượng để tự động lưu giỏ hàng.</p>
+ <a href="/Shop" class="text-link">Tiếp tục mua sắm →</a>
+ </div>
+ <aside class="panel order-summary cart-order-summary"><h2>Tóm tắt đơn hàng</h2><div class="totals"><p>Tạm tính<strong>700,000 đ</strong></p><p>Giao hàng<strong>0 đ</strong></p><p class="total">Tổng cộng<strong>700,000 đ</strong></p></div><a href="/Shop/Checkout" class="btn-black full-width">Tiến hành đặt hàng</a><p class="muted small">Miễn phí giao hàng từ 700.000 đ. Chọn COD hoặc chuyển khoản ở bước thanh toán.</p></aside>
+ </div>
+</section>
+</main>
+<footer b-3unlxie71n class="footer"><div b-3unlxie71n class="footer-container"><div b-3unlxie71n><h3 b-3unlxie71n>QOANH</h3><p b-3unlxie71n>Đơn giản, tinh tế và thoải mái mỗi ngày.</p><p b-3unlxie71n>0900 123 456<br b-3unlxie71n/>hello@qoanh.example</p></div><div b-3unlxie71n><h4 b-3unlxie71n>HỖ TRỢ</h4><a b-3unlxie71n href="/Home/Info/contact">Liên hệ</a><a b-3unlxie71n href="/Home/Info/returns">Đổi trả</a><a b-3unlxie71n href="/Home/Info/guide">Hướng dẫn mua hàng</a></div><div b-3unlxie71n><h4 b-3unlxie71n>THÔNG TIN</h4><a b-3unlxie71n href="/Home/Info/about">Về chúng tôi</a><a b-3unlxie71n href="/Home/Info/stores">Cửa hàng</a><a b-3unlxie71n href="/Home/Info/privacy">Quyền riêng tư</a><a b-3unlxie71n href="/Home/Info/terms">Điều khoản</a></div><div b-3unlxie71n><h4 b-3unlxie71n>KHÔNG GIAN CỦA BẠN</h4><a b-3unlxie71n href="/Account/Orders">Đơn hàng của tôi</a><a b-3unlxie71n href="/Shop/Wishlist">Sản phẩm yêu thích</a><a b-3unlxie71n href="/Admin">Quản trị cửa hàng</a></div></div><div b-3unlxie71n class="copyright">© 2026 QOANH · Cửa hàng thời trang QOANH.</div></footer>
+<script src="/js/site.js?v=xda_b9_5pCqvhy6UegoX3iU8TZsLIBNRAFlemvCMclk"></script>
+</body></html>
+

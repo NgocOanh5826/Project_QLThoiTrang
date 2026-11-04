@@ -1,4 +1,97 @@
+@*
+    VAI TRÒ VIEW: Khách mở thanh toán khi giỏ có hàng; điền hồ sơ, tạo checkout-token và chụp
+    checkout-quote trong Session để phát hiện giỏ/giá đổi khi gửi form. DỮ LIỆU MODEL:
+    CheckoutInput. ĐIỂM XỬ LÝ: Controllers/ShopController.cs; tra HUONG_DAN_CODE.md để tìm đúng
+    overload GET/POST.
+*@
+
 @model CheckoutInput
 @inject Project_QLThoiTrang.Services.StoreService Store
-@{ViewData["Title"]="Thông tin giao hàng";var cart=(CartViewModel)ViewBag.Cart;}
-<section class="page-section"><p class="eyebrow">01 GIỎ HÀNG / 02 GIAO HÀNG / 03 HOÀN TẤT</p><h1>Thông tin giao hàng</h1><div class="checkout-grid"><form asp-action="Checkout" method="post" class="panel form-stack"><input asp-for="CheckoutToken" type="hidden"/><h2>Địa chỉ nhận hàng</h2><div asp-validation-summary="All" class="validation"></div><label>Họ và tên<input asp-for="Name" autocomplete="name"/></label><label>Số điện thoại<input asp-for="Phone" autocomplete="tel"/></label><div class="address-picker" data-address-picker><input asp-for="Address" type="hidden" data-address-full/><div class="form-grid address-grid"><label>Tỉnh/Thành phố<select data-address-province required><option value="">Chọn tỉnh/thành phố</option></select></label><label>Xã/Phường<select data-address-ward required disabled><option value="">Chọn xã/phường</option></select></label></div><label>Số nhà, tên đường<input type="text" data-address-street placeholder="Ví dụ: 96 Võ Văn Ngân" autocomplete="street-address" required/></label></div><label>Ghi chú đơn hàng<textarea asp-for="Note"></textarea></label><label>Mã ưu đãi<input asp-for="PromotionCode" maxlength="30"/></label><label>Thanh toán<select asp-for="Payment"><option value="COD">COD - khi nhận hàng</option>@if(Store.BankOptions.Enabled){<option value="Chuyển khoản">Chuyển khoản ngân hàng</option>}</select></label><button class="btn-black">Xác nhận đặt hàng</button><a href="/Shop/Cart" class="text-button">Quay lại giỏ hàng</a></form><aside class="panel order-summary"><h2>Đơn hàng của bạn</h2>@foreach(var line in cart.Lines){<p class="summary-line"><span>@line.Name · @line.Size × @line.Quantity</span><strong>@((line.Price*line.Quantity).ToString("N0")) đ</strong></p>}<div class="totals"><p>Tạm tính<strong>@cart.Subtotal.ToString("N0") đ</strong></p><p>Giao hàng<strong>@cart.Shipping.ToString("N0") đ</strong></p><p class="total">Tổng cộng<strong>@cart.Total.ToString("N0") đ</strong></p></div></aside></div></section>
+@{
+    ViewData["Title"] = "Thông tin giao hàng";
+    var cart = (CartViewModel)ViewBag.Cart;
+}
+<section class="page-section">
+    <p class="eyebrow">01 GIỎ HÀNG / 02 GIAO HÀNG / 03 HOÀN TẤT</p>
+    <h1>Thông tin giao hàng</h1>
+    <div class="checkout-grid">
+        @*
+            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Shop/Checkout.
+            asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
+            ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo
+            token chống CSRF khi áp dụng. CHỨC NĂNG: Kiểm tra giỏ không rỗng, ModelState và
+            checkout-token khớp Session; PlaceOrder đối chiếu báo giá/trừ tồn/lưu đơn. Chỉ xóa giỏ
+            sau khi đặt thành công rồi chuyển trang Success.
+        *@
+        <form asp-action="Checkout" method="post" class="panel form-stack">
+            <input asp-for="CheckoutToken" type="hidden"/>
+            <h2>Địa chỉ nhận hàng</h2>
+            @*
+                THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc
+                controller thêm; sửa ô bị lỗi rồi gửi lại form.
+            *@
+            <div asp-validation-summary="All" class="validation"></div>
+            <label>
+                Họ và tên
+                <input asp-for="Name" autocomplete="name"/>
+            </label>
+            <label>
+                Số điện thoại
+                <input asp-for="Phone" autocomplete="tel"/>
+            </label>
+            <div class="address-picker" data-address-picker>
+                <input asp-for="Address" type="hidden" data-address-full/>
+                <div class="form-grid address-grid">
+                    <label>
+                        Tỉnh/Thành phố
+                        <select data-address-province required>
+                            <option value="">Chọn tỉnh/thành phố</option>
+                        </select>
+                    </label>
+                    <label>
+                        Xã/Phường
+                        <select data-address-ward required disabled>
+                            <option value="">Chọn xã/phường</option>
+                        </select>
+                    </label>
+                </div>
+                <label>
+                    Số nhà, tên đường
+                    <input
+                        type="text"
+                        data-address-street
+                        placeholder="Ví dụ: 96 Võ Văn Ngân"
+                        autocomplete="street-address"
+                        required
+                    />
+                </label>
+            </div>
+            <label>
+                Ghi chú đơn hàng
+                <textarea asp-for="Note"></textarea>
+            </label>
+            <label>
+                Mã ưu đãi
+                <input asp-for="PromotionCode" maxlength="30"/>
+            </label>
+            <label>
+                Thanh toán
+                <select asp-for="Payment">
+                    <option value="COD">COD - khi nhận hàng</option>
+                    @if (Store.BankOptions.Enabled)
+                    {
+                        <option value="Chuyển khoản">Chuyển khoản ngân hàng</option>
+                    }
+                </select>
+            </label>
+            <button class="btn-black">Xác nhận đặt hàng</button>
+            <a href="/Shop/Cart" class="text-button">Quay lại giỏ hàng</a>
+        </form>
+        @*
+            THÀNH PHẦN DÙNG CHUNG: Views/Shared/_CheckoutSummary.cshtml. Tóm tắt giỏ khi thanh toán:
+            dòng hàng, tiền hàng, phí và tổng hiển thị. PlaceOrder vẫn tính và đối chiếu lại số tiền
+            trên server.
+        *@
+        <partial name="_CheckoutSummary" model="cart"/>
+    </div>
+</section>

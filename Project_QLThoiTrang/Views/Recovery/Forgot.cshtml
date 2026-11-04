@@ -1,3 +1,42 @@
+@*
+    VAI TRÒ VIEW: Mở form quên mật khẩu, ViewBag.Ready cho biết SMTP/khóa OTP đã cấu hình hay chưa.
+    DỮ LIỆU MODEL: ForgotInput. ĐIỂM XỬ LÝ: Controllers/RecoveryController.cs; tra HUONG_DAN_CODE.md
+    để tìm đúng overload GET/POST.
+*@
+
 @model ForgotInput
-@{ViewData["Title"]="Quên mật khẩu";}
-<section class="page-section narrow"><h1>Quên mật khẩu</h1><form method="post" class="panel form-stack"><div asp-validation-summary="All" class="validation"></div><p>Nhập email tài khoản khách hàng để nhận mã OTP có hiệu lực 10 phút.</p>@if(ViewBag.Ready!=true){<p class="notice">Chức năng gửi email chưa được cửa hàng cấu hình. Vui lòng liên hệ hỗ trợ.</p>}<label>Email<input asp-for="Email" type="email" autocomplete="email" required/></label><button class="btn-black" disabled="@(ViewBag.Ready!=true)">Gửi mã OTP</button><a href="/Recovery/Reset">Tôi đã có mã OTP</a><a href="/Account/Login">Quay lại đăng nhập</a></form></section>
+@{
+    ViewData["Title"] = "Quên mật khẩu";
+}
+<section class="page-section narrow">
+    <h1>Quên mật khẩu</h1>
+    @*
+        FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Recovery/Forgot.
+        asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
+        ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo token
+        chống CSRF khi áp dụng. CHỨC NĂNG: Kiểm tra email rồi yêu cầu gửi OTP qua PasswordRecovery;
+        thông báo chung không xác nhận email có trong hệ thống. Áp dụng policy login để giới hạn yêu
+        cầu.
+    *@
+    <form method="post" class="panel form-stack">
+        @*
+            THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc
+            controller thêm; sửa ô bị lỗi rồi gửi lại form.
+        *@
+        <div asp-validation-summary="All" class="validation"></div>
+        <p>Nhập email tài khoản khách hàng để nhận mã OTP có hiệu lực 10 phút.</p>
+        @if (ViewBag.Ready != true)
+        {
+            <p class="notice">
+                Chức năng gửi email chưa được cửa hàng cấu hình. Vui lòng liên hệ hỗ trợ.
+            </p>
+        }
+        <label>
+            Email
+            <input asp-for="Email" type="email" autocomplete="email" required/>
+        </label>
+        <button class="btn-black" disabled="@(ViewBag.Ready != true)">Gửi mã OTP</button>
+        <a href="/Recovery/Reset">Tôi đã có mã OTP</a>
+        <a href="/Account/Login">Quay lại đăng nhập</a>
+    </form>
+</section>

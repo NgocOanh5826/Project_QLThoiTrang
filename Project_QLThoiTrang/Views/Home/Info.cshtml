@@ -1,2 +1,26 @@
+@*
+    VAI TRÒ VIEW: Tra nội dung trang thông tin theo id trong bảng pages; id không được hỗ trợ trả
+    404, có thì ghép thông tin cửa hàng cho view. DỮ LIỆU MODEL: StoreSettings. ĐIỂM XỬ LÝ:
+    Controllers/HomeController.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
+*@
+
 @model StoreSettings
-<section class="page-section narrow"><p class="eyebrow">QOANH · THÔNG TIN</p><h1>@ViewData["Title"]</h1><div class="panel editorial"><p>@ViewData["Text"]</p><hr/><h2>Kết nối với cửa hàng</h2><p>@Model.Name<br/>@Model.Address<br/>@Model.Phone<br/>@Model.Email</p><a href="/Shop" class="btn-black">Tiếp tục khám phá</a></div></section>
+<section class="page-section narrow">
+    <p class="eyebrow">QOANH · THÔNG TIN</p>
+    <h1>@ViewData["Title"]</h1>
+    <div class="panel editorial">
+        <p>@ViewData["Text"]</p>
+        <hr/>
+        <h2>Kết nối với cửa hàng</h2>
+        <p>
+            @Model.Name
+            <br/>
+            @Model.Address
+            <br/>
+            @Model.Phone
+            <br/>
+            @Model.Email
+        </p>
+        <a href="/Shop" class="btn-black">Tiếp tục khám phá</a>
+    </div>
+</section>

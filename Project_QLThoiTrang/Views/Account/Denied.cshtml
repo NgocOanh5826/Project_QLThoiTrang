@@ -1,2 +1,16 @@
-@{ViewData["Title"]="Không có quyền truy cập";}
-<section class="page-section narrow"><div class="empty-state"><h1>Trang dành cho quản trị</h1><p>Tài khoản hiện tại không có quyền quản lý cửa hàng.</p><a href="/Account" class="btn-black">Về tài khoản</a><a href="/" class="button-secondary">Trang chủ</a></div></section>
+@*
+    VAI TRÒ VIEW: Hiển thị trang báo tài khoản không có quyền truy cập. ĐIỂM XỬ LÝ:
+    Controllers/AccountController.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
+*@
+
+@{
+    ViewData["Title"] = "Không có quyền truy cập";
+}
+<section class="page-section narrow">
+    <div class="empty-state">
+        <h1>Trang dành cho quản trị</h1>
+        <p>Tài khoản hiện tại không có quyền quản lý cửa hàng.</p>
+        <a href="/Account" class="btn-black">Về tài khoản</a>
+        <a href="/" class="button-secondary">Trang chủ</a>
+    </div>
+</section>

@@ -1,3 +1,97 @@
+@*
+    VAI TRÒ VIEW: Danh sách đánh giá và form gửi sao/nội dung/tệp. Chỉ hiện form cho Customer;
+    Shop/Review và StoreService.Review vẫn kiểm tra đã mua/đã giao/chưa đánh giá. DỮ LIỆU MODEL:
+    Product. Partial/layout được trang cha gọi; không tự tạo URL/action riêng.
+*@
+
 @model Product
-<section class="page-section"><h2>Đánh giá sản phẩm</h2>@foreach(var r in (List<ReviewItem>)ViewBag.Reviews){<article class="panel"><strong>@r.Customer · @r.Stars / 5</strong><p>@r.Text</p><small>@r.Created.ToString("dd/MM/yyyy")</small></article>}
-@if(User.IsInRole("Customer")){<form asp-controller="Shop" asp-action="Review" method="post" class="panel form-stack"><input name="id" value="@Model.Id" type="hidden"/><label>Số sao<select name="stars">@for(int i=5;i>=1;i--){<option>@i</option>}</select></label><label>Nội dung<textarea name="text" minlength="5" maxlength="1000" required></textarea></label><button class="button-secondary">Gửi đánh giá sau khi đã nhận hàng</button></form>}</section>
+<section class="page-section product-reviews">
+    <h2>Đánh giá sản phẩm</h2>
+    @foreach (var r in (List<ReviewItem>)ViewBag.Reviews)
+    {
+        <article class="panel">
+            <strong>@r.Customer</strong>
+            <span class="review-stars" aria-label="@r.Stars trên 5 sao">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <span class="@(i <= r.Stars ? "filled" : "")" aria-hidden="true">★</span>
+                }
+            </span>
+            <p>@r.Text</p>
+            @*
+                THÀNH PHẦN DÙNG CHUNG: Views/Shared/_ReviewMedia.cshtml. Hiển thị ảnh hoặc video từ
+                danh sách media; URL Shop/ReviewMedia trả byte sau kiểm tra trạng thái đánh giá và
+                quyền xem.
+            *@
+            <partial name="_ReviewMedia" model="r.Media"/>
+            <small>@r.Created.ToString("dd/MM/yyyy")</small>
+        </article>
+    }
+    @*
+        ĐIỀU KIỆN HIỂN THỊ: phần bên dưới chỉ xuất hiện khi trạng thái đăng nhập/vai trò thỏa biểu
+        thức if. Quyền thực hiện thao tác vẫn phải được controller/service kiểm tra.
+    *@
+    @if (User.IsInRole("Customer"))
+    {
+        @*
+            FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Shop/Review.
+            Controller nhận dữ liệu và kiểm tra ModelState/quyền; service kiểm tra nghiệp vụ trước
+            khi lưu. TagHelper form POST tạo token chống CSRF khi áp dụng. CHỨC NĂNG: Nhận đánh giá
+            và tối đa 5 tệp từ khách; giới hạn request, đọc byte vào bộ nhớ rồi chuyển kiểm tra đã
+            mua/số sao/định dạng tệp sang StoreService.Review.Các thuộc tính data-* nối form với sự
+            kiện JavaScript trong wwwroot/js.
+        *@
+        <form
+            asp-controller="Shop"
+            asp-action="Review"
+            method="post"
+            enctype="multipart/form-data"
+            class="panel form-stack"
+            data-review-form
+        >
+            <input name="id" value="@Model.Id" type="hidden"/>
+            <fieldset class="review-rating">
+                <legend>Đánh giá của bạn</legend>
+                <div class="review-star-picker">
+                    @for (int i = 5; i >= 1; i--)
+                    {
+                        <label>
+                            <input
+                                type="radio"
+                                name="stars"
+                                value="@i"
+                                checked="@(i == 5)"
+                                required
+                            />
+                            <span aria-hidden="true">★</span>
+                            <span class="sr-only">@i sao</span>
+                        </label>
+                    }
+                </div>
+            </fieldset>
+            <label>
+                Nội dung
+                <textarea name="text" minlength="5" maxlength="1000" required></textarea>
+            </label>
+            <label class="review-upload">
+                Thêm hình ảnh / video
+                <input
+                    type="file"
+                    name="media"
+                    accept=".jpg,.jpeg,.png,.gif,.webp,.mp4,.webm"
+                    multiple
+                    aria-describedby="review-upload-help"
+                    data-review-upload
+                />
+            </label>
+            <p id="review-upload-help" class="muted small">
+                Tối đa 5 tệp (chỉ 1 video). Ảnh JPG/PNG/GIF/WebP tối đa 5 MB; video MP4/WebM tối đa
+                20 MB. Tổng tối đa 30 MB.
+            </p>
+            <div class="review-media" data-review-preview aria-live="polite"></div>
+            <button type="submit" class="button-secondary">
+                Gửi đánh giá sau khi đã nhận hàng
+            </button>
+        </form>
+    }
+</section>

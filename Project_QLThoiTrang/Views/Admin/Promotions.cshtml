@@ -1,4 +1,73 @@
+@*
+    VAI TRÒ VIEW: Mở danh sách chương trình ưu đãi. DỮ LIỆU MODEL: List<Promotion>. ĐIỂM XỬ LÝ:
+    Controllers/AdminController.cs và AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload
+    GET/POST.
+*@
+
 @model List<Promotion>
-@{ViewData["Title"]="Chương trình khuyến mãi";ViewData["CreateUrl"]="/Admin/Promotion";ViewData["CreateLabel"]="Thêm chương trình";}
-@{ViewData["TableFilters"]=new[]{AdminListFilter.Choice("state","Trạng thái",("active","Đang hiệu lực"),("upcoming","Sắp diễn ra"),("expired","Hết hạn"),("inactive","Đã tắt")),AdminListFilter.Choice("kind","Loại giảm",("PHANTRAM","Phần trăm"),("SOTIEN","Số tiền")),new AdminListFilter("month","Tháng kết thúc")};}
-<partial name="_AdminListToolbar"/><div class="panel table-scroll"><table class="data-table"><thead><tr><th>Chương trình</th><th>Mã</th><th>Mức giảm dự kiến</th><th>Kết thúc</th><th>Trạng thái</th><th></th></tr></thead><tbody>@foreach(var p in Model){<tr data-filter-state="@(!p.Active?"inactive":p.Until.Date<DateTime.Today?"expired":p.From>DateTime.Now?"upcoming":"active")" data-filter-kind="@p.Kind" data-filter-month="@p.Until.ToString("yyyy-MM")"><td>@p.Name</td><td><strong>@p.Code</strong></td><td>@((p.Value>0?p.Value:p.Percent).ToString("N0")) @(p.Kind=="PHANTRAM"?"%":"đ")</td><td>@p.Until.ToString("dd/MM/yyyy")</td><td><span class="status">@(!p.Active?"Đã tắt":p.Until.Date<DateTime.Today?"Hết hạn":p.From>DateTime.Now?"Sắp diễn ra":"Đang hiệu lực")</span></td><td class="table-actions-cell"><div class="table-actions"><a asp-action="Promotion" asp-route-id="@p.Id" class="button-secondary compact table-action">Sửa</a></div></td></tr>}</tbody></table></div>
+@{
+    ViewData["Title"] = "Chương trình khuyến mãi";
+    ViewData["CreateUrl"] = "/Admin/Promotion";
+    ViewData["CreateLabel"] = "Thêm chương trình";
+}
+@{
+    ViewData["TableFilters"] = new[]
+    {
+        AdminListFilter.Choice("state", "Trạng thái", ("active", "Đang hiệu lực"), ("upcoming",
+    "Sắp diễn ra"), ("expired", "Hết hạn"), ("inactive", "Đã tắt")),
+        AdminListFilter.Choice("kind", "Loại giảm", ("PHANTRAM", "Phần trăm"), ("SOTIEN",
+    "Số tiền")),
+        new AdminListFilter("month", "Tháng kết thúc")
+    };
+}
+@*
+    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminListToolbar.cshtml. Thanh tìm kiếm/lọc danh sách quản
+    trị dùng lại qua partial; thuộc tính data-* kết nối với bộ xử lý lọc trong wwwroot/js/site.js.
+*@
+<partial name="_AdminListToolbar"/>
+<div class="panel table-scroll">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Chương trình</th>
+                <th>Mã</th>
+                <th>Mức giảm dự kiến</th>
+                <th>Kết thúc</th>
+                <th>Trạng thái</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model)
+            {
+                <tr
+                    data-filter-state="@(!p.Active ? "inactive" : p.Until.Date < DateTime.Today
+                    ? "expired" : p.From > DateTime.Now ? "upcoming" : "active")"
+                    data-filter-kind="@p.Kind"
+                    data-filter-month="@p.Until.ToString("yyyy-MM")"
+                >
+                    <td>@p.Name</td>
+                    <td>
+                        <strong>@p.Code</strong>
+                    </td>
+                    <td>@((p.Value > 0 ? p.Value : p.Percent).ToString("N0")) @(p.Kind == "PHANTRAM"
+                        ? "%" : "đ")</td>
+                    <td>@p.Until.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <span class="status">@(!p.Active ? "Đã tắt" : p.Until.Date < DateTime.Today
+                            ? "Hết hạn" : p.From > DateTime.Now ? "Sắp diễn ra" : "Đang hiệu lực")</span>
+                    </td>
+                    <td class="table-actions-cell">
+                        <div class="table-actions">
+                            <a
+                                asp-action="Promotion"
+                                asp-route-id="@p.Id"
+                                class="button-secondary compact table-action"
+                            >Sửa</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,27 @@
+@*
+    VAI TRÒ VIEW: Hiển thị ảnh hoặc video từ danh sách media; URL Shop/ReviewMedia trả byte sau kiểm
+    tra trạng thái đánh giá và quyền xem. DỮ LIỆU MODEL: List<ReviewMediaInfo>. Partial/layout được
+    trang cha gọi; không tự tạo URL/action riêng.
+*@
+
+@model List<ReviewMediaInfo>
+@if (Model.Count > 0)
+{
+    <div class="review-media">
+        @foreach (var media in Model)
+        {
+            var url = Url.Action("ReviewMedia", "Shop", new { id = media.Id });
+            if (media.IsVideo)
+            {
+                <video controls preload="metadata" src="@url" aria-label="Video đính kèm đánh giá">
+                
+                    </video>
+            }
+            else
+            {
+                <a href="@url" target="_blank" rel="noopener">
+                    <img src="@url" alt="Ảnh đính kèm đánh giá" loading="lazy"/>
+                </a>
+        } }
+    </div>
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "separate options, price and post token",
+    "status": "PASS"
+  },
+  {
+    "id": "logout icon last with confirmation",
+    "status": "PASS"
+  },
+  {
+    "id": "guest favorite selected/unselected after refresh",
+    "status": "PASS"
+  },
+  {
+    "id": "customer favorite selected/unselected after refresh",
+    "status": "PASS"
+  },
+  {
+    "id": "admin still cannot purchase",
+    "status": "PASS"
+  }
+]

@@ -1,0 +1,52 @@
+@*
+    VAI TRÒ VIEW: Tóm tắt giỏ khi thanh toán: dòng hàng, tiền hàng, phí và tổng hiển thị. PlaceOrder
+    vẫn tính và đối chiếu lại số tiền trên server. DỮ LIỆU MODEL: CartViewModel. Partial/layout được
+    trang cha gọi; không tự tạo URL/action riêng.
+*@
+
+@model CartViewModel
+<aside class="panel order-summary checkout-order-summary">
+    <div class="checkout-summary-heading">
+        <h2>Đơn hàng của bạn</h2>
+        <a href="/Shop/Cart" class="text-button">Chỉnh sửa</a>
+    </div>
+    <p class="muted small">
+        @Model.Lines.Sum(l => l.Quantity) sản phẩm · @Model.Lines.Count phiên bản
+    </p>
+    <div class="checkout-summary-items">
+        @foreach (var line in Model.Lines)
+        {
+            <div class="checkout-summary-item">
+                <img src="@line.Image" alt="@line.Name"/>
+                <div>
+                    <strong>@line.Name</strong>
+                    <p class="muted small">@line.Color · Size @line.Size</p>
+                    <small>Số lượng: @line.Quantity</small>
+                </div>
+                <strong class="checkout-line-price">
+                    @((line.Price * line.Quantity).ToString("N0")) đ
+                </strong>
+            </div>
+        }
+    </div>
+    <div class="totals">
+        <p>
+            Tạm tính
+            <strong>@Model.Subtotal.ToString("N0") đ</strong>
+        </p>
+        <p>
+            Phí giao hàng
+            <strong>
+                @(Model.Shipping == 0 ? "Miễn phí" : Model.Shipping.ToString("N0") + " đ")
+            </strong>
+        </p>
+        <p class="total">
+            Tổng cộng
+            <strong>@Model.Total.ToString("N0") đ</strong>
+        </p>
+    </div>
+    <p class="muted small">
+        Mã ưu đãi hợp lệ được tính khi xác nhận đặt hàng. Giá và tồn kho được kiểm tra lại trước khi
+        tạo đơn.
+    </p>
+</aside>

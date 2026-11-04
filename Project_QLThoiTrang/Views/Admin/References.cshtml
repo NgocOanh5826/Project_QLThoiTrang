@@ -1,8 +1,115 @@
+@*
+    VAI TRÒ VIEW: Mở danh sách danh mục theo kind hoặc chuyển sang form sửa khi id > 0; tính tập id
+    đang được sử dụng để view thể hiện trạng thái liên quan. DỮ LIỆU MODEL: ReferencePage. ĐIỂM XỬ
+    LÝ: Controllers/AdminController.cs và AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng
+    overload GET/POST.
+*@
+
 @model ReferencePage
-@{var titles=new Dictionary<string,string>{{"brands","Thương hiệu"},{"sizes","Kích thước"},{"colors","Màu sắc"},{"warehouses","Kho"},{"suppliers","Nhà cung cấp"}};ViewData["FilterStatus"]=true;ViewData["Title"]=titles[Model.Input.Kind];ViewData["CreateUrl"]="/Admin/Reference?kind="+Model.Input.Kind;ViewData["CreateLabel"]="Thêm "+titles[Model.Input.Kind].ToLower();}
-@if(Model.Input.Kind is "brands" or "sizes" or "colors"){
-<nav class="admin-tabs" aria-label="Nhóm danh mục sản phẩm">@foreach(var x in titles.Where(x=>x.Key is "brands" or "sizes" or "colors")){<a class="button-secondary @(Model.Input.Kind==x.Key?"is-active":"")" aria-current="@(Model.Input.Kind==x.Key?"page":null)" href="/Admin/References?kind=@x.Key">@x.Value</a>}</nav>
+@{
+    var titles = new Dictionary<string, string>
+    {
+        {
+            "brands",
+            "Thương hiệu"
+        },
+        {
+            "sizes",
+            "Kích thước"
+        },
+        {
+            "colors",
+            "Màu sắc"
+        },
+        {
+            "warehouses",
+            "Kho"
+        },
+        {
+            "suppliers",
+            "Nhà cung cấp"
+        }
+    };
+    ViewData["FilterStatus"] = true;
+    ViewData["Title"] = titles[Model.Input.Kind];
+    ViewData["CreateUrl"] = "/Admin/Reference?kind=" + Model.Input.Kind;
+    ViewData["CreateLabel"] = "Thêm " + titles[Model.Input.Kind].ToLower();
 }
-@{var usedReferences=(HashSet<int>)ViewBag.ReferenceUsage;var referenceFilters=new List<AdminListFilter>{AdminListFilter.Choice("usage","Sử dụng",("used","Đang được sử dụng"),("unused","Chưa được sử dụng"))};if(Model.Input.Kind is not ("sizes" or "colors")){referenceFilters.Insert(0,AdminListFilter.Choice("state","Trạng thái",("active","Đang hoạt động"),("inactive","Ngừng hoạt động")));}ViewData["TableFilters"]=referenceFilters;}
+@if (Model.Input.Kind is "brands" or "sizes" or "colors")
+{
+    <nav class="admin-tabs" aria-label="Nhóm danh mục sản phẩm">
+        @foreach (var x in titles.Where(x => x.Key is "brands" or "sizes" or "colors"))
+        {
+            <a
+                class="button-secondary @(Model.Input.Kind == x.Key ? "is-active" : "")"
+                aria-current="@(Model.Input.Kind == x.Key ? "page" : null)"
+                href="/Admin/References?kind=@x.Key"
+            >@x.Value</a>
+        }
+    </nav>
+}
+@{
+    var usedReferences = (HashSet<int>)ViewBag.ReferenceUsage;
+    var referenceFilters = new List<AdminListFilter>
+    {
+        AdminListFilter.Choice("usage", "Sử dụng", ("used", "Đang được sử dụng"), ("unused",
+    "Chưa được sử dụng"))
+    };
+    if (Model.Input.Kind is not ("sizes" or "colors"))
+    {
+        referenceFilters.Insert(0, AdminListFilter.Choice("state", "Trạng thái", ("active",
+    "Đang hoạt động"), ("inactive", "Ngừng hoạt động")));
+    }
+    ViewData["TableFilters"] = referenceFilters;
+}
+@*
+    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminListToolbar.cshtml. Thanh tìm kiếm/lọc danh sách quản
+    trị dùng lại qua partial; thuộc tính data-* kết nối với bộ xử lý lọc trong wwwroot/js/site.js.
+*@
 <partial name="_AdminListToolbar"/>
-<div class="panel table-scroll"><table class="data-table"><thead><tr><th>Mã</th><th>Tên</th><th>Thông tin</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody>@foreach(var r in Model.Rows){<tr data-filter-usage="@(usedReferences.Contains(r.Id)?"used":"unused")" data-state="@(r.Active?"active":"inactive")"><td>@r.Id</td><td><strong>@r.Name</strong></td><td>@r.Description @r.Address<br/>@r.Phone @r.Email</td><td><span class="status @(r.Active?"":"inactive")">@(r.Active?"Hoạt động":"Ngừng hoạt động")</span></td><td class="table-actions-cell"><div class="table-actions"><a class="button-secondary compact table-action" href="/Admin/Reference?kind=@r.Kind&id=@r.Id">Sửa</a></div></td></tr>}</tbody></table></div>
+<div class="panel table-scroll">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Mã</th>
+                <th>Tên</th>
+                <th>Thông tin</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in Model.Rows)
+            {
+                <tr
+                    data-filter-usage="@(usedReferences.Contains(r.Id) ? "used" : "unused")"
+                    data-state="@(r.Active ? "active" : "inactive")"
+                >
+                    <td>@r.Id</td>
+                    <td>
+                        <strong>@r.Name</strong>
+                    </td>
+                    <td>
+                        @r.Description
+                        @r.Address
+                        <br/>
+                        @r.Phone
+                        @r.Email
+                    </td>
+                    <td>
+                        <span class="status @(r.Active ? "" : "inactive")">@(r.Active ? "Hoạt động"
+                            : "Ngừng hoạt động")</span>
+                    </td>
+                    <td class="table-actions-cell">
+                        <div class="table-actions">
+                            <a
+                                class="button-secondary compact table-action"
+                                href="/Admin/Reference?kind=@r.Kind&id=@r.Id"
+                            >Sửa</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

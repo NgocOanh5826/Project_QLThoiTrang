@@ -1,7 +1,45 @@
+@*
+    VAI TRÒ VIEW: Chỉ hiển thị xác nhận đơn thuộc đúng tài khoản đang đăng nhập; mã đơn không khớp
+    chủ trả 404. DỮ LIỆU MODEL: Order. ĐIỂM XỬ LÝ: Controllers/ShopController.cs; tra
+    HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
+*@
+
 @model Order
-@{ViewData["Title"]="Đặt hàng thành công";}
-<section class="page-section narrow"><div class="empty-state success-state"><p class="eyebrow">CẢM ƠN BẠN ĐÃ CHỌN QOANH</p><h1>Đã nhận đơn hàng</h1><p>Đơn hàng <strong>@Model.Id</strong> đang chờ xác nhận.</p><p>@Model.Name · @Model.Phone<br/>@Model.Address</p><div class="actions"><a asp-controller="Account" asp-action="Order" asp-route-id="@Model.Id" class="btn-black">Xem đơn hàng</a><a href="/Shop" class="button-secondary">Tiếp tục khám phá</a></div></div></section>
-
-<div class="actions toolbar-actions"><a href="/Documents/Order/@Model.Id" class="button-secondary">Tải PDF đơn hàng</a></div>
-
+@{
+    ViewData["Title"] = "Đặt hàng thành công";
+}
+<section class="page-section narrow">
+    <div class="empty-state success-state">
+        <p class="eyebrow">CẢM ƠN BẠN ĐÃ CHỌN QOANH</p>
+        <h1>Đã nhận đơn hàng</h1>
+        <p>
+            Đơn hàng
+            <strong>@Model.Id</strong>
+            đang chờ xác nhận.
+        </p>
+        <p>
+            @Model.Name
+            ·
+            @Model.Phone
+            <br/>
+            @Model.Address
+        </p>
+        <div class="actions">
+            <a
+                asp-controller="Account"
+                asp-action="Order"
+                asp-route-id="@Model.Id"
+                class="btn-black"
+            >Xem đơn hàng</a>
+            <a href="/Shop" class="button-secondary">Tiếp tục khám phá</a>
+        </div>
+    </div>
+</section>
+<div class="actions toolbar-actions">
+    <a href="/Documents/Order/@Model.Id" class="button-secondary">Tải PDF đơn hàng</a>
+</div>
+@*
+    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_PaymentStatus.cshtml. Hiển thị trạng thái tiền đã thu/hoàn
+    và hướng dẫn liên quan; Admin/Payment mới là điểm nhận thao tác ghi nhận thu tiền.
+*@
 <partial name="_PaymentStatus" model="Model"/>

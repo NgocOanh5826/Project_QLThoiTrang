@@ -1,4 +1,58 @@
+@*
+    VAI TRÒ VIEW: Admin xem tối đa 300 nhật ký đăng nhập gần nhất trực tiếp từ SQL. DỮ LIỆU MODEL:
+    List<Project_QLThoiTrang.Data.Native.LichSuDangNhapRow>. ĐIỂM XỬ LÝ:
+    Controllers/AdminController.cs và AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload
+    GET/POST.
+*@
+
 @model List<Project_QLThoiTrang.Data.Native.LichSuDangNhapRow>
-@{ViewData["Title"]="Lịch sử đăng nhập";}
-@{ViewData["TableFilters"]=new[]{AdminListFilter.Choice("actor","Loại tài khoản",("customer","Khách hàng"),("staff","Nhân viên")),new AdminListFilter("result","Kết quả"),new AdminListFilter("month","Tháng đăng nhập")};}
-<partial name="_AdminListToolbar"/><div class="panel table-scroll"><table class="data-table"><thead><tr><th>Khách / nhân viên</th><th>Đăng nhập</th><th>Đăng xuất</th><th>IP / thiết bị</th><th>Kết quả</th></tr></thead><tbody>@foreach(var r in Model){<tr data-filter-actor="@(r.MaNV.HasValue?"staff":"customer")" data-filter-result="@r.TrangThai" data-filter-month="@r.ThoiGianDangNhap.ToString("yyyy-MM")"><td>@r.MaKH / @r.MaNV</td><td>@r.ThoiGianDangNhap</td><td>@r.ThoiGianDangXuat</td><td>@r.DiaChiIP<br/>@r.ThietBi</td><td>@r.TrangThai</td></tr>}</tbody></table></div>
+@{
+    ViewData["Title"] = "Lịch sử đăng nhập";
+}
+@{
+    ViewData["TableFilters"] = new[]
+    {
+        AdminListFilter.Choice("actor", "Loại tài khoản", ("customer", "Khách hàng"), ("staff",
+    "Nhân viên")),
+        new AdminListFilter("result", "Kết quả"),
+        new AdminListFilter("month", "Tháng đăng nhập")
+    };
+}
+@*
+    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminListToolbar.cshtml. Thanh tìm kiếm/lọc danh sách quản
+    trị dùng lại qua partial; thuộc tính data-* kết nối với bộ xử lý lọc trong wwwroot/js/site.js.
+*@
+<partial name="_AdminListToolbar"/>
+<div class="panel table-scroll">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Khách / nhân viên</th>
+                <th>Đăng nhập</th>
+                <th>Đăng xuất</th>
+                <th>IP / thiết bị</th>
+                <th>Kết quả</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in Model)
+            {
+                <tr
+                    data-filter-actor="@(r.MaNV.HasValue ? "staff" : "customer")"
+                    data-filter-result="@r.TrangThai"
+                    data-filter-month="@r.ThoiGianDangNhap.ToString("yyyy-MM")"
+                >
+                    <td>@r.MaKH / @r.MaNV</td>
+                    <td>@r.ThoiGianDangNhap</td>
+                    <td>@r.ThoiGianDangXuat</td>
+                    <td>
+                        @r.DiaChiIP
+                        <br/>
+                        @r.ThietBi
+                    </td>
+                    <td>@r.TrangThai</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

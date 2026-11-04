@@ -1,0 +1,34 @@
+[
+  {
+    "id": "stars and multipart form",
+    "status": "PASS"
+  },
+  {
+    "id": "upload requires anti-forgery token",
+    "status": "PASS"
+  },
+  {
+    "id": "upload guest redirects to login",
+    "status": "PASS"
+  },
+  {
+    "id": "fake image rejected without review",
+    "status": "PASS"
+  },
+  {
+    "id": "valid multipart image and video stored",
+    "status": "PASS"
+  },
+  {
+    "id": "image bytes and video byte ranges",
+    "status": "PASS"
+  },
+  {
+    "id": "hidden review media access and restore",
+    "status": "PASS"
+  },
+  {
+    "id": "unknown media is 404",
+    "status": "PASS"
+  }
+]

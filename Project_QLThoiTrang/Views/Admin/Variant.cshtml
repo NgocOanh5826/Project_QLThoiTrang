@@ -1,3 +1,67 @@
+@*
+    VAI TRÒ VIEW: Mở form thêm khi id = 0, hoặc đọc BienTheSanPham để dựng VariantInput khi sửa;
+    không có bản ghi trả 404. DỮ LIỆU MODEL: VariantInput. ĐIỂM XỬ LÝ:
+    Controllers/AdminController.cs và AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload
+    GET/POST.
+*@
+
 @model VariantInput
-@{ViewData["Title"]=Model.Id==0?"Thêm biến thể":"Chỉnh sửa biến thể";var products=(List<Product>)ViewBag.Products;}
-<div class="admin-form-page"><form asp-action="Variant" method="post" class="panel form-stack"><input asp-for="Id" type="hidden"/><label>Sản phẩm<select asp-for="ProductId">@foreach(var p in products){<option value="@p.Id">@p.Name</option>}</select></label><label>Kích thước<select asp-for="SizeId">@foreach(var s in (List<ReferenceInput>)ViewBag.Sizes){<option value="@s.Id">@s.Name</option>}</select></label><label>Màu<select asp-for="ColorId">@foreach(var s in (List<ReferenceInput>)ViewBag.Colors){<option value="@s.Id">@s.Name</option>}</select></label><label>SKU<input asp-for="Sku" required maxlength="50"/></label><label>Giá riêng (để trống dùng giá sản phẩm)<input asp-for="Price" type="number" min="1000" max="100000000" step="1000"/></label><label class="checkbox"><input asp-for="Active"/>Đang bán</label><div class="actions"><a href="/Admin/Variants" class="button-secondary">Hủy / quay lại</a><button class="btn-black">Lưu biến thể</button></div></form></div>
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Thêm biến thể" : "Chỉnh sửa biến thể";
+    var products = (List<Product>)ViewBag.Products;
+}
+<div class="admin-form-page">
+    @*
+        FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Admin/Variant. asp-for
+        liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra ModelState/quyền;
+        service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo token chống CSRF khi áp
+        dụng. CHỨC NĂNG: Nhận form biến thể, kiểm tra ModelState rồi SaveVariant; service kiểm tra
+        SKU/tổ hợp không trùng và cấm sửa định danh của biến thể cũ.
+    *@
+    <form asp-action="Variant" method="post" class="panel form-stack">
+        <input asp-for="Id" type="hidden"/>
+        <label>
+            Sản phẩm
+            <select asp-for="ProductId">
+                @foreach (var p in products)
+                {
+                    <option value="@p.Id">@p.Name</option>
+                }
+            </select>
+        </label>
+        <label>
+            Kích thước
+            <select asp-for="SizeId">
+                @foreach (var s in (List<ReferenceInput>)ViewBag.Sizes)
+                {
+                    <option value="@s.Id">@s.Name</option>
+                }
+            </select>
+        </label>
+        <label>
+            Màu
+            <select asp-for="ColorId">
+                @foreach (var s in (List<ReferenceInput>)ViewBag.Colors)
+                {
+                    <option value="@s.Id">@s.Name</option>
+                }
+            </select>
+        </label>
+        <label>
+            SKU
+            <input asp-for="Sku" required maxlength="50"/>
+        </label>
+        <label>
+            Giá riêng (để trống dùng giá sản phẩm)
+            <input asp-for="Price" type="number" min="1000" max="100000000" step="1000"/>
+        </label>
+        <label class="checkbox">
+            <input asp-for="Active"/>
+            Đang bán
+        </label>
+        <div class="actions">
+            <a href="/Admin/Variants" class="button-secondary">Hủy / quay lại</a>
+            <button class="btn-black">Lưu biến thể</button>
+        </div>
+    </form>
+</div>

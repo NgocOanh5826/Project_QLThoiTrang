@@ -1,10 +1,10 @@
 {
   "archive": "Project_QLThoiTrang_ver2_Updated.zip",
-  "files": 306,
-  "bytes": 2173923,
-  "sha256": "d10bd35e27f4dbe91ba0d5209d4df8bdfed2cef91767cdf7c8be656168654361",
+  "files": 348,
+  "bytes": 2221802,
+  "sha256": "a6bad102cf5edcaca838a7f000b1670e1c4544c57621e1220bbe54df8f851fc8",
   "zipCrc": "PASS",
   "sourceByteComparison": "PASS",
-  "protectedFilesUnchanged": 71,
-  "intentionalUiChanges": 5
+  "protectedFilesUnchanged": 74,
+  "intentionalUiChanges": 2
 }

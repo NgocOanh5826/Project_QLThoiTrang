@@ -1,8 +1,50 @@
-@{var filters=ViewData["TableFilters"] as IEnumerable<AdminListFilter>??(ViewData["FilterStatus"] is true?new[]{AdminListFilter.Choice("state","Trạng thái",("active","Đang hoạt động"),("inactive","Ngừng hoạt động"))}:Array.Empty<AdminListFilter>());}
+@*
+    VAI TRÒ VIEW: Thanh tìm kiếm/lọc danh sách quản trị dùng lại qua partial; thuộc tính data-* kết
+    nối với bộ xử lý lọc trong wwwroot/js/site.js. Partial/layout được trang cha gọi; không tự tạo
+    URL/action riêng.
+*@
+
+@{
+    var filters = ViewData["TableFilters"] as IEnumerable<AdminListFilter> ?? (
+    ViewData["FilterStatus"] is true ? new[]
+    {
+        AdminListFilter.Choice("state", "Trạng thái", ("active", "Đang hoạt động"), ("inactive",
+    "Ngừng hoạt động"))
+    }
+    : Array.Empty<AdminListFilter>());
+}
 <div class="filter-bar admin-list-toolbar" data-admin-list-filter>
- <label class="admin-list-search">Tìm kiếm<input type="search" data-admin-list-search placeholder="Nhập từ khóa trong bảng…" autocomplete="off"/></label>
- @foreach(var filter in filters){<label>@filter.Label<select data-admin-row-filter="@filter.Key" data-admin-filter-auto="@(filter.Options==null?"true":null)"><option value="">Tất cả</option>@if(filter.Options!=null){foreach(var option in filter.Options){<option value="@option.Value">@option.Text</option>}}</select></label>}
- <button type="button" class="button-secondary" data-admin-list-reset>Xóa bộ lọc</button>
- <span class="muted small" data-admin-list-count aria-live="polite"></span>
- @if(ViewData["CreateUrl"] is string createUrl){<a href="@createUrl" class="btn-black">@(ViewData["CreateLabel"]??"Thêm mới")</a>}
+    <label class="admin-list-search">
+        Tìm kiếm
+        <input
+            type="search"
+            data-admin-list-search
+            placeholder="Nhập từ khóa trong bảng…"
+            autocomplete="off"
+        />
+    </label>
+    @foreach (var filter in filters)
+    {
+        <label>
+            @filter.Label
+            <select
+                data-admin-row-filter="@filter.Key"
+                data-admin-filter-auto="@(filter.Options == null ? "true" : null)"
+            >
+                <option value="">Tất cả</option>
+                @if (filter.Options != null)
+                {
+                    foreach (var option in filter.Options)
+                    {
+                        <option value="@option.Value">@option.Text</option>
+                } }
+            </select>
+        </label>
+    }
+    <button type="button" class="button-secondary" data-admin-list-reset>Xóa bộ lọc</button>
+    <span class="muted small" data-admin-list-count aria-live="polite"></span>
+    @if (ViewData["CreateUrl"] is string createUrl)
+    {
+        <a href="@createUrl" class="btn-black">@(ViewData["CreateLabel"] ?? "Thêm mới")</a>
+    }
 </div>

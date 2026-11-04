@@ -1,3 +1,68 @@
+@*
+    VAI TRÒ VIEW: Mở form thêm/sửa nhân viên; đổi id dương của form sang Id âm trong StoreData để
+    tìm đúng nhân viên. DỮ LIỆU MODEL: StaffInput. ĐIỂM XỬ LÝ: Controllers/AdminController.cs và
+    AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
+*@
+
 @model StaffInput
-@{ViewData["Title"]=Model.Id==0?"Thêm nhân viên":"Chỉnh sửa nhân viên";}
-<div class="admin-form-page"><form asp-action="StaffMember" method="post" class="panel form-stack"><div asp-validation-summary="All" class="validation"></div><input asp-for="Id" type="hidden"/><label>Họ tên<input asp-for="Name" required/></label><label>Email<input asp-for="Email" type="email" required/></label><label>Điện thoại<input asp-for="Phone" maxlength="15"/></label><label>Vai trò<select asp-for="Role">@foreach(string r in new[]{"Admin","Catalog","Inventory","Sales","Support"}){<option>@r</option>}</select></label><label>Mật khẩu mới (để trống khi giữ mật khẩu cũ)<input asp-for="Password" type="password" autocomplete="new-password"/></label><label class="checkbox"><input asp-for="Active"/>Đang hoạt động</label><div class="actions"><a href="/Admin/Staff" class="button-secondary">Hủy / quay lại</a><button class="btn-black">Lưu nhân viên</button></div></form></div>
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Thêm nhân viên" : "Chỉnh sửa nhân viên";
+}
+<div class="admin-form-page">
+    @*
+        FORM POST: gửi các ô input/select/textarea theo thuộc tính name tới /Admin/StaffMember.
+        asp-for liên kết tên ô với thuộc tính model. Controller nhận dữ liệu và kiểm tra
+        ModelState/quyền; service kiểm tra nghiệp vụ trước khi lưu. TagHelper form POST tạo token
+        chống CSRF khi áp dụng. CHỨC NĂNG: Admin lưu nhân viên qua SaveStaff; nếu lỗi thì xóa mật
+        khẩu khỏi input/ModelState trước khi hiển thị lại form để không điền lại giá trị nhạy cảm.
+    *@
+    <form asp-action="StaffMember" method="post" class="panel form-stack">
+        @*
+            THÔNG BÁO LỖI: Razor hiển thị các lỗi ModelState do binding, DataAnnotations hoặc
+            controller thêm; sửa ô bị lỗi rồi gửi lại form.
+        *@
+        <div asp-validation-summary="All" class="validation"></div>
+        <input asp-for="Id" type="hidden"/>
+        <label>
+            Họ tên
+            <input asp-for="Name" required/>
+        </label>
+        <label>
+            Email
+            <input asp-for="Email" type="email" required/>
+        </label>
+        <label>
+            Điện thoại
+            <input asp-for="Phone" maxlength="15"/>
+        </label>
+        <label>
+            Vai trò
+            <select asp-for="Role">
+                @foreach (string r in new[]
+                {
+                    "Admin",
+                    "Catalog",
+                    "Inventory",
+                    "Sales",
+                    "Support"
+                }
+                )
+                {
+                    <option>@r</option>
+                }
+            </select>
+        </label>
+        <label>
+            Mật khẩu mới (để trống khi giữ mật khẩu cũ)
+            <input asp-for="Password" type="password" autocomplete="new-password"/>
+        </label>
+        <label class="checkbox">
+            <input asp-for="Active"/>
+            Đang hoạt động
+        </label>
+        <div class="actions">
+            <a href="/Admin/Staff" class="button-secondary">Hủy / quay lại</a>
+            <button class="btn-black">Lưu nhân viên</button>
+        </div>
+    </form>
+</div>

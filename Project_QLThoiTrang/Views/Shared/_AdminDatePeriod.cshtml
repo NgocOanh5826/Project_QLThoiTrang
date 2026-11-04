@@ -1,1 +1,16 @@
-<label>Khoảng thời gian<select name="period"><option value="">Chọn ngày tùy ý</option><option value="today" selected="@(ViewBag.Period=="today")">Hôm nay</option><option value="last7" selected="@(ViewBag.Period=="last7")">7 ngày gần nhất</option><option value="last30" selected="@(ViewBag.Period=="last30")">30 ngày gần nhất</option><option value="month" selected="@(ViewBag.Period=="month")">Tháng này</option></select></label>
+@*
+    VAI TRÒ VIEW: Các mốc thời gian nhanh cho báo cáo/danh sách; controller chuyển period thành
+    from/to, JavaScript gửi lại form khi thay đổi. Partial/layout được trang cha gọi; không tự tạo
+    URL/action riêng.
+*@
+
+<label>
+    Khoảng thời gian
+    <select name="period">
+        <option value="">Chọn ngày tùy ý</option>
+        <option value="today" selected="@(ViewBag.Period == "today")">Hôm nay</option>
+        <option value="last7" selected="@(ViewBag.Period == "last7")">7 ngày gần nhất</option>
+        <option value="last30" selected="@(ViewBag.Period == "last30")">30 ngày gần nhất</option>
+        <option value="month" selected="@(ViewBag.Period == "month")">Tháng này</option>
+    </select>
+</label>

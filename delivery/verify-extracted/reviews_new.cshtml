@@ -1,0 +1,19 @@
+@model Product
+<section class="page-section product-reviews"><h2>Đánh giá sản phẩm</h2>
+@foreach(var r in (List<ReviewItem>)ViewBag.Reviews){
+ <article class="panel"><strong>@r.Customer</strong><span class="review-stars" aria-label="@r.Stars trên 5 sao">@for(int i=1;i<=5;i++){<span class="@(i<=r.Stars?"filled":"")" aria-hidden="true">★</span>}</span><p>@r.Text</p><partial name="_ReviewMedia" model="r.Media"/><small>@r.Created.ToString("dd/MM/yyyy")</small></article>
+}
+@if(User.IsInRole("Customer")){
+ <form asp-controller="Shop" asp-action="Review" method="post" enctype="multipart/form-data" class="panel form-stack" data-review-form>
+  <input name="id" value="@Model.Id" type="hidden"/>
+  <fieldset class="review-rating"><legend>Đánh giá của bạn</legend><div class="review-star-picker">
+   @for(int i=5;i>=1;i--){<label><input type="radio" name="stars" value="@i" checked="@(i==5)" required/><span aria-hidden="true">★</span><span class="sr-only">@i sao</span></label>}
+  </div></fieldset>
+  <label>Nội dung<textarea name="text" minlength="5" maxlength="1000" required></textarea></label>
+  <label class="review-upload">Thêm hình ảnh / video<input type="file" name="media" accept=".jpg,.jpeg,.png,.gif,.webp,.mp4,.webm" multiple aria-describedby="review-upload-help" data-review-upload/></label>
+  <p id="review-upload-help" class="muted small">Tối đa 5 tệp (chỉ 1 video). Ảnh JPG/PNG/GIF/WebP tối đa 5 MB; video MP4/WebM tối đa 20 MB. Tổng tối đa 30 MB.</p>
+  <div class="review-media" data-review-preview aria-live="polite"></div>
+  <button type="submit" class="button-secondary">Gửi đánh giá sau khi đã nhận hàng</button>
+ </form>
+}
+</section>

@@ -1,4 +1,68 @@
-@{ViewData["FilterStatus"]=true;ViewData["Title"]="Biến thể sản phẩm";ViewData["CreateUrl"]="/Admin/Variant";ViewData["CreateLabel"]="Thêm biến thể";var products=(List<Product>)ViewBag.Products;}
-@{ViewData["TableFilters"]=new[]{new AdminListFilter("product","Sản phẩm"),new AdminListFilter("size","Kích thước"),new AdminListFilter("color","Màu sắc"),AdminListFilter.Choice("state","Trạng thái",("active","Đang hoạt động"),("inactive","Ngừng hoạt động")),AdminListFilter.Choice("stock","Tồn kho",("empty","Hết hàng"),("low","Sắp hết (1–5)"),("normal","Còn hàng (>5)"))};}
+@*
+    VAI TRÒ VIEW: Mở danh sách biến thể; có id thì chuyển sang trang sửa riêng, không có thì nạp các
+    lựa chọn và danh sách biến thể. ĐIỂM XỬ LÝ: Controllers/AdminController.cs và
+    AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
+*@
+
+@{
+    ViewData["FilterStatus"] = true;
+    ViewData["Title"] = "Biến thể sản phẩm";
+    ViewData["CreateUrl"] = "/Admin/Variant";
+    ViewData["CreateLabel"] = "Thêm biến thể";
+    var products = (List<Product>)ViewBag.Products;
+}
+@{
+    ViewData["TableFilters"] = new[]
+    {
+        new AdminListFilter("product", "Sản phẩm"),
+        new AdminListFilter("size", "Kích thước"),
+        new AdminListFilter("color", "Màu sắc"),
+        AdminListFilter.Choice("state", "Trạng thái", ("active", "Đang hoạt động"), ("inactive",
+    "Ngừng hoạt động")),
+        AdminListFilter.Choice("stock", "Tồn kho", ("empty", "Hết hàng"), ("low", "Sắp hết (1–5)"),
+    ("normal", "Còn hàng (>5)"))
+    };
+}
+@*
+    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminListToolbar.cshtml. Thanh tìm kiếm/lọc danh sách quản
+    trị dùng lại qua partial; thuộc tính data-* kết nối với bộ xử lý lọc trong wwwroot/js/site.js.
+*@
 <partial name="_AdminListToolbar"/>
-<div class="panel table-scroll"><table class="data-table"><thead><tr><th>Mã / SKU</th><th>Sản phẩm</th><th>Size / màu</th><th>Giá riêng</th><th>Tồn khả dụng</th><th></th></tr></thead><tbody>@foreach(var v in (List<Variant>)ViewBag.Variants){<tr data-filter-product="@v.ProductId" data-filter-product-label="@products.First(p=>p.Id==v.ProductId).Name" data-filter-size="@v.Size" data-filter-color="@v.Color" data-filter-stock="@(v.Stock==0?"empty":v.Stock<=5?"low":"normal")" data-state="@(v.Active?"active":"inactive")"><td>@v.Id / @v.Sku</td><td>@products.First(p=>p.Id==v.ProductId).Name</td><td>@v.Size / @v.Color</td><td>@v.Price?.ToString("N0")</td><td>@v.Stock</td><td class="table-actions-cell"><div class="table-actions"><a href="/Admin/Variant/@v.Id" class="table-action">Sửa</a></div></td></tr>}</tbody></table></div>
+<div class="panel table-scroll">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Mã / SKU</th>
+                <th>Sản phẩm</th>
+                <th>Size / màu</th>
+                <th>Giá riêng</th>
+                <th>Tồn khả dụng</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var v in (List<Variant>)ViewBag.Variants)
+            {
+                <tr
+                    data-filter-product="@v.ProductId"
+                    data-filter-product-label="@products.First(p => p.Id == v.ProductId).Name"
+                    data-filter-size="@v.Size"
+                    data-filter-color="@v.Color"
+                    data-filter-stock="@(v.Stock == 0 ? "empty" : v.Stock <= 5 ? "low" : "normal")"
+                    data-state="@(v.Active ? "active" : "inactive")"
+                >
+                    <td>@v.Id / @v.Sku</td>
+                    <td>@products.First(p => p.Id == v.ProductId).Name</td>
+                    <td>@v.Size / @v.Color</td>
+                    <td>@v.Price?.ToString("N0")</td>
+                    <td>@v.Stock</td>
+                    <td class="table-actions-cell">
+                        <div class="table-actions">
+                            <a href="/Admin/Variant/@v.Id" class="table-action">Sửa</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,4 +1,110 @@
+@*
+    VAI TRÒ VIEW: Danh sách sản phẩm; lọc theo từ khóa tên/màu, danh mục, thương hiệu và trạng thái;
+    chuẩn bị các lựa chọn bộ lọc trong ViewBag. DỮ LIỆU MODEL: List<Product>. ĐIỂM XỬ LÝ:
+    Controllers/AdminController.cs và AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload
+    GET/POST.
+*@
+
 @model List<Product>
-@{ViewData["Title"]="Quản lý sản phẩm";}
-<form method="get" class="filter-bar admin-list-toolbar" data-admin-server-filter><label class="admin-list-search">Tìm sản phẩm<input name="q" value="@ViewBag.Query" placeholder="Tên hoặc màu sản phẩm"/></label><label>Danh mục<select name="category"><option value="">Tất cả</option>@foreach(var c in (List<string>)ViewBag.Categories){<option value="@c" selected="@(ViewBag.Category==c)">@c</option>}</select></label><label>Thương hiệu<select name="brandId"><option value="">Tất cả</option><option value="0" selected="@(ViewBag.BrandId==0)">Không thương hiệu</option>@foreach(var b in (List<ReferenceInput>)ViewBag.Brands){<option value="@b.Id" selected="@(ViewBag.BrandId==b.Id)">@b.Name</option>}</select></label><label>Hiển thị<select name="state"><option value="">Tất cả</option><option value="active" selected="@(ViewBag.State=="active")">Đang bán</option><option value="inactive" selected="@(ViewBag.State=="inactive")">Đã ẩn</option></select></label><button class="button-secondary">Lọc</button><a href="/Admin/Products" class="button-secondary">Xóa bộ lọc</a><span class="muted small admin-filter-count">@Model.Count / @ViewBag.Total bản ghi</span><a href="/Admin/Product" class="btn-black">Thêm sản phẩm</a></form>
-<div class="panel table-scroll"><table class="data-table"><thead><tr><th>Sản phẩm</th><th>Danh mục</th><th>Giá bán</th><th>Tồn kho</th><th>Hiển thị</th><th>Thao tác</th></tr></thead><tbody>@foreach(var p in Model){<tr><td><div class="table-product"><img src="@p.Image" alt=""/><div><strong>@p.Name</strong><small>SP@(p.Id.ToString("000")) · @p.Color</small></div></div></td><td>@p.Category</td><td>@p.Price.ToString("N0") đ</td><td>@p.Stock</td><td><span class="status">@(p.Active?"Đang bán":"Đã ẩn")</span></td><td class="table-actions-cell"><div class="table-actions"><a asp-action="Product" asp-route-id="@p.Id" class="button-secondary compact table-action">Sửa</a><a asp-action="DeleteProduct" asp-route-id="@p.Id" class="button-danger compact table-action table-action--danger">Ẩn</a></div></td></tr>}</tbody></table>@if(Model.Count==0){<p class="empty-state">Không tìm thấy sản phẩm.</p>}</div>
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+}
+@*
+    FORM GET: gửi các ô input/select/textarea theo thuộc tính name tới /Admin/Products. Các giá trị
+    được gửi trong query string để đọc/lọc dữ liệu. CHỨC NĂNG: Danh sách sản phẩm; lọc theo từ khóa
+    tên/màu, danh mục, thương hiệu và trạng thái; chuẩn bị các lựa chọn bộ lọc trong ViewBag.Các
+    thuộc tính data-* nối form với sự kiện JavaScript trong wwwroot/js.
+*@
+<form method="get" class="filter-bar admin-list-toolbar" data-admin-server-filter>
+    <label class="admin-list-search">
+        Tìm sản phẩm
+        <input name="q" value="@ViewBag.Query" placeholder="Tên hoặc màu sản phẩm"/>
+    </label>
+    <label>
+        Danh mục
+        <select name="category">
+            <option value="">Tất cả</option>
+            @foreach (var c in (List<string>)ViewBag.Categories)
+            {
+                <option value="@c" selected="@(ViewBag.Category == c)">@c</option>
+            }
+        </select>
+    </label>
+    <label>
+        Thương hiệu
+        <select name="brandId">
+            <option value="">Tất cả</option>
+            <option value="0" selected="@(ViewBag.BrandId == 0)">Không thương hiệu</option>
+            @foreach (var b in (List<ReferenceInput>)ViewBag.Brands)
+            {
+                <option value="@b.Id" selected="@(ViewBag.BrandId == b.Id)">@b.Name</option>
+            }
+        </select>
+    </label>
+    <label>
+        Hiển thị
+        <select name="state">
+            <option value="">Tất cả</option>
+            <option value="active" selected="@(ViewBag.State == "active")">Đang bán</option>
+            <option value="inactive" selected="@(ViewBag.State == "inactive")">Đã ẩn</option>
+        </select>
+    </label>
+    <button class="button-secondary">Lọc</button>
+    <a href="/Admin/Products" class="button-secondary">Xóa bộ lọc</a>
+    <span class="muted small admin-filter-count">@Model.Count / @ViewBag.Total bản ghi</span>
+    <a href="/Admin/Product" class="btn-black">Thêm sản phẩm</a>
+</form>
+<div class="panel table-scroll">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Danh mục</th>
+                <th>Giá bán</th>
+                <th>Tồn kho</th>
+                <th>Hiển thị</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="table-product">
+                            <img src="@p.Image" alt=""/>
+                            <div>
+                                <strong>@p.Name</strong>
+                                <small>SP@(p.Id.ToString("000")) · @p.Color</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>@p.Category</td>
+                    <td>@p.Price.ToString("N0") đ</td>
+                    <td>@p.Stock</td>
+                    <td>
+                        <span class="status">@(p.Active ? "Đang bán" : "Đã ẩn")</span>
+                    </td>
+                    <td class="table-actions-cell">
+                        <div class="table-actions">
+                            <a
+                                asp-action="Product"
+                                asp-route-id="@p.Id"
+                                class="button-secondary compact table-action"
+                            >Sửa</a>
+                            <a
+                                asp-action="DeleteProduct"
+                                asp-route-id="@p.Id"
+                                class="button-danger compact table-action table-action--danger"
+                            >Ẩn</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.Count == 0)
+    {
+        <p class="empty-state">Không tìm thấy sản phẩm.</p>
+    }
+</div>

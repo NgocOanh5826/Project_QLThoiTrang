@@ -1,5 +1,68 @@
+@*
+    VAI TRÒ VIEW: Inventory/Admin xem tồn và giá vốn hiện có theo biến thể; dữ liệu đọc từ
+    InventoryValues và StoreData. DỮ LIỆU MODEL: StoreData. ĐIỂM XỬ LÝ:
+    Controllers/ValuationController.cs; tra HUONG_DAN_CODE.md để tìm đúng overload GET/POST.
+*@
+
 @model StoreData
-@{ViewData["Title"]="Giá vốn tồn kho";var values=(List<InventoryValue>)ViewBag.Values;}
-<p class="notice">Khai báo giá vốn tồn đầu cho từng biến thể theo chứng từ thực tế. Lần nhập tiếp theo cập nhật bình quân theo số lượng tồn và tiền nhập. Khai báo mới chỉ áp dụng giao dịch tiếp theo, không sửa giá vốn đơn đã chốt.</p>@{ViewData["TableFilters"]=new[]{new AdminListFilter("category","Danh mục"),AdminListFilter.Choice("cost","Giá vốn",("known","Đã xác định"),("unknown","Chưa xác định")),AdminListFilter.Choice("stock","Tồn kho",("empty","Hết hàng"),("available","Còn hàng"))};}
+@{
+    ViewData["Title"] = "Giá vốn tồn kho";
+    var values = (List<InventoryValue>)ViewBag.Values;
+}
+<p class="notice">
+    Khai báo giá vốn tồn đầu cho từng biến thể theo chứng từ thực tế. Lần nhập tiếp theo cập nhật
+    bình quân theo số lượng tồn và tiền nhập. Khai báo mới chỉ áp dụng giao dịch tiếp theo, không
+    sửa giá vốn đơn đã chốt.
+</p>
+@{
+    ViewData["TableFilters"] = new[]
+    {
+        new AdminListFilter("category", "Danh mục"),
+        AdminListFilter.Choice("cost", "Giá vốn", ("known", "Đã xác định"), ("unknown",
+    "Chưa xác định")),
+        AdminListFilter.Choice("stock", "Tồn kho", ("empty", "Hết hàng"), ("available", "Còn hàng"))
+    };
+}
+@*
+    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminListToolbar.cshtml. Thanh tìm kiếm/lọc danh sách quản
+    trị dùng lại qua partial; thuộc tính data-* kết nối với bộ xử lý lọc trong wwwroot/js/site.js.
+*@
 <partial name="_AdminListToolbar"/>
-<div class="panel table-scroll"><table class="data-table"><thead><tr><th>Biến thể</th><th>Tồn toàn kho</th><th>Giá vốn bình quân</th><th>Căn cứ gần nhất</th><th></th></tr></thead><tbody>@foreach(var v in Model.Variants){var a=values.FirstOrDefault(a=>a.VariantId==v.Id);<tr data-filter-category="@Model.Products.Single(p=>p.Id==v.ProductId).Category" data-filter-cost="@(a?.AverageCost.HasValue==true?"known":"unknown")" data-filter-stock="@(Model.Stocks.Where(s=>s.VariantId==v.Id).Sum(s=>s.Quantity)==0?"empty":"available")"><td>@Model.Products.Single(p=>p.Id==v.ProductId).Name · @v.Sku</td><td>@Model.Stocks.Where(s=>s.VariantId==v.Id).Sum(s=>s.Quantity)</td><td>@(a?.AverageCost?.ToString("N2")??"Chưa xác định")</td><td>@a?.Note</td><td class="table-actions-cell"><div class="table-actions"><a href="/Valuation/Edit/@v.Id" class="button-secondary compact table-action">Khai báo</a></div></td></tr>}</tbody></table></div>
+<div class="panel table-scroll">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Biến thể</th>
+                <th>Tồn toàn kho</th>
+                <th>Giá vốn bình quân</th>
+                <th>Căn cứ gần nhất</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var v in Model.Variants)
+            {
+                var a = values.FirstOrDefault(a => a.VariantId == v.Id);
+                <tr
+                    data-filter-category="@Model.Products.Single(p => p.Id == v.ProductId).Category"
+                    data-filter-cost="@(a?.AverageCost.HasValue == true ? "known" : "unknown")"
+                    data-filter-stock="@(Model.Stocks.Where(s => s.VariantId == v.Id).Sum(s => s
+                        .Quantity) == 0 ? "empty" : "available")"
+                >
+                    <td>@Model.Products.Single(p => p.Id == v.ProductId).Name · @v.Sku</td>
+                    <td>@Model.Stocks.Where(s => s.VariantId == v.Id).Sum(s => s.Quantity)</td>
+                    <td>@(a?.AverageCost?.ToString("N2") ?? "Chưa xác định")</td>
+                    <td>@a?.Note</td>
+                    <td class="table-actions-cell">
+                        <div class="table-actions">
+                            <a
+                                href="/Valuation/Edit/@v.Id"
+                                class="button-secondary compact table-action"
+                            >Khai báo</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

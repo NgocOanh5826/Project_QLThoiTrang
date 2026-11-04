@@ -1,0 +1,42 @@
+[
+  {
+    "id": "cart auto-edit controls and delete confirmation",
+    "status": "PASS"
+  },
+  {
+    "id": "quantity update",
+    "status": "PASS"
+  },
+  {
+    "id": "change size/color variant",
+    "status": "PASS"
+  },
+  {
+    "id": "merge into existing variant",
+    "status": "PASS"
+  },
+  {
+    "id": "cross-product and missing variant rejected",
+    "status": "PASS"
+  },
+  {
+    "id": "quantity and merged total limit",
+    "status": "PASS"
+  },
+  {
+    "id": "cart update requires anti-forgery token",
+    "status": "PASS"
+  },
+  {
+    "id": "delete POST removes selected lines",
+    "status": "PASS"
+  },
+  {
+    "id": "customer cart persists across sessions",
+    "status": "PASS"
+  },
+  {
+    "id": "checkout summary thumbnails color size quantity",
+    "status": "PASS"
+  }
+]

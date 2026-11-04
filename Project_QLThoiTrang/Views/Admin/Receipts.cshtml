@@ -1,7 +1,76 @@
+@*
+    VAI TRÒ VIEW: Mở danh sách phiếu nhập từ SQL, bổ sung bảng tra tên kho/NCC/nhân viên trong
+    ViewBag. DỮ LIỆU MODEL: List<Project_QLThoiTrang.Data.Native.PhieuNhapRow>. ĐIỂM XỬ LÝ:
+    Controllers/AdminController.cs và AdminExtensions.cs; tra HUONG_DAN_CODE.md để tìm đúng overload
+    GET/POST.
+*@
+
 @model List<Project_QLThoiTrang.Data.Native.PhieuNhapRow>
-@{ViewData["Title"]="Lịch sử phiếu nhập";ViewData["CreateUrl"]="/Admin/Receive";ViewData["CreateLabel"]="Nhập kho";}
-@{ViewData["TableFilters"]=new[]{new AdminListFilter("warehouse","Kho nhận"),new AdminListFilter("supplier","Nhà cung cấp"),new AdminListFilter("staff","Nhân viên nhập"),new AdminListFilter("month","Tháng nhập")};}
+@{
+    ViewData["Title"] = "Lịch sử phiếu nhập";
+    ViewData["CreateUrl"] = "/Admin/Receive";
+    ViewData["CreateLabel"] = "Nhập kho";
+}
+@{
+    ViewData["TableFilters"] = new[]
+    {
+        new AdminListFilter("warehouse", "Kho nhận"),
+        new AdminListFilter("supplier", "Nhà cung cấp"),
+        new AdminListFilter("staff", "Nhân viên nhập"),
+        new AdminListFilter("month", "Tháng nhập")
+    };
+}
+@*
+    THÀNH PHẦN DÙNG CHUNG: Views/Shared/_AdminListToolbar.cshtml. Thanh tìm kiếm/lọc danh sách quản
+    trị dùng lại qua partial; thuộc tính data-* kết nối với bộ xử lý lọc trong wwwroot/js/site.js.
+*@
 <partial name="_AdminListToolbar"/>
-<div class="panel table-scroll"><table class="data-table"><thead><tr><th>Mã phiếu</th><th>Chứng từ</th><th>Ngày nhập</th><th>Kho</th><th>Nhà cung cấp</th><th>Nhân viên</th><th>Tổng tiền</th><th>Thao tác</th></tr></thead><tbody>
-@foreach(var r in Model){<tr data-filter-warehouse="@r.MaKho" data-filter-warehouse-label="@(((Dictionary<int,string>)ViewBag.WarehouseNames).GetValueOrDefault(r.MaKho))" data-filter-supplier="@r.MaNCC" data-filter-supplier-label="@(((Dictionary<int,string>)ViewBag.SupplierNames).GetValueOrDefault(r.MaNCC))" data-filter-staff="@r.MaNV" data-filter-staff-label="@(((Dictionary<int,string>)ViewBag.StaffNames).GetValueOrDefault(r.MaNV))" data-filter-month="@r.NgayNhap.ToString("yyyy-MM")"><td>@r.MaPhieuNhap</td><td>@r.QReference</td><td>@r.NgayNhap.ToString("dd/MM/yyyy HH:mm")</td><td>@r.MaKho</td><td>@r.MaNCC</td><td>@r.MaNV</td><td>@r.TongTien.ToString("N0") đ</td><td class="table-actions-cell"><div class="table-actions"><a href="/Admin/Receipt/@r.MaPhieuNhap" class="button-secondary compact table-action">Chi tiết</a></div></td></tr>}
-</tbody></table></div>
+<div class="panel table-scroll">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Mã phiếu</th>
+                <th>Chứng từ</th>
+                <th>Ngày nhập</th>
+                <th>Kho</th>
+                <th>Nhà cung cấp</th>
+                <th>Nhân viên</th>
+                <th>Tổng tiền</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in Model)
+            {
+                <tr
+                    data-filter-warehouse="@r.MaKho"
+                    data-filter-warehouse-label="@(((Dictionary<int, string>)ViewBag.WarehouseNames)
+                        .GetValueOrDefault(r.MaKho))"
+                    data-filter-supplier="@r.MaNCC"
+                    data-filter-supplier-label="@(((Dictionary<int, string>)ViewBag.SupplierNames)
+                        .GetValueOrDefault(r.MaNCC))"
+                    data-filter-staff="@r.MaNV"
+                    data-filter-staff-label="@(((Dictionary<int, string>)ViewBag.StaffNames)
+                        .GetValueOrDefault(r.MaNV))"
+                    data-filter-month="@r.NgayNhap.ToString("yyyy-MM")"
+                >
+                    <td>@r.MaPhieuNhap</td>
+                    <td>@r.QReference</td>
+                    <td>@r.NgayNhap.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@r.MaKho</td>
+                    <td>@r.MaNCC</td>
+                    <td>@r.MaNV</td>
+                    <td>@r.TongTien.ToString("N0") đ</td>
+                    <td class="table-actions-cell">
+                        <div class="table-actions">
+                            <a
+                                href="/Admin/Receipt/@r.MaPhieuNhap"
+                                class="button-secondary compact table-action"
+                            >Chi tiết</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
